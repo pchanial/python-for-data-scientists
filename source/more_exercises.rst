@@ -4,12 +4,10 @@ More exercises
 .. topic:: **Exercise**: Data fitting
     :class: green
 
-    TBD
+    Download the **FITS file** :download:`auto_examples/data_oof.fits <auto_examples/data_oof.fits>`
+    And read the following example of curve fitting:
 
-    .. only:: html
-
-        [:ref:`Solution <plot_oof.py>`]
-
+    .. literalinclude:: auto_examples/plot_oof.py
 
 .. topic:: **Exercise**: Integration
     :class: green

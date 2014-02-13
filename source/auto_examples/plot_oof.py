@@ -45,9 +45,10 @@ def compute_residuals(param, observation, freq):
     return residual
 
 # read raw signal in fits Table Data
-hdulist = fits.open('plot_oof.fits')
+hdulist = fits.open('data_oof.fits')
+print hdulist[1].header
 table = hdulist[1].data
-signal = table.ps
+signal = table.timeline
 nsamples = signal.size
 
 # remove mode 0

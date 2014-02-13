@@ -22,7 +22,7 @@ The Python scientific environment is often referred to as an ecosystem: it is ma
 :matplotlib:
    `Curve plotting and data visualisation <http://matplotlib.org/>`_ in an impressive `number of ways <http://matplotlib.org/gallery.html>`_
 
-This ecosystem is very active and successful, and as a result, it has expanded to the point of outshining several modules from the Python standard library, such as ``random`` and ``math``, which can safely and completely be forgotten by the data scientist.
+This ecosystem is very active and successful, and as a result, it has expanded to the point of outshining several modules from the Python standard library, such as ``random`` and ``math``, which can completely and safely be forgotten by the data scientist.
 
 The NumPy array model ``ndarray`` instead of ``list`` or ``tuple`` and NumPy's vectorized operations instead of ``for`` loops
     >>> %timeit [_**2 for _ in xrange(1000000)]

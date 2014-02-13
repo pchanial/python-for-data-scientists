@@ -362,7 +362,7 @@ TBD
 Broadcasting
 ------------
 
-Broadcasting allows operations which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of array/scalar operations.
+Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of array/scalar operations.
 
 * the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).
 
@@ -399,17 +399,17 @@ Broadcasting allows operations which are normally elementwise to be carried on a
 .. topic:: **Exercise**:
     :class: green
 
-        Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?
+    Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?
 
-        * (3, 3) and (2, 3)
+    * (3, 3) and (2, 3)
 
-        * (1, 7) and (4, 7)
+    * (1, 7) and (4, 7)
 
-        * (7, 1) and (7, 4)
+    * (7, 1) and (7, 4)
 
-        * (1, 1, 1, 8) and (1, 9, 1)
+    * (1, 1, 1, 8) and (1, 9, 1)
 
-        * (4, 1, 9) and (3, 1)
+    * (4, 1, 9) and (3, 1)
 
 
     .. only:: html
@@ -488,7 +488,7 @@ Structured dtype
 loadtxt, genfrom...
 TBD
 
-          .. note:: since array elements must have a fixed common ``itemsize``, it is mandatory to specify the maximum number of characters in a string field.
+.. note:: since array elements must have a fixed common ``itemsize``, it is mandatory to specify the maximum number of characters in a string field.
 
 
 .. topic:: **Exercise**: Indirect sort.
@@ -512,7 +512,7 @@ TBD
 Special values
 --------------
 
-Numpy support IEEE 754 floating point special values `NaN` and `inf`. These literal values are available as ``np.nan`` and ``np.inf`` and are stored as Python ``float``.
+Numpy supports IEEE 754 floating point special values `NaN` and `inf`. These literal values are available as ``np.nan`` and ``np.inf`` and are stored as Python ``float``.
 
 Numpy's behaviour when an IEEE exception occurs is configurable with the ``seterr`` function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:
 

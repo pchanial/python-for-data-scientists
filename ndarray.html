@@ -496,7 +496,7 @@ TBD</p>
 </div>
 <div class="section" id="broadcasting">
 <h1>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h1>
-<p>Broadcasting allows operations which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions that can be seen as a generalization of array/scalar operations.</p>
+<p>Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of array/scalar operations.</p>
 <ul class="simple">
 <li>the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).</li>
 </ul>
@@ -533,8 +533,7 @@ TBD</p>
 </ul>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>:</p>
-<blockquote>
-<div><p>Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?</p>
+<p>Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?</p>
 <ul class="simple">
 <li>(3, 3) and (2, 3)</li>
 <li>(1, 7) and (4, 7)</li>
@@ -542,7 +541,6 @@ TBD</p>
 <li>(1, 1, 1, 8) and (1, 9, 1)</li>
 <li>(4, 1, 9) and (3, 1)</li>
 </ul>
-</div></blockquote>
 <p>[<a class="reference internal" href="auto_examples/broadcasting_shapes.html#broadcasting-shapes"><em>Solution</em></a>]</p>
 </div>
 <div class="green topic">
@@ -604,12 +602,10 @@ mp.show()
 <h1>Structured dtype<a class="headerlink" href="#structured-dtype" title="Permalink to this headline">¶</a></h1>
 <p>loadtxt, genfrom...
 TBD</p>
-<blockquote>
-<div><div class="admonition note">
+<div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">since array elements must have a fixed common <tt class="docutils literal"><span class="pre">itemsize</span></tt>, it is mandatory to specify the maximum number of characters in a string field.</p>
 </div>
-</div></blockquote>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Indirect sort.</p>
 <p>An indirect sort consists in using an array to sort another one.</p>
@@ -623,7 +619,7 @@ TBD</p>
 </div>
 <div class="section" id="special-values">
 <h1>Special values<a class="headerlink" href="#special-values" title="Permalink to this headline">¶</a></h1>
-<p>Numpy support IEEE 754 floating point special values <cite>NaN</cite> and <cite>inf</cite>. These literal values are available as <tt class="docutils literal"><span class="pre">np.nan</span></tt> and <tt class="docutils literal"><span class="pre">np.inf</span></tt> and are stored as Python <tt class="docutils literal"><span class="pre">float</span></tt>.</p>
+<p>Numpy supports IEEE 754 floating point special values <cite>NaN</cite> and <cite>inf</cite>. These literal values are available as <tt class="docutils literal"><span class="pre">np.nan</span></tt> and <tt class="docutils literal"><span class="pre">np.inf</span></tt> and are stored as Python <tt class="docutils literal"><span class="pre">float</span></tt>.</p>
 <p>Numpy&#8217;s behaviour when an IEEE exception occurs is configurable with the <tt class="docutils literal"><span class="pre">seterr</span></tt> function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s">&#39;raise&#39;</span><span class="p">)</span>
 </pre></div>
