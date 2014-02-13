@@ -362,8 +362,59 @@ TBD
 Broadcasting
 ------------
 
-TBD
+Broadcasting allows operations which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions that can be seen as a generalization of array/scalar operations.
 
+* the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).
+
+.. image:: broadcast_scalar.png
+
+* the addition of a row on a matrix will be seen as the addition of a matrix with replicated rows (the number of columns must match).
+
+.. image:: broadcast_row.png
+
+* conversely the addition of a column on a matrix will be seen as the addition of matrix with replicated columns (the number of rows must match)
+
+.. image:: broadcast_column.png
+
+* What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.
+
+* Can it work on arrays with different ranks? Sure! Dimensions of length 1 are **prepended** (added on the left of the array shape) until the two arrays have the same number of dimensions. As a consequence, the following operation is possible:
+
+    >>> np.zeros((5, 9)) + np.zeros(9)
+
+  but not this one since the righmost dimensions are different:
+
+    >>> np.zeros((5, 9)) + np.zeros(5)
+    ValueError: operands could not be broadcast together with shapes (5,9) (5)
+
+  So for columns, an additional dimension must be specified and added on the right:
+
+    >>> np.zeros((5, 9)) + np.zeros(5)[:, None]
+
+
+* Can it work on more than two arrays? Yes again! But you have to find an elementwise operation with more than two operands...
+
+* Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible.
+
+.. topic:: **Exercise**:
+    :class: green
+
+        Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?
+
+        * (3, 3) and (2, 3)
+
+        * (1, 7) and (4, 7)
+
+        * (7, 1) and (7, 4)
+
+        * (1, 1, 1, 8) and (1, 9, 1)
+
+        * (4, 1, 9) and (3, 1)
+
+
+    .. only:: html
+
+        [:ref:`Solution <broadcasting_shapes>`]
 
 .. topic:: **Exercise**:
     :class: green

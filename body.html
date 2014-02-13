@@ -577,7 +577,55 @@ TBD</p>
 </div>
 <div class="section" id="broadcasting">
 <h1>9. Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h1>
-<p>TBD</p>
+<p>Broadcasting allows operations which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions that can be seen as a generalization of array/scalar operations.</p>
+<ul class="simple">
+<li>the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).</li>
+</ul>
+<img alt="_images/broadcast_scalar.png" src="_images/broadcast_scalar.png" />
+<ul class="simple">
+<li>the addition of a row on a matrix will be seen as the addition of a matrix with replicated rows (the number of columns must match).</li>
+</ul>
+<img alt="_images/broadcast_row.png" src="_images/broadcast_row.png" />
+<ul class="simple">
+<li>conversely the addition of a column on a matrix will be seen as the addition of matrix with replicated columns (the number of rows must match)</li>
+</ul>
+<img alt="_images/broadcast_column.png" src="_images/broadcast_column.png" />
+<ul>
+<li><p class="first">What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.</p>
+</li>
+<li><p class="first">Can it work on arrays with different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same number of dimensions. As a consequence, the following operation is possible:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>but not this one since the righmost dimensions are different:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">ValueError: operands could not be broadcast together with shapes (5,9) (5)</span>
+</pre></div>
+</div>
+<p>So for columns, an additional dimension must be specified and added on the right:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Can it work on more than two arrays? Yes again! But you have to find an elementwise operation with more than two operands...</p>
+</li>
+<li><p class="first">Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible.</p>
+</li>
+</ul>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>:</p>
+<blockquote>
+<div><p>Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?</p>
+<ul class="simple">
+<li>(3, 3) and (2, 3)</li>
+<li>(1, 7) and (4, 7)</li>
+<li>(7, 1) and (7, 4)</li>
+<li>(1, 1, 1, 8) and (1, 9, 1)</li>
+<li>(4, 1, 9) and (3, 1)</li>
+</ul>
+</div></blockquote>
+<p>[<a class="reference internal" href="auto_examples/broadcasting_shapes.html#broadcasting-shapes"><em>Solution</em></a>]</p>
+</div>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Remove the <tt class="docutils literal"><span class="pre">for</span></tt> loops in this code by using broadcasting and measure the improvement in execution time.</p>
