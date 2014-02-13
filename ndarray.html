@@ -1,0 +1,667 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The array model &mdash; Python for Data Scientists, 2014.02</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2014.02',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python for Data Scientists, 2014.02" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="the-array-model">
+<h1>The array model<a class="headerlink" href="#the-array-model" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+<a class="reference internal image-reference" href="_images/layout_listoflist.png"><img alt="_images/layout_listoflist.png" src="_images/layout_listoflist.png" style="width: 40%;" /></a>
+<a class="reference internal image-reference" href="_images/layout_2darray.png"><img alt="_images/layout_2darray.png" src="_images/layout_2darray.png" style="width: 40%;" /></a>
+<p>The NumPy array <tt class="docutils literal"><span class="pre">ndarray</span></tt> is defined by 4 attributes:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dtype:</th><td class="field-body"><p class="first">The common type of the array&#8217;s data. It can be a basic type. TBD quaternions</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>The name <tt class="docutils literal"><span class="pre">float128</span></tt> is misleading. This data type is unlikely to represent quadruple precision (but C type <tt class="docutils literal"><span class="pre">long</span> <span class="pre">double</span></tt> instead). Try:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">_</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float128</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="mf">0.00097656</span><span class="p">,</span> <span class="mf">1.1920929e-07</span><span class="p">,</span> <span class="mf">2.2204460492503131e-16</span><span class="p">,</span> <span class="mf">1.084202172485504434e-19</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">shape:</th><td class="field-body"><p class="first">A tuple containing the array dimensions (the length of the array axes, in NumPy terminology).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>a dimension of zero is valid</li>
+<li>the shape <tt class="docutils literal"><span class="pre">()</span></tt> is valid, it corresponds to a 0-ranked array, similar to a scalar.</li>
+</ul>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">strides:</th><td class="field-body"><p class="first">A tuple containing how many bytes should be walked in the memory to go from one element to the next one along each dimension.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(40, 8)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The fast dimension is that with the smallest stride. By default, when an ndarray is created, it is the last one (row-major storage order like C and unlike Fortran, Matlab and IDL), but note that this is not the case for every ndarray:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(8, 40)</span>
+</pre></div>
+</div>
+<p class="last">When iterating through a multi-dimensional array (check beforehand that you really have to...), make sure that you are indexing first the actual slow dimension(s) in the <tt class="docutils literal"><span class="pre">for</span></tt> loop(s).</p>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">ctypes.data:</th><td class="field-body"><p class="first last">The memory location of the first array element (but you should not worry about it)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>An ndarray also has convenience attributes, which can be derived from the previous ones:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">ndim:</th><td class="field-body">number of dimensions (or array&#8217;s rank, in NumPy wavering terminology)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">size:</th><td class="field-body">number of elements</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">itemsize:</th><td class="field-body">number of bytes of one element</td>
+</tr>
+<tr class="field-even field"><th class="field-name">nbytes:</th><td class="field-body">number of bytes of all elements</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>In Python (so it is also true for NumPy ndarrays), the assignation operator &#8216;=&#8217; does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for ndarrays the memory buffer will be released.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="creating-arrays">
+<h1>Creating arrays<a class="headerlink" href="#creating-arrays" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">There are plenty of ways to create an array. The simplest one is to convert a Python list or tuple:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="go">array([ 1.  ,  2.  ,  3.14,  4.  ])</span>
+</pre></div>
+</div>
+<p>The data type of the resulting array is inferred from the types of the sequence elements, but it can be explicitly set using the <tt class="docutils literal"><span class="pre">dtype</span></tt> keyword:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
+<span class="go">array([1, 2, 3, 4], dtype=int8)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+<span class="go">array([ 1.00+0.j,  2.00+0.j,  3.14+0.j,  4.00+0.j])</span>
+</pre></div>
+</div>
+<p>Multi-dimensional arrays can be created using the same mechanism by nesting sequences, the innermost ones corresponding to the last dimension. Here is an example of a 2-by-3 array:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="go">array([[1, 2, 3],</span>
+<span class="go">       [1, 0, 1]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="go">array([1, 2, 3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+<span class="go">array([1, 0, 1])</span>
+</pre></div>
+</div>
+<p>Although it is cumbersome (we will see better ways to achieve that), a 4-by-1 array (a column) can be similarly created:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+<span class="go">array([[ 4],</span>
+<span class="go">       [-1],</span>
+<span class="go">       [ 2],</span>
+<span class="go">       [ 0]])</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Alternatively, when the array dimensions are known, the array can be allocated in memory and optionally filled with a particular value. The array may then be updated at a later stage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">zeros:</th><td class="field-body"><p class="first">allocate a 0-filled array of given shape</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">ones:</th><td class="field-body"><p class="first">allocate a 1-filled array of given shape</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">empty:</th><td class="field-body"><p class="first">allocate an array of given shape without initializing its values</p>
+<div class="last admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function is much faster, but be careful to completely populate the array afterwards.</p>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To initialize an array with another value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">It is possible to use another variable as a template to create a new array with the same data type and shape:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">_</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(dtype(&#39;int64&#39;), (2, 3))</span>
+<span class="go">(dtype(&#39;int64&#39;), (2, 3))</span>
+<span class="go">(dtype(&#39;int64&#39;), (2, 3))</span>
+<span class="go">(dtype(&#39;int64&#39;), (2, 3))</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Since discretization is at the heart of scientific computing, the creation of grids is straightforward and can be done in several ways:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">arange:</th><td class="field-body"><p class="first">TBD</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">linspace:</th><td class="field-body"><p class="first">Return evenly spaced numbers over a specified interval.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">linspace</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="go">array([ 2. ,  2.4,  2.8,  3.2,  3.6,  4. ])</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">logspace:</th><td class="field-body"><p class="first">Return numbers spaced evenly on a log scale. By default the base 10 is used and the end points specify the base&#8217;s powers.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">array([ 1., 3.16227766, 10., 31.6227766, 100.])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">unlike Python&#8217;s <tt class="docutils literal"><span class="pre">range</span></tt> builtin, the last point of the interval is included by default in the array returned by <tt class="docutils literal"><span class="pre">linspace</span></tt> and <tt class="docutils literal"><span class="pre">logspace</span></tt>.</p>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">meshgrid:</th><td class="field-body"><p class="first last">TBD</p>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Creation of arrays populated by pseudonumbers. The package <tt class="docutils literal"><span class="pre">numpy.random</span></tt> contains pseudonumber generators for the usual distributions. Many more are available in <tt class="docutils literal"><span class="pre">scipy.stats</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">random_itegers:</th><td class="field-body"><p class="first">Return random integers between a lower and upper value, inclusive.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">random_sample:</th><td class="field-body"><p class="first">Return random floats in the half-open interval [0.0, 1.0).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">for the only purpose of confusing users, this function has 3 aliases <tt class="docutils literal"><span class="pre">random</span></tt>, <tt class="docutils literal"><span class="pre">randf</span></tt> and <tt class="docutils literal"><span class="pre">sample</span></tt>! And there&#8217;s also <tt class="docutils literal"><span class="pre">rand</span></tt>: see note below.</p>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">standard_nomal:</th><td class="field-body"><p class="first last">Return random floats from the standard normal distribution.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">randint</span></tt>, <tt class="docutils literal"><span class="pre">rand</span></tt> and <tt class="docutils literal"><span class="pre">randn</span></tt>, since their calling sequence <tt class="docutils literal"><span class="pre">randint(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with that of NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt> or <tt class="docutils literal"><span class="pre">ones</span></tt>, which use a tuple to specify the array shape.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="indexing-arrays">
+<h1>Indexing arrays<a class="headerlink" href="#indexing-arrays" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+<ul class="simple">
+<li>boolean indexing</li>
+</ul>
+<p>TBD</p>
+<ul class="simple">
+<li>selection indexing</li>
+</ul>
+<p>TBD</p>
+</div>
+<div class="section" id="basic-operations">
+<h1>Basic operations<a class="headerlink" href="#basic-operations" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>: Computation of <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by Monte-Carlo sampling.</p>
+<p>Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. <img class="math" src="_images/math/e6bb193313c6dd69aea0a65814c37c3c8522a0f7.png" alt="\pi/4"/>. It is then possible possible to compute <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.</p>
+<p>Vectorize the following scalar pure Python code, by using NumPy arrays and functions.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">NTOTAL</span> <span class="o">=</span> <span class="mi">1000000</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ninside</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">NTOTAL</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ninside</span> <span class="o">+=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span>
+<span class="n">pi</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">ninside</span> <span class="o">/</span> <span class="n">NTOTAL</span>
+
+<span class="k">print</span> <span class="n">pi</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+</pre></div>
+</div>
+<p>[<a class="reference internal" href="auto_examples/pi_montecarlo.html#pi-montecarlo-py"><em>Solution</em></a>]</p>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>: Histogram</p>
+<p>Complete the missing parts of the code below to do this exercise.
+Given a large number of particules of velocities <img class="math" src="_images/math/d6838c7e8f493e142abba75cd9bd1646a55b60ab.png" alt="v_x, v_y, v_z"/> distributed according to the standard normal distribution, plot the histogram of the speed in 1, 2 and 3 dimensions:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="_images/math/95262ec2c5cb7476bcbf8ca4af2af964dce8bbc8.png" alt="v_1 &amp;= |v_x| \\
+v_2 &amp;= \sqrt{v_x^2+v_y^2} \\
+v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
+</div></div></blockquote>
+<p>and compare it to the theoretical Maxwell distributions:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="_images/math/a7bc6a791d2f4f4f6c2ef8f387f8ee455461a9ef.png" alt="f_n(v) = \left(\frac{\pi}{2}\right)^{-\frac{|n-2|}{2}} v^{n-1} e^{-\frac{1}{2}v^2}"/></p>
+</div></div></blockquote>
+<p>where <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> = 1, 2, 3 is the number of dimensions.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">mp</span>
+
+
+<span class="k">def</span> <span class="nf">velocity2speed</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="n">ndims</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return the ndims-dimensional speed of the particles. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="o">...</span>
+
+
+<span class="k">def</span> <span class="nf">speed_distribution</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">ndims</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the probability distribution function of the ndims-dimensional</span>
+<span class="sd">    speed of the particles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="o">...</span>
+
+
+<span class="n">NPARTICULES</span> <span class="o">=</span> <span class="mi">1000000</span>
+
+<span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">NPARTICULES</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">ndims</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="n">speed</span> <span class="o">=</span> <span class="n">velocity2speed</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ndims</span><span class="p">)</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">patches</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;{}-d speed distribution&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ndims</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;speed&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">mp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>[<a class="reference internal" href="auto_examples/plot_maxwell.html#plot-maxwell-py"><em>Solution</em></a>]</p>
+</div>
+</div>
+<div class="section" id="manipulating-arrays">
+<h1>Manipulating arrays<a class="headerlink" href="#manipulating-arrays" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Transformations that change the shape but not the size</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">.reshape:</th><td class="field-body"><p class="first">Give a new shape.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">.ravel:</th><td class="field-body"><p class="first">Flatten an array to one dimension.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default, in the <tt class="docutils literal"><span class="pre">reshape</span></tt> and <tt class="docutils literal"><span class="pre">ravel</span></tt> transformations, the elements of the input and output array are identical when both travelled following the row-major order.</p>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">.T:</th><td class="field-body"><p class="first">Transpose of the array.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">.swapaxes:</th><td class="field-body"><p class="first">Interchange two axes.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">np.rollaxis:</th><td class="field-body"><p class="first">Roll a specified axis backwards, until it lies in a given position.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">.squeeze:</th><td class="field-body"><p class="first last">Remove single-dimensional entries from the shape of the array.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>It is also easy to add a new dimension, using <tt class="docutils literal"><span class="pre">None</span></tt> or <tt class="docutils literal"><span class="pre">np.newaxis</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(3, 5, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(3, 1, 5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(1, 3, 5)</span>
+</pre></div>
+</div>
+<p>We will see later how much this notation can be handy when used in conjonction with broadcasting.</p>
+<ul class="simple">
+<li>Transformations that change the size</li>
+</ul>
+<p>TBD</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">np.resize:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">.resize:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">tile:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>:</p>
+<p>Write a function that returns the mean of each 100 element block of a vector of size 100×N. The first version will loop over the vector slices by using a list comprehension and the second one will use NumPy transformation functions to avoid the <tt class="docutils literal"><span class="pre">for</span></tt> loop. The vector elements will be drawn from any statistical distribution.</p>
+<p>[<a class="reference internal" href="auto_examples/block_mean.html#block-mean-py"><em>Solution</em></a>]</p>
+</div>
+</div>
+<div class="section" id="views-and-copies">
+<h1>Views and copies<a class="headerlink" href="#views-and-copies" title="Permalink to this headline">¶</a></h1>
+<p>A powerful aspect of NumPy&#8217;s array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view of the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, so it is important to know which operations return a view or a copy. A view of an ndarray is different from a reference: even though they share the same memory buffer, the viewing and viewed ndarrays are different Python objects:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>:</p>
+<p>Given the function</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">isview</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="go">        &quot;&quot;&quot;</span>
+<span class="go">        Return True if b is a view of a.</span>
+<span class="go">        (It is assumed that a&#39;s memory buffer is contiguous)</span>
+<span class="go">        &quot;&quot;&quot;</span>
+<span class="go">        return a.ctypes.data &lt;= b.ctypes.data &lt; a.ctypes.data + a.nbytes</span>
+</pre></div>
+</div>
+<p>and the array</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>let&#8217;s first check that slicing an <tt class="docutils literal"><span class="pre">ndarray</span></tt> does not copy it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">isview</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Then, check what the following actions do and whether their result is a view or a copy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">([(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;mass&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
+<span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+<span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">T</span>
+<span class="n">a</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">a</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="combining-arrays">
+<h1>Combining arrays<a class="headerlink" href="#combining-arrays" title="Permalink to this headline">¶</a></h1>
+<p>Many ways:
+TBD</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">r_:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">hstack:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">vstack:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">dstack:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">concatenate:</th><td class="field-body"></td>
+</tr>
+<tr class="field-even field"><th class="field-name">column_stack:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="broadcasting">
+<h1>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>:</p>
+<p>Remove the <tt class="docutils literal"><span class="pre">for</span></tt> loops in this code by using broadcasting and measure the improvement in execution time.</p>
+<div class="highlight-python"><div class="highlight"><pre>from __future__ import division
+import numpy as np
+
+NDETECTORS = 8
+NSAMPLES = 1000
+SAMPLING_PERIOD = 0.1
+GLITCH_TAU = 0.3
+GLITCH_POWER = 10
+GAIN_SIGMA = 0.03
+SOURCE_AMPL = 7
+SOURCE_PERIOD = 5
+NOISE_SIGMA = 0.7
+
+time = np.arange(NSAMPLES) * SAMPLING_PERIOD
+glitch = np.zeros(NSAMPLES)
+glitch[100:] = GLITCH_AMPL * np.exp(-time[:-100] / GLITCH_TAU)
+gain = 1 + GAIN_SIGMA * np.random.standard_normal(NDETECTORS)
+source = SOURCE_AMPL * np.sin(2 * np.pi * time / SOURCE_PERIOD)
+noise = NOISE_SIGMA * np.random.standard_normal((NDETECTORS, NSAMPLES)
+
+signal = np.empty((NDETECTORS, NSAMPLES))
+for idet in xrange(NDETECTORS):
+    for isample in xrange(NSAMPLES):
+        signal[idet, isample] = gain[idet] * source[isample] + \
+                                glitch[isample] + offset[idet] + \
+                                noise[idet, isample]
+
+mp.figure()
+mp.subplot(&#39;211&#39;)
+mp.imshow(signal, aspect=&#39;auto&#39;, interpolation=&#39;none&#39;)
+mp.xlabel(&#39;sample&#39;)
+mp.ylabel(&#39;detector&#39;)
+mp.subplot(&#39;212&#39;)
+for s in signal:
+    mp.plot(time, s)
+    mp.xlabel(&#39;time [s]&#39;)
+    mp.ylabel(&#39;signal&#39;)
+mp.show()
+</pre></div>
+</div>
+<p>[<a class="reference internal" href="auto_examples/plot_broadcasting.html#plot-broadcasting-py"><em>Solution</em></a>]</p>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>:</p>
+<p>Write a one-liner function that normalizes by the euclidian norm M N-dimensional real vectors packed in an array of shape (M, N).</p>
+<p>[<a class="reference internal" href="auto_examples/normalize.html#normalize-py"><em>Solution</em></a>]</p>
+</div>
+</div>
+<div class="section" id="ufuncs">
+<h1>Ufuncs<a class="headerlink" href="#ufuncs" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+</div>
+<div class="section" id="structured-dtype">
+<h1>Structured dtype<a class="headerlink" href="#structured-dtype" title="Permalink to this headline">¶</a></h1>
+<p>loadtxt, genfrom...
+TBD</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">since array elements must have a fixed common <tt class="docutils literal"><span class="pre">itemsize</span></tt>, it is mandatory to specify the maximum number of characters in a string field.</p>
+</div>
+</div></blockquote>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>: Indirect sort.</p>
+<p>An indirect sort consists in using an array to sort another one.</p>
+<p>First, create a structured dtype with a string field <tt class="docutils literal"><span class="pre">'name'</span></tt> (no more than 10 characters) and an integer field <tt class="docutils literal"><span class="pre">'age'</span></tt>. Then use it to allocate a large array of people. The &#8216;name&#8217; field will be populated with <tt class="docutils literal"><span class="pre">'id1'</span></tt>, <tt class="docutils literal"><span class="pre">'id2'</span></tt>, etc. and the <tt class="docutils literal"><span class="pre">'age'</span></tt> field according to any random distribution. Sort the people according to their age by two methods: 1) using the function <tt class="docutils literal"><span class="pre">argsort</span></tt> and 2) looking at the <tt class="docutils literal"><span class="pre">sort</span></tt> documentation related to structured arrays.</p>
+<p>[<a class="reference internal" href="auto_examples/indirect_sort.html#indirect-sort-py"><em>Solution</em></a>]</p>
+</div>
+</div>
+<div class="section" id="recarray">
+<h1>Recarray<a class="headerlink" href="#recarray" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+</div>
+<div class="section" id="special-values">
+<h1>Special values<a class="headerlink" href="#special-values" title="Permalink to this headline">¶</a></h1>
+<p>Numpy support IEEE 754 floating point special values <cite>NaN</cite> and <cite>inf</cite>. These literal values are available as <tt class="docutils literal"><span class="pre">np.nan</span></tt> and <tt class="docutils literal"><span class="pre">np.inf</span></tt> and are stored as Python <tt class="docutils literal"><span class="pre">float</span></tt>.</p>
+<p>Numpy&#8217;s behaviour when an IEEE exception occurs is configurable with the <tt class="docutils literal"><span class="pre">seterr</span></tt> function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s">&#39;raise&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To inspect these special values:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">isinf:</th><td class="field-body"><p class="first">Return True for positive or negative infinite numbers</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">isnan:</th><td class="field-body"><p class="first">Return True for NaN elements</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">isfinite:</th><td class="field-body"><p class="first last">Return True for infinite or NaN elements</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>And to make them non-special:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">nan_to_num:</th><td class="field-body">Set <cite>NaN</cite> to zero, <cite>+inf</cite> to max float and <cite>-inf</cite> to min float</td>
+</tr>
+</tbody>
+</table>
+<p>When NaN values are present in an array, most Numpy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: <tt class="docutils literal"><span class="pre">nanmin</span></tt>, <tt class="docutils literal"><span class="pre">nanmax</span></tt>, <tt class="docutils literal"><span class="pre">nanargmin</span></tt>, <tt class="docutils literal"><span class="pre">nanargmax</span></tt>, <tt class="docutils literal"><span class="pre">nanmean</span></tt>, <tt class="docutils literal"><span class="pre">nanstd</span></tt>, <tt class="docutils literal"><span class="pre">nanvar</span></tt>, <tt class="docutils literal"><span class="pre">nansum</span></tt>.</p>
+</div>
+<div class="section" id="masked-arrays">
+<h1>Masked arrays<a class="headerlink" href="#masked-arrays" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+</div>
+<div class="section" id="linear-algebra">
+<h1>Linear algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>:</p>
+<p>exo condition number
+TBD</p>
+<p>[<em class="xref std std-ref">Solution</em>]</p>
+</div>
+</div>
+<div class="section" id="matrices">
+<h1>Matrices<a class="headerlink" href="#matrices" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>
+
+<a href="www.univ-paris-diderot.fr">
+  <img src="_static/paris7.png" alt="Université Paris Diderot / Paris 7" height="80" style="image-orientation: 90deg;">
+</a>
+
+<a href="www.apc.univ-paris-diderot.fr">
+  <img src="_static/apc.png" alt="Laboratoire APC" height="80">
+</a>
+
+<a href="http://univearths.in2p3.fr">
+  <img src="_static/labex-univearths.png" alt="UnivEarthS' LabEx" height="80">
+</a>
+
+<script language="JavaScript" src="http://freehostedscripts.net/ocount.php?site=ID2440830&name=Visits since 2014.02"></script>
+
+  </body>
+</html>

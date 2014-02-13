@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Python for Data Scientists, 2014.02</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2014.02',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Python for Data Scientists, 2014.02" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <p id="block-mean-py">Block mean computation.</p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/block_mean.py"><tt class="xref download docutils literal"><span class="pre">block_mean.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">block_mean</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">vector</span><span class="o">.</span><span class="n">size</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid size.&#39;</span><span class="p">)</span>
+    <span class="n">nblocks</span> <span class="o">=</span> <span class="n">vector</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">100</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vector</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">100</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nblocks</span><span class="p">)])</span>
+
+
+<span class="k">def</span> <span class="nf">block_mean_fast</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">vector</span><span class="o">.</span><span class="n">size</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid size.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vector</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">100</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">block_mean</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">block_mean_fast</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>
+
+<a href="www.univ-paris-diderot.fr">
+  <img src="../_static/paris7.png" alt="Université Paris Diderot / Paris 7" height="80" style="image-orientation: 90deg;">
+</a>
+
+<a href="www.apc.univ-paris-diderot.fr">
+  <img src="../_static/apc.png" alt="Laboratoire APC" height="80">
+</a>
+
+<a href="http://univearths.in2p3.fr">
+  <img src="../_static/labex-univearths.png" alt="UnivEarthS' LabEx" height="80">
+</a>
+
+<script language="JavaScript" src="http://freehostedscripts.net/ocount.php?site=ID2440830&name=Visits since 2014.02"></script>
+
+  </body>
+</html>

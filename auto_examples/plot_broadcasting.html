@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Python for Data Scientists, 2014.02</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2014.02',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Python for Data Scientists, 2014.02" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <p id="plot-broadcasting-py">Using broadcasting instead of <tt class="docutils literal"><span class="pre">for</span></tt> loops.</p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/plot_broadcasting.py"><tt class="xref download docutils literal"><span class="pre">plot_broadcasting.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NDETECTORS</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">NSAMPLES</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">SAMPLING_PERIOD</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">GLITCH_TAU</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">GLITCH_AMPL</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">GAIN_SIGMA</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="n">SOURCE_AMPL</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">SOURCE_PERIOD</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">NOISE_AMPL</span> <span class="o">=</span> <span class="mf">0.7</span>
+
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">NSAMPLES</span><span class="p">)</span> <span class="o">*</span> <span class="n">SAMPLING_PERIOD</span>
+<span class="n">glitch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">NSAMPLES</span><span class="p">)</span>
+<span class="n">glitch</span><span class="p">[</span><span class="mi">100</span><span class="p">:]</span> <span class="o">=</span> <span class="n">GLITCH_AMPL</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">time</span><span class="p">[:</span><span class="o">-</span><span class="mi">100</span><span class="p">]</span> <span class="o">/</span> <span class="n">GLITCH_TAU</span><span class="p">)</span>
+<span class="n">gain</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">GAIN_SIGMA</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">NDETECTORS</span><span class="p">)</span>
+<span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">NDETECTORS</span><span class="p">)</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">SOURCE_AMPL</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">time</span> <span class="o">/</span> <span class="n">SOURCE_PERIOD</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">NOISE_AMPL</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">NDETECTORS</span><span class="p">,</span> <span class="n">NSAMPLES</span><span class="p">))</span>
+
+<span class="n">signal</span> <span class="o">=</span> <span class="n">gain</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">source</span> <span class="o">+</span> <span class="n">glitch</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">noise</span>
+
+<span class="n">mp</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="s">&#39;211&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s">&#39;auto&#39;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;sample&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="s">&#39;212&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signal</span><span class="p">:</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;time [s]&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/plot_broadcasting.png" class="align-center" src="../_images/plot_broadcasting.png" />
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>
+
+<a href="www.univ-paris-diderot.fr">
+  <img src="../_static/paris7.png" alt="Université Paris Diderot / Paris 7" height="80" style="image-orientation: 90deg;">
+</a>
+
+<a href="www.apc.univ-paris-diderot.fr">
+  <img src="../_static/apc.png" alt="Laboratoire APC" height="80">
+</a>
+
+<a href="http://univearths.in2p3.fr">
+  <img src="../_static/labex-univearths.png" alt="UnivEarthS' LabEx" height="80">
+</a>
+
+<script language="JavaScript" src="http://freehostedscripts.net/ocount.php?site=ID2440830&name=Visits since 2014.02"></script>
+
+  </body>
+</html>
