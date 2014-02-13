@@ -362,7 +362,7 @@ TBD
 Broadcasting
 ------------
 
-Broadcasting allows operations which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions that can be seen as a generalization of array/scalar operations.
+Broadcasting allows operations which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of array/scalar operations.
 
 * the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).
 
