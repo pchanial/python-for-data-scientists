@@ -13,7 +13,7 @@ TBD
 
 The NumPy array ``ndarray`` is defined by 4 attributes:
 
-  :dtype: The common type of the array's data. It can be a basic type. TBD quaternions
+  :dtype: The common type of the array's data. It can be a basic type, such as integers, floats or strings of fixed length. Numpy provides many more basic types than Python does (``int8``, ``int16``, ``int32``, ``float16``, ``float32`` etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.
 
           .. warning:: The name ``float128`` is misleading. This data type is unlikely to represent quadruple precision (but C type ``long double`` instead). Try:
 
@@ -118,7 +118,7 @@ Creating arrays
 
 * Since discretization is at the heart of scientific computing, the creation of grids is straightforward and can be done in several ways:
 
-  :arange: TBD
+  :arange: Return evenly spaced values within a given interval.
 
   :linspace: Return evenly spaced numbers over a specified interval.
 
@@ -132,7 +132,15 @@ Creating arrays
 
              .. note:: unlike Python's ``range`` builtin, the last point of the interval is included by default in the array returned by ``linspace`` and ``logspace``.
 
-  :meshgrid: TBD
+  :meshgrid: Return coordinate matrices from two or more coordinate vectors.
+
+             >>> nx, ny = (3, 2)
+             >>> x = np.linspace(0, 1, nx)
+             >>> y = np.linspace(0, 1, ny)
+             >>> xv, yv = meshgrid(x, y)
+             >>> xv
+             array([[ 0. ,  0.5,  1. ],
+             [ 0. ,  0.5,  1. ]])
 
 
 * Creation of arrays populated by pseudonumbers. The package ``numpy.random`` contains pseudonumber generators for the usual distributions. Many more are available in ``scipy.stats``.
@@ -150,24 +158,100 @@ Creating arrays
   .. note:: I prefer not to use MATLAB® equivalent shortcuts ``randint``, ``rand`` and ``randn``, since their calling sequence ``randint(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros`` or ``ones``, which use a tuple to specify the array shape.
 
 
-Indexing arrays
----------------
-
-TBD
-
-* boolean indexing
-
-TBD
-
-* selection indexing
-
-TBD
-
-
 Basic operations
 ----------------
 
-TBD
+* Many functions are vectorized in Numpy
+
+  :sum: sum of elements
+  :product: product of elements
+  :cumsum: cumulative sum of elements
+  :cumproduct: cumulative sum of elements
+  :sort: sort elements
+  :arg: returns the indices that would sort an array.
+
+With these functions a axis can be specified: it is the axis along which the operation is performed.
+
+>>> arange(8).reshape((2, 4))
+[[0 1 2 3]
+ [4 5 6 7]]
+>>> np.sum(arange(8).reshape((2, 4)), axis=0)
+array([ 4,  6,  8, 10])
+>>> np.sum(arange(8).reshape((2, 4)), axis=1)
+array([ 6, 22])
+
+* Most common operations with two operands are performed element-wise:
+
+>>> a = ones((2, 4))
+>>> b = zeros((2, 4))
+>>> a * b
+array([[ 0.,  0.,  0.,  0.],
+       [ 0.,  0.,  0.,  0.]])
+
+
+* Boolean operations
+
+The ``and``, ``or`` and ``not`` operators should not be used on arrays.
+
++------+--------------------------+
+| not  | ``~`` or ``logical_not`` | 
++------+--------------------------+
+| and  | ``&`` or ``logical_and`` |
++------+--------------------------+
+| or   | ``|`` or ``logical_or``  |
++------+--------------------------+
+| xor  | ``^`` or ``logical_xor`` |
++------+--------------------------+
+
+>>> tf = np.array([True, False])
+>>> np.logical_and.outer(tf, tf)
+array([[ True, False],
+       [False, False]], dtype=bool)
+>>> tf = np.array([True, False])
+>>> np.logical_or.outer(tf, tf)
+array([[ True,  True],
+       [ True, False]], dtype=bool)
+
+
+Indexing arrays
+---------------
+
+* integers and slices, like Python
+
+  .. warning:: indexing starts at 0!
+
+  .. warning:: in slices, the stop point is excluded from the selection!
+
+  .. note:: negative index are fine.
+
+  >>> a = np.arange(10)
+  >>> a[3: -3]
+  array([3, 4, 5, 6])
+  >>> a[::2]
+  array([0, 2, 4, 6, 8])
+  >>> a.strides, a[::2].strides
+  (8,), (16,)
+
+* The ``Ellipsis`` (``...``) replaces as many ``:`` as possible. For an array ``a`` of rank 4: ``a[..., 0, :]`` is equivalent to ``a[:, :, 0, :]``
+
+  >>> a = np.arange((2, 3, 4, 5))
+  >>> a[..., 0].shape
+  (2, 3, 4)
+
+  .. note:: ``a[i]`` is equivalent to ``a[i, ...]``
+
+* A boolean array can be used as a mask to select elements.
+
+  >>> x = np.random.random_sample(1000)
+  >>> x[x > 3] = 0
+
+  .. note:: Use boolean masks instead of the ``where`` function!
+
+
+* selection indexing: an integer array can also be used
+  >>> x = np.random.random_sample(1000)
+  >>> index = np.argsort(x)
+  >>> x[index[:10]] = 0
 
 
 .. topic:: **Exercise**: Computation of :math:`\pi` by Monte-Carlo sampling.
@@ -272,11 +356,9 @@ We will see later how much this notation can be handy when used in conjonction w
 
 * Transformations that change the size
 
-TBD
+:np.resize: Return a new array with the specified shape, repeating the array if necessary
+:tile: Construct an array by repeating A the given number of times.
 
-:np.resize:
-:.resize:
-:tile:
 
 
 .. topic:: **Exercise**:
@@ -349,15 +431,17 @@ True
 Combining arrays
 ----------------
 
-Many ways:
-TBD
+  :r\_: Translates slice objects to concatenation along the first axis.
 
-  :r\_: 
-  :hstack:
-  :vstack:
-  :dstack:
-  :concatenate:
-  :column_stack:
+        >>> np.r_[np.array([1,2,3]), 0, 0, np.array([4,5,6])]
+        array([1, 2, 3, 0, 0, 4, 5, 6])
+  :hstack: Stack arrays in sequence horizontally (column wise).
+  :vstack: Stack arrays in sequence vertically (row wise).
+  :dstack: Stack arrays in sequence depth wise (along third axis).
+  :concatenate: Join a sequence of arrays together.
+  :column_stack: Stack 1-D arrays as columns into a 2-D array.
+  :row_stack: Stack arrays in sequence vertically (row wise).
+
 
 Broadcasting
 ------------

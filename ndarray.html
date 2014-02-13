@@ -51,7 +51,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">dtype:</th><td class="field-body"><p class="first">The common type of the array&#8217;s data. It can be a basic type. TBD quaternions</p>
+<tr class="field-odd field"><th class="field-name">dtype:</th><td class="field-body"><p class="first">The common type of the array&#8217;s data. It can be a basic type, such as integers, floats or strings of fixed length. Numpy provides many more basic types than Python does (<tt class="docutils literal"><span class="pre">int8</span></tt>, <tt class="docutils literal"><span class="pre">int16</span></tt>, <tt class="docutils literal"><span class="pre">int32</span></tt>, <tt class="docutils literal"><span class="pre">float16</span></tt>, <tt class="docutils literal"><span class="pre">float32</span></tt> etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>The name <tt class="docutils literal"><span class="pre">float128</span></tt> is misleading. This data type is unlikely to represent quadruple precision (but C type <tt class="docutils literal"><span class="pre">long</span> <span class="pre">double</span></tt> instead). Try:</p>
@@ -203,7 +203,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">arange:</th><td class="field-body"><p class="first">TBD</p>
+<tr class="field-odd field"><th class="field-name">arange:</th><td class="field-body"><p class="first">Return evenly spaced values within a given interval.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">linspace:</th><td class="field-body"><p class="first">Return evenly spaced numbers over a specified interval.</p>
@@ -224,7 +224,16 @@
 </div>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">meshgrid:</th><td class="field-body"><p class="first last">TBD</p>
+<tr class="field-even field"><th class="field-name">meshgrid:</th><td class="field-body"><p class="first">Return coordinate matrices from two or more coordinate vectors.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xv</span><span class="p">,</span> <span class="n">yv</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xv</span>
+<span class="go">array([[ 0. ,  0.5,  1. ],</span>
+<span class="go">[ 0. ,  0.5,  1. ]])</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
@@ -257,21 +266,138 @@
 </li>
 </ul>
 </div>
-<div class="section" id="indexing-arrays">
-<h1>Indexing arrays<a class="headerlink" href="#indexing-arrays" title="Permalink to this headline">¶</a></h1>
-<p>TBD</p>
-<ul class="simple">
-<li>boolean indexing</li>
-</ul>
-<p>TBD</p>
-<ul class="simple">
-<li>selection indexing</li>
-</ul>
-<p>TBD</p>
-</div>
 <div class="section" id="basic-operations">
 <h1>Basic operations<a class="headerlink" href="#basic-operations" title="Permalink to this headline">¶</a></h1>
-<p>TBD</p>
+<ul>
+<li><p class="first">Many functions are vectorized in Numpy</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">sum:</th><td class="field-body">sum of elements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">product:</th><td class="field-body">product of elements</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">cumsum:</th><td class="field-body">cumulative sum of elements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cumproduct:</th><td class="field-body">cumulative sum of elements</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">sort:</th><td class="field-body">sort elements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">arg:</th><td class="field-body">returns the indices that would sort an array.</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<p>With these functions a axis can be specified: it is the axis along which the operation is performed.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="go">[[0 1 2 3]</span>
+<span class="go"> [4 5 6 7]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">array([ 4,  6,  8, 10])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">array([ 6, 22])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Most common operations with two operands are performed element-wise:</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="go">array([[ 0.,  0.,  0.,  0.],</span>
+<span class="go">       [ 0.,  0.,  0.,  0.]])</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Boolean operations</li>
+</ul>
+<p>The <tt class="docutils literal"><span class="pre">and</span></tt>, <tt class="docutils literal"><span class="pre">or</span></tt> and <tt class="docutils literal"><span class="pre">not</span></tt> operators should not be used on arrays.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>not</td>
+<td><tt class="docutils literal"><span class="pre">~</span></tt> or <tt class="docutils literal"><span class="pre">logical_not</span></tt></td>
+</tr>
+<tr class="row-even"><td>and</td>
+<td><tt class="docutils literal"><span class="pre">&amp;</span></tt> or <tt class="docutils literal"><span class="pre">logical_and</span></tt></td>
+</tr>
+<tr class="row-odd"><td>or</td>
+<td><tt class="docutils literal"><span class="pre">|</span></tt> or <tt class="docutils literal"><span class="pre">logical_or</span></tt></td>
+</tr>
+<tr class="row-even"><td>xor</td>
+<td><tt class="docutils literal"><span class="pre">^</span></tt> or <tt class="docutils literal"><span class="pre">logical_xor</span></tt></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+<span class="go">array([[ True, False],</span>
+<span class="go">       [False, False]], dtype=bool)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+<span class="go">array([[ True,  True],</span>
+<span class="go">       [ True, False]], dtype=bool)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="indexing-arrays">
+<h1>Indexing arrays<a class="headerlink" href="#indexing-arrays" title="Permalink to this headline">¶</a></h1>
+<ul>
+<li><p class="first">integers and slices, like Python</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">indexing starts at 0!</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">in slices, the stop point is excluded from the selection!</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">negative index are fine.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">array([3, 4, 5, 6])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">array([0, 2, 4, 6, 8])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">strides</span><span class="p">,</span> <span class="n">a</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strides</span>
+<span class="go">(8,), (16,)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">Ellipsis</span></tt> (<tt class="docutils literal"><span class="pre">...</span></tt>) replaces as many <tt class="docutils literal"><span class="pre">:</span></tt> as possible. For an array <tt class="docutils literal"><span class="pre">a</span></tt> of rank 4: <tt class="docutils literal"><span class="pre">a[...,</span> <span class="pre">0,</span> <span class="pre">:]</span></tt> is equivalent to <tt class="docutils literal"><span class="pre">a[:,</span> <span class="pre">:,</span> <span class="pre">0,</span> <span class="pre">:]</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(2, 3, 4)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">a[i]</span></tt> is equivalent to <tt class="docutils literal"><span class="pre">a[i,</span> <span class="pre">...]</span></tt></p>
+</div>
+</li>
+<li><p class="first">A boolean array can be used as a mask to select elements.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use boolean masks instead of the <tt class="docutils literal"><span class="pre">where</span></tt> function!</p>
+</div>
+</li>
+<li><p class="first">selection indexing: an integer array can also be used
+&gt;&gt;&gt; x = np.random.random_sample(1000)
+&gt;&gt;&gt; index = np.argsort(x)
+&gt;&gt;&gt; x[index[:10]] = 0</p>
+</li>
+</ul>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Computation of <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by Monte-Carlo sampling.</p>
 <p>Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. <img class="math" src="_images/math/e6bb193313c6dd69aea0a65814c37c3c8522a0f7.png" alt="\pi/4"/>. It is then possible possible to compute <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.</p>
@@ -396,16 +522,13 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <ul class="simple">
 <li>Transformations that change the size</li>
 </ul>
-<p>TBD</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">np.resize:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">np.resize:</th><td class="field-body">Return a new array with the specified shape, repeating the array if necessary</td>
 </tr>
-<tr class="field-even field"><th class="field-name">.resize:</th><td class="field-body"></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">tile:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">tile:</th><td class="field-body">Construct an array by repeating A the given number of times.</td>
 </tr>
 </tbody>
 </table>
@@ -471,24 +594,35 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="combining-arrays">
 <h1>Combining arrays<a class="headerlink" href="#combining-arrays" title="Permalink to this headline">¶</a></h1>
-<p>Many ways:
-TBD</p>
 <blockquote>
 <div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">r_:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">r_:</th><td class="field-body"><p class="first">Translates slice objects to concatenation along the first axis.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])]</span>
+<span class="go">array([1, 2, 3, 0, 0, 4, 5, 6])</span>
+</pre></div>
+</div>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">hstack:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">hstack:</th><td class="field-body"><p class="first">Stack arrays in sequence horizontally (column wise).</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">vstack:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">vstack:</th><td class="field-body"><p class="first">Stack arrays in sequence vertically (row wise).</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">dstack:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">dstack:</th><td class="field-body"><p class="first">Stack arrays in sequence depth wise (along third axis).</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">concatenate:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">concatenate:</th><td class="field-body"><p class="first">Join a sequence of arrays together.</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">column_stack:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">column_stack:</th><td class="field-body"><p class="first">Stack 1-D arrays as columns into a 2-D array.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">row_stack:</th><td class="field-body"><p class="first last">Stack arrays in sequence vertically (row wise).</p>
+</td>
 </tr>
 </tbody>
 </table>
