@@ -26,7 +26,7 @@ def spectrum_estimate(signal):
 def oof_model(freq, param):
     """
     1/f noise model
-        param[0] : noise variance
+        param[0] : noise standard deviation
         param[1] : knee frequency
         param[2] : alpha
     freq : array of frequency

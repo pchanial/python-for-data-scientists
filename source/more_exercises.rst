@@ -4,8 +4,7 @@ More exercises
 .. topic:: **Exercise**: Data fitting
     :class: green
 
-    Download the **FITS file** :download:`auto_examples/data_oof.fits <auto_examples/data_oof.fits>`
-    And read the following example of curve fitting:
+    Download the **FITS file** :download:`data_oof.fits <auto_examples/data_oof.fits>`, read and run the following example of curve fitting:
 
     .. literalinclude:: auto_examples/plot_oof.py
 
