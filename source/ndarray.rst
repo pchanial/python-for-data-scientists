@@ -118,16 +118,16 @@ Creating arrays
 
 * Since discretization is at the heart of scientific computing, the creation of grids is straightforward and can be done in several ways:
 
-  :arange: Return evenly spaced values within a given interval.
+  :arange: Return evenly spaced values.
 
   :linspace: Return evenly spaced numbers over a specified interval.
 
-             >>> linspace(2, 4, 6)
+             >>> np.linspace(2, 4, 6)
              array([ 2. ,  2.4,  2.8,  3.2,  3.6,  4. ])
 
   :logspace: Return numbers spaced evenly on a log scale. By default the base 10 is used and the end points specify the base's powers.
 
-             >>> logspace(0, 2, 5)
+             >>> np.logspace(0, 2, 5)
              array([ 1., 3.16227766, 10., 31.6227766, 100.])
 
              .. note:: unlike Python's ``range`` builtin, the last point of the interval is included by default in the array returned by ``linspace`` and ``logspace``.
@@ -137,10 +137,10 @@ Creating arrays
              >>> nx, ny = (3, 2)
              >>> x = np.linspace(0, 1, nx)
              >>> y = np.linspace(0, 1, ny)
-             >>> xv, yv = meshgrid(x, y)
+             >>> xv, yv = np.meshgrid(x, y)
              >>> xv
              array([[ 0. ,  0.5,  1. ],
-             [ 0. ,  0.5,  1. ]])
+                    [ 0. ,  0.5,  1. ]])
 
 
 * Creation of arrays populated by pseudonumbers. The package ``numpy.random`` contains pseudonumber generators for the usual distributions. Many more are available in ``scipy.stats``.
@@ -249,6 +249,7 @@ Indexing arrays
 
 
 * selection indexing: an integer array can also be used
+
   >>> x = np.random.random_sample(1000)
   >>> index = np.argsort(x)
   >>> x[index[:10]] = 0
@@ -358,7 +359,6 @@ We will see later how much this notation can be handy when used in conjonction w
 
 :np.resize: Return a new array with the specified shape, repeating the array if necessary
 :tile: Construct an array by repeating A the given number of times.
-
 
 
 .. topic:: **Exercise**:
@@ -560,17 +560,15 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
         [:ref:`Solution <normalize.py>`]
 
 
-Ufuncs
-------
-
-TBD
-
-
 Structured dtype
 ----------------
 
-loadtxt, genfrom...
-TBD
+dtype can be records:
+
+>>> point_dtype = [('x', float), ('y', float)]
+>>> print np.zeros(10, dtype=point_dtype)
+[(0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0)
+ (0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0)]
 
 .. note:: since array elements must have a fixed common ``itemsize``, it is mandatory to specify the maximum number of characters in a string field.
 
@@ -585,12 +583,6 @@ TBD
     .. only:: html
 
         [:ref:`Solution <indirect_sort.py>`]
-
-
-Recarray
---------
-
-TBD
 
 
 Special values
@@ -620,32 +612,3 @@ And to make them non-special:
 :nan_to_num: Set `NaN` to zero, `+inf` to max float and `-inf` to min float
 
 When NaN values are present in an array, most Numpy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: ``nanmin``, ``nanmax``, ``nanargmin``, ``nanargmax``, ``nanmean``, ``nanstd``, ``nanvar``, ``nansum``.
-
-
-Masked arrays
--------------
-
-TBD
-
-
-Linear algebra
---------------
-
-TBD
-
-.. topic:: **Exercise**:
-    :class: green
-
-    exo condition number
-    TBD
-
-
-    .. only:: html
-
-        [:ref:`Solution <condition_number.py>`]
-
-
-Matrices
---------
-
-TBD
