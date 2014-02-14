@@ -11,5 +11,5 @@ More exercises
 .. topic:: **Exercise**: Integration
     :class: green
 
-    Numerically verify the Stephan-Boltzmann law, which related the emission of a black body to its temperature.
+    Numerically verify the Stephan-Boltzmann law, which relates the emission of a black body to its temperature.
 
