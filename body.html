@@ -569,6 +569,16 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">.reshape:</th><td class="field-body"><p class="first">Give a new shape.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>One shape dimension can be -1. In this case, the value is inferred from the number of elements of the array and the remaining dimensions.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(4, 14)</span>
+</pre></div>
+</div>
+</div>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">.ravel:</th><td class="field-body"><p class="first">Flatten an array to one dimension.</p>
@@ -725,17 +735,17 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </ul>
 <img alt="_images/broadcast_row.png" src="_images/broadcast_row.png" />
 <ul class="simple">
-<li>conversely the addition of a column on a matrix will be seen as the addition of matrix with replicated columns (the number of rows must match)</li>
+<li>conversely the addition of a column on a matrix will be seen as the addition of a matrix with replicated columns (the number of rows must match)</li>
 </ul>
 <img alt="_images/broadcast_column.png" src="_images/broadcast_column.png" />
 <ul>
 <li><p class="first">What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.</p>
 </li>
-<li><p class="first">Can it work on arrays with different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same number of dimensions. As a consequence, the following operation is possible:</p>
+<li><p class="first">Can it work on arrays with different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>but not this one since the righmost dimensions are different:</p>
+<p>but not this one, since the righmost dimensions are different:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">ValueError: operands could not be broadcast together with shapes (5,9) (5)</span>
 </pre></div>

@@ -332,9 +332,17 @@ Manipulating arrays
 * Transformations that change the shape but not the size
 
 :.reshape: Give a new shape.
+
+           .. note:: One shape dimension can be -1. In this case, the value is inferred from the number of elements of the array and the remaining dimensions.
+
+                     >>> a = np.ones((4, 2, 7))
+                     >>> b = a.reshape((4, -1))
+                     >>> b.shape
+                     (4, 14)
+
 :.ravel: Flatten an array to one dimension.
 
-              .. note:: By default, in the ``reshape`` and ``ravel`` transformations, the elements of the input and output array are identical when both travelled following the row-major order.
+         .. note:: By default, in the ``reshape`` and ``ravel`` transformations, the elements of the input and output array are identical when both travelled following the row-major order.
 
 :.T: Transpose of the array.
 :.swapaxes: Interchange two axes.
@@ -455,17 +463,17 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 
 .. image:: broadcast_row.png
 
-* conversely the addition of a column on a matrix will be seen as the addition of matrix with replicated columns (the number of rows must match)
+* conversely the addition of a column on a matrix will be seen as the addition of a matrix with replicated columns (the number of rows must match)
 
 .. image:: broadcast_column.png
 
 * What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.
 
-* Can it work on arrays with different ranks? Sure! Dimensions of length 1 are **prepended** (added on the left of the array shape) until the two arrays have the same number of dimensions. As a consequence, the following operation is possible:
+* Can it work on arrays with different ranks? Sure! Dimensions of length 1 are **prepended** (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:
 
     >>> np.zeros((5, 9)) + np.zeros(9)
 
-  but not this one since the righmost dimensions are different:
+  but not this one, since the righmost dimensions are different:
 
     >>> np.zeros((5, 9)) + np.zeros(5)
     ValueError: operands could not be broadcast together with shapes (5,9) (5)

@@ -10,13 +10,14 @@ def block_mean(vector):
     if vector.size % 100 != 0:
         raise ValueError('Invalid size.')
     nblocks = vector.size // 100
-    return np.array([np.mean(vector[i*100:(i+1)*100]) for i in range(nblocks)])
+    return np.array([np.mean(vector[i*100:(i+1)*100])
+                     for i in xrange(nblocks)])
 
 
 def block_mean_fast(vector):
     if vector.size % 100 != 0:
         raise ValueError('Invalid size.')
-    return np.mean(vector.reshape((N, 100)), axis=-1)
+    return np.mean(vector.reshape((-1, 100)), axis=-1)
 
 
 N = 30
