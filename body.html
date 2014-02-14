@@ -132,7 +132,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">dtype:</th><td class="field-body"><p class="first">The common type of the array&#8217;s data. It can be a basic type, such as integers, floats or strings of fixed length. Numpy provides many more basic types than Python does (<tt class="docutils literal"><span class="pre">int8</span></tt>, <tt class="docutils literal"><span class="pre">int16</span></tt>, <tt class="docutils literal"><span class="pre">int32</span></tt>, <tt class="docutils literal"><span class="pre">float16</span></tt>, <tt class="docutils literal"><span class="pre">float32</span></tt> etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.</p>
+<tr class="field-odd field"><th class="field-name">dtype:</th><td class="field-body"><p class="first">The common type of the array&#8217;s data. It can be a basic type, such as integers, floats or strings of fixed length. NumPy provides many more basic types than Python does (<tt class="docutils literal"><span class="pre">int8</span></tt>, <tt class="docutils literal"><span class="pre">int16</span></tt>, <tt class="docutils literal"><span class="pre">int32</span></tt>, <tt class="docutils literal"><span class="pre">float16</span></tt>, <tt class="docutils literal"><span class="pre">float32</span></tt> etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>The name <tt class="docutils literal"><span class="pre">float128</span></tt> is misleading. This data type is unlikely to represent quadruple precision (but C type <tt class="docutils literal"><span class="pre">long</span> <span class="pre">double</span></tt> instead). Try:</p>
@@ -350,7 +350,7 @@
 <div class="section" id="basic-operations">
 <h1>4. Basic operations<a class="headerlink" href="#basic-operations" title="Permalink to this headline">¶</a></h1>
 <ul>
-<li><p class="first">Many functions are vectorized in Numpy</p>
+<li><p class="first">Many functions are vectorized in NumPy</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -679,7 +679,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">r_:</th><td class="field-body"><p class="first">Translates slice objects to concatenation along the first axis.</p>
+<tr class="field-odd field"><th class="field-name">r_:</th><td class="field-body"><p class="first">Translate slice objects to concatenation along the first axis.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])]</span>
 <span class="go">array([1, 2, 3, 0, 0, 4, 5, 6])</span>
 </pre></div>
@@ -844,8 +844,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="special-values">
 <h1>12. Special values<a class="headerlink" href="#special-values" title="Permalink to this headline">¶</a></h1>
-<p>Numpy supports IEEE 754 floating point special values <cite>NaN</cite> and <cite>inf</cite>. These literal values are available as <tt class="docutils literal"><span class="pre">np.nan</span></tt> and <tt class="docutils literal"><span class="pre">np.inf</span></tt> and are stored as Python <tt class="docutils literal"><span class="pre">float</span></tt>.</p>
-<p>Numpy&#8217;s behaviour when an IEEE exception occurs is configurable with the <tt class="docutils literal"><span class="pre">seterr</span></tt> function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:</p>
+<p>NumPy supports IEEE 754 floating point special values <cite>NaN</cite> and <cite>inf</cite>. These literal values are available as <tt class="docutils literal"><span class="pre">np.nan</span></tt> and <tt class="docutils literal"><span class="pre">np.inf</span></tt> and are stored as Python <tt class="docutils literal"><span class="pre">float</span></tt>.</p>
+<p>NumPy&#8217;s behaviour when an IEEE exception occurs is configurable with the <tt class="docutils literal"><span class="pre">seterr</span></tt> function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s">&#39;raise&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -882,7 +882,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </tr>
 </tbody>
 </table>
-<p>When NaN values are present in an array, most Numpy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: <tt class="docutils literal"><span class="pre">nanmin</span></tt>, <tt class="docutils literal"><span class="pre">nanmax</span></tt>, <tt class="docutils literal"><span class="pre">nanargmin</span></tt>, <tt class="docutils literal"><span class="pre">nanargmax</span></tt>, <tt class="docutils literal"><span class="pre">nanmean</span></tt>, <tt class="docutils literal"><span class="pre">nanstd</span></tt>, <tt class="docutils literal"><span class="pre">nanvar</span></tt>, <tt class="docutils literal"><span class="pre">nansum</span></tt>.</p>
+<p>When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: <tt class="docutils literal"><span class="pre">nanmin</span></tt>, <tt class="docutils literal"><span class="pre">nanmax</span></tt>, <tt class="docutils literal"><span class="pre">nanargmin</span></tt>, <tt class="docutils literal"><span class="pre">nanargmax</span></tt>, <tt class="docutils literal"><span class="pre">nanmean</span></tt>, <tt class="docutils literal"><span class="pre">nanstd</span></tt>, <tt class="docutils literal"><span class="pre">nanvar</span></tt>, <tt class="docutils literal"><span class="pre">nansum</span></tt>.</p>
 </div>
 <div class="section" id="more-exercises">
 <h1>13. More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>

@@ -13,7 +13,7 @@ TBD
 
 The NumPy array ``ndarray`` is defined by 4 attributes:
 
-  :dtype: The common type of the array's data. It can be a basic type, such as integers, floats or strings of fixed length. Numpy provides many more basic types than Python does (``int8``, ``int16``, ``int32``, ``float16``, ``float32`` etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.
+  :dtype: The common type of the array's data. It can be a basic type, such as integers, floats or strings of fixed length. NumPy provides many more basic types than Python does (``int8``, ``int16``, ``int32``, ``float16``, ``float32`` etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.
 
           .. warning:: The name ``float128`` is misleading. This data type is unlikely to represent quadruple precision (but C type ``long double`` instead). Try:
 
@@ -161,7 +161,7 @@ Creating arrays
 Basic operations
 ----------------
 
-* Many functions are vectorized in Numpy
+* Many functions are vectorized in NumPy
 
   :sum: sum of elements
   :product: product of elements
@@ -427,7 +427,7 @@ True
 Combining arrays
 ----------------
 
-  :r\_: Translates slice objects to concatenation along the first axis.
+  :r\_: Translate slice objects to concatenation along the first axis.
 
         >>> np.r_[np.array([1,2,3]), 0, 0, np.array([4,5,6])]
         array([1, 2, 3, 0, 0, 4, 5, 6])
@@ -599,9 +599,9 @@ dtype can be records:
 Special values
 --------------
 
-Numpy supports IEEE 754 floating point special values `NaN` and `inf`. These literal values are available as ``np.nan`` and ``np.inf`` and are stored as Python ``float``.
+NumPy supports IEEE 754 floating point special values `NaN` and `inf`. These literal values are available as ``np.nan`` and ``np.inf`` and are stored as Python ``float``.
 
-Numpy's behaviour when an IEEE exception occurs is configurable with the ``seterr`` function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:
+NumPy's behaviour when an IEEE exception occurs is configurable with the ``seterr`` function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:
 
     >>> np.seterr(invalid='raise')
 
@@ -622,4 +622,4 @@ And to make them non-special:
 
 :nan_to_num: Set `NaN` to zero, `+inf` to max float and `-inf` to min float
 
-When NaN values are present in an array, most Numpy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: ``nanmin``, ``nanmax``, ``nanargmin``, ``nanargmax``, ``nanmean``, ``nanstd``, ``nanvar``, ``nansum``.
+When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: ``nanmin``, ``nanmax``, ``nanargmin``, ``nanargmax``, ``nanmean``, ``nanstd``, ``nanvar``, ``nansum``.
