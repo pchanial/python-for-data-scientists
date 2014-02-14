@@ -341,16 +341,6 @@
 </tr>
 </tbody>
 </table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
-<span class="go">array([[ True, False],</span>
-<span class="go">       [False, False]], dtype=bool)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
-<span class="go">array([[ True,  True],</span>
-<span class="go">       [ True, False]], dtype=bool)</span>
-</pre></div>
-</div>
 </div>
 <div class="section" id="indexing-arrays">
 <h1>Indexing arrays<a class="headerlink" href="#indexing-arrays" title="Permalink to this headline">¶</a></h1>
@@ -689,44 +679,45 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Remove the <tt class="docutils literal"><span class="pre">for</span></tt> loops in this code by using broadcasting and measure the improvement in execution time.</p>
-<div class="highlight-python"><div class="highlight"><pre>from __future__ import division
-import numpy as np
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-NDETECTORS = 8
-NSAMPLES = 1000
-SAMPLING_PERIOD = 0.1
-GLITCH_TAU = 0.3
-GLITCH_POWER = 10
-GAIN_SIGMA = 0.03
-SOURCE_AMPL = 7
-SOURCE_PERIOD = 5
-NOISE_SIGMA = 0.7
+<span class="n">NDETECTORS</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">NSAMPLES</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">SAMPLING_PERIOD</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">GLITCH_TAU</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">GLITCH_AMPL</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">GAIN_SIGMA</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="n">SOURCE_AMPL</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">SOURCE_PERIOD</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">NOISE_SIGMA</span> <span class="o">=</span> <span class="mf">0.7</span>
 
-time = np.arange(NSAMPLES) * SAMPLING_PERIOD
-glitch = np.zeros(NSAMPLES)
-glitch[100:] = GLITCH_AMPL * np.exp(-time[:-100] / GLITCH_TAU)
-gain = 1 + GAIN_SIGMA * np.random.standard_normal(NDETECTORS)
-source = SOURCE_AMPL * np.sin(2 * np.pi * time / SOURCE_PERIOD)
-noise = NOISE_SIGMA * np.random.standard_normal((NDETECTORS, NSAMPLES)
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">NSAMPLES</span><span class="p">)</span> <span class="o">*</span> <span class="n">SAMPLING_PERIOD</span>
+<span class="n">glitch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">NSAMPLES</span><span class="p">)</span>
+<span class="n">glitch</span><span class="p">[</span><span class="mi">100</span><span class="p">:]</span> <span class="o">=</span> <span class="n">GLITCH_AMPL</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">time</span><span class="p">[:</span><span class="o">-</span><span class="mi">100</span><span class="p">]</span> <span class="o">/</span> <span class="n">GLITCH_TAU</span><span class="p">)</span>
+<span class="n">gain</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">GAIN_SIGMA</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">NDETECTORS</span><span class="p">)</span>
+<span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">NDETECTORS</span><span class="p">)</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">SOURCE_AMPL</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">time</span> <span class="o">/</span> <span class="n">SOURCE_PERIOD</span><span class="p">)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">NOISE_SIGMA</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="n">NDETECTORS</span><span class="p">,</span> <span class="n">NSAMPLES</span><span class="p">))</span>
 
-signal = np.empty((NDETECTORS, NSAMPLES))
-for idet in xrange(NDETECTORS):
-    for isample in xrange(NSAMPLES):
-        signal[idet, isample] = gain[idet] * source[isample] + \
-                                glitch[isample] + offset[idet] + \
-                                noise[idet, isample]
+<span class="n">signal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">NDETECTORS</span><span class="p">,</span> <span class="n">NSAMPLES</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">idet</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">NDETECTORS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">isample</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">NSAMPLES</span><span class="p">):</span>
+        <span class="n">signal</span><span class="p">[</span><span class="n">idet</span><span class="p">,</span> <span class="n">isample</span><span class="p">]</span> <span class="o">=</span> <span class="n">gain</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">*</span> <span class="n">source</span><span class="p">[</span><span class="n">isample</span><span class="p">]</span> <span class="o">+</span> \
+                                <span class="n">glitch</span><span class="p">[</span><span class="n">isample</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="n">idet</span><span class="p">]</span> <span class="o">+</span> \
+                                <span class="n">noise</span><span class="p">[</span><span class="n">idet</span><span class="p">,</span> <span class="n">isample</span><span class="p">]</span>
 
-mp.figure()
-mp.subplot(&#39;211&#39;)
-mp.imshow(signal, aspect=&#39;auto&#39;, interpolation=&#39;none&#39;)
-mp.xlabel(&#39;sample&#39;)
-mp.ylabel(&#39;detector&#39;)
-mp.subplot(&#39;212&#39;)
-for s in signal:
-    mp.plot(time, s)
-    mp.xlabel(&#39;time [s]&#39;)
-    mp.ylabel(&#39;signal&#39;)
-mp.show()
+<span class="n">mp</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="s">&#39;211&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s">&#39;auto&#39;</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;sample&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;detector&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="s">&#39;212&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signal</span><span class="p">:</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;time [s]&#39;</span><span class="p">)</span>
+    <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;signal&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>[<a class="reference internal" href="auto_examples/plot_broadcasting.html#plot-broadcasting-py"><em>Solution</em></a>]</p>
@@ -735,6 +726,20 @@ mp.show()
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Write a one-liner function that normalizes by the euclidian norm M N-dimensional real vectors packed in an array of shape (M, N).</p>
 <p>[<a class="reference internal" href="auto_examples/normalize.html#normalize-py"><em>Solution</em></a>]</p>
+</div>
+</div>
+<div class="section" id="ufuncs">
+<h1>Ufuncs<a class="headerlink" href="#ufuncs" title="Permalink to this headline">¶</a></h1>
+<p>TBD</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+<span class="go">array([[ True, False],</span>
+<span class="go">       [False, False]], dtype=bool)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
+<span class="go">array([[ True,  True],</span>
+<span class="go">       [ True, False]], dtype=bool)</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="structured-dtype">

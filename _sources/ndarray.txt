@@ -208,15 +208,6 @@ The ``and``, ``or`` and ``not`` operators should not be used on arrays.
 | xor  | ``^`` or ``logical_xor`` |
 +------+--------------------------+
 
->>> tf = np.array([True, False])
->>> np.logical_and.outer(tf, tf)
-array([[ True, False],
-       [False, False]], dtype=bool)
->>> tf = np.array([True, False])
->>> np.logical_or.outer(tf, tf)
-array([[ True,  True],
-       [ True, False]], dtype=bool)
-
 
 Indexing arrays
 ---------------
@@ -519,18 +510,19 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
       NSAMPLES = 1000
       SAMPLING_PERIOD = 0.1
       GLITCH_TAU = 0.3
-      GLITCH_POWER = 10
+      GLITCH_AMPL = 20
       GAIN_SIGMA = 0.03
       SOURCE_AMPL = 7
       SOURCE_PERIOD = 5
       NOISE_SIGMA = 0.7
-      
+
       time = np.arange(NSAMPLES) * SAMPLING_PERIOD
       glitch = np.zeros(NSAMPLES)
       glitch[100:] = GLITCH_AMPL * np.exp(-time[:-100] / GLITCH_TAU)
       gain = 1 + GAIN_SIGMA * np.random.standard_normal(NDETECTORS)
+      offset = np.arange(NDETECTORS)
       source = SOURCE_AMPL * np.sin(2 * np.pi * time / SOURCE_PERIOD)
-      noise = NOISE_SIGMA * np.random.standard_normal((NDETECTORS, NSAMPLES)
+      noise = NOISE_SIGMA * np.random.standard_normal((NDETECTORS, NSAMPLES))
       
       signal = np.empty((NDETECTORS, NSAMPLES))
       for idet in xrange(NDETECTORS):
@@ -563,6 +555,21 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
     .. only:: html
 
         [:ref:`Solution <normalize.py>`]
+
+
+Ufuncs
+------
+
+TBD
+
+>>> tf = np.array([True, False])
+>>> np.logical_and.outer(tf, tf)
+array([[ True, False],
+       [False, False]], dtype=bool)
+>>> tf = np.array([True, False])
+>>> np.logical_or.outer(tf, tf)
+array([[ True,  True],
+       [ True, False]], dtype=bool)
 
 
 Structured dtype

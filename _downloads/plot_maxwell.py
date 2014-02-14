@@ -7,9 +7,9 @@ import numpy as np
 from matplotlib import pyplot as mp
 
 
-def velocity2speed(speed, ndims):
+def velocity2speed(velocity, ndims):
     """ Return the ndims-dimensional speed of the particles. """
-    return np.sqrt(np.sum(speed[..., :ndims]**2, axis=-1))
+    return np.sqrt(np.sum(velocity[..., :ndims]**2, axis=-1))
 
 
 def speed_distribution(speed, ndims):

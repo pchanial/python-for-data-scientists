@@ -14,7 +14,7 @@ GLITCH_AMPL = 20
 GAIN_SIGMA = 0.03
 SOURCE_AMPL = 7
 SOURCE_PERIOD = 10
-NOISE_AMPL = 0.7
+NOISE_SIGMA = 0.7
 
 time = np.arange(NSAMPLES) * SAMPLING_PERIOD
 glitch = np.zeros(NSAMPLES)
@@ -22,7 +22,7 @@ glitch[100:] = GLITCH_AMPL * np.exp(-time[:-100] / GLITCH_TAU)
 gain = 1 + GAIN_SIGMA * np.random.standard_normal(NDETECTORS)
 offset = np.arange(NDETECTORS)
 source = SOURCE_AMPL * np.sin(2 * np.pi * time / SOURCE_PERIOD)
-noise = NOISE_AMPL * np.random.standard_normal((NDETECTORS, NSAMPLES))
+noise = NOISE_SIGMA * np.random.standard_normal((NDETECTORS, NSAMPLES))
 
 signal = gain[:, None] * source + glitch + offset[:, None] + noise
 
