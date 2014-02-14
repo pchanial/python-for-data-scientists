@@ -192,6 +192,10 @@
 </tbody>
 </table>
 </div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">len</span></tt> function can be confusing when applied on arrays: it returns the number of elements along the first dimension only. It is better not to use it with arrays, and use <tt class="docutils literal"><span class="pre">.shape[0]</span></tt> instead for clarity.</p>
+</div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>In Python (so it is also true for NumPy ndarrays), the assignation operator &#8216;=&#8217; does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for ndarrays the memory buffer will be released.</p>
@@ -620,7 +624,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="views-and-copies">
 <h1>7. Views and copies<a class="headerlink" href="#views-and-copies" title="Permalink to this headline">¶</a></h1>
-<p>A powerful aspect of NumPy&#8217;s array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view of the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, so it is important to know which operations return a view or a copy. A view of an ndarray is different from a reference: even though they share the same memory buffer, the viewing and viewed ndarrays are different Python objects:</p>
+<p>A powerful aspect of NumPy&#8217;s array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view of the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, so it is important to know which operations return a view and which ones a copy. A view of an ndarray is different from a reference: even though they share the same memory buffer, the viewing and viewed ndarrays are different Python objects:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
@@ -651,7 +655,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </pre></div>
 </div>
 <p>Then, check what the following actions do and whether their result is a view or a copy:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">a</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
 <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
 <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">([(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;mass&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
 <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>

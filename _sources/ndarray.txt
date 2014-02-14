@@ -47,6 +47,8 @@ An ndarray also has convenience attributes, which can be derived from the previo
   :itemsize: number of bytes of one element
   :nbytes: number of bytes of all elements
 
+.. note:: The ``len`` function can be confusing when applied on arrays: it returns the number of elements along the first dimension only. It is better not to use it with arrays, and use ``.shape[0]`` instead for clarity.
+
 .. warning:: In Python (so it is also true for NumPy ndarrays), the assignation operator '=' does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for ndarrays the memory buffer will be released.
 
     >>> a = np.arange(100)
@@ -370,7 +372,7 @@ We will see later how much this notation can be handy when used in conjonction w
 Views and copies
 ----------------
 
-A powerful aspect of NumPy's array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view of the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, so it is important to know which operations return a view or a copy. A view of an ndarray is different from a reference: even though they share the same memory buffer, the viewing and viewed ndarrays are different Python objects:
+A powerful aspect of NumPy's array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view of the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, so it is important to know which operations return a view and which ones a copy. A view of an ndarray is different from a reference: even though they share the same memory buffer, the viewing and viewed ndarrays are different Python objects:
 
 >>> a = np.zeros(10)
 >>> b = a.view()
@@ -405,6 +407,7 @@ True
 
        ::
 
+           a.copy()
            a[:, ::-1, :]
            a.view(complex)
            a.view([('position', float, 3), ('mass', float)])
