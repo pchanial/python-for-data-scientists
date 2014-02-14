@@ -163,7 +163,7 @@ Creating arrays
 Basic operations
 ----------------
 
-* Many functions are vectorized in NumPy
+* Functions in Numpy are vectorized
 
   :sum: sum of elements
   :product: product of elements
