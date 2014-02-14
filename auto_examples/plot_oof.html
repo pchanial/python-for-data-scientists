@@ -130,9 +130,9 @@ mp.grid()
 sigma_param_est = np.sqrt(np.diagonal(cov_x))
 mesg_fit = (
     r&#39;     $\sigma={:5.3g}\pm{:3.2g}$&#39;.format(
-        param_est[0], sigma_param_est[0]) + &#39;\n&#39; +
+        param_est[0], sigma_param_est[0]) + &#39;\n&#39;
     r&#39;fit: $f_{{\rm knee}}={:5.3f}\pm{:3.2f}$&#39;.format(
-        param_est[1], sigma_param_est[1]) + &#39;\n&#39; +
+        param_est[1], sigma_param_est[1]) + &#39;\n&#39;
     r&#39;     $\alpha={:5.3f}\pm{:3.2f}$&#39;.format(
         param_est[2], sigma_param_est[2]))
 mp.legend([&#39;raw spectrum&#39;, &#39;guess&#39;, mesg_fit], loc=&#39;best&#39;)
