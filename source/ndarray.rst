@@ -339,7 +339,7 @@ Manipulating arrays
 :np.rollaxis: Roll a specified axis backwards, until it lies in a given position.
 :.squeeze: Remove single-dimensional entries from the shape of the array.
 
-It is also easy to add a new dimension, using ``None`` or ``np.newaxis``:
+It is also easy to add a new dimension, using ``None`` (or equivalently ``np.newaxis``):
 
 >>> a = np.zeros((3, 5))
 >>> a[..., None].shape
@@ -442,7 +442,7 @@ Combining arrays
 Broadcasting
 ------------
 
-Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of array/scalar operations.
+Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of operations involving an array and a scalar.
 
 * the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).
 
@@ -481,11 +481,11 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 
     Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?
 
-    * (3, 3) and (2, 3)
-
-    * (1, 7) and (4, 7)
-
     * (7, 1) and (7, 4)
+
+    * (7,) and (4, 7)
+
+    * (3, 3) and (2, 3)
 
     * (1, 1, 1, 8) and (1, 9, 1)
 
@@ -566,7 +566,6 @@ TBD
 >>> np.logical_and.outer(tf, tf)
 array([[ True, False],
        [False, False]], dtype=bool)
->>> tf = np.array([True, False])
 >>> np.logical_or.outer(tf, tf)
 array([[ True,  True],
        [ True, False]], dtype=bool)

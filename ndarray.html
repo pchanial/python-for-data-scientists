@@ -507,7 +507,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </tr>
 </tbody>
 </table>
-<p>It is also easy to add a new dimension, using <tt class="docutils literal"><span class="pre">None</span></tt> or <tt class="docutils literal"><span class="pre">np.newaxis</span></tt>:</p>
+<p>It is also easy to add a new dimension, using <tt class="docutils literal"><span class="pre">None</span></tt> (or equivalently <tt class="docutils literal"><span class="pre">np.newaxis</span></tt>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(3, 5, 1)</span>
@@ -629,7 +629,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="broadcasting">
 <h1>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h1>
-<p>Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of array/scalar operations.</p>
+<p>Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of operations involving an array and a scalar.</p>
 <ul class="simple">
 <li>the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).</li>
 </ul>
@@ -668,9 +668,9 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Can the arrays of the following shapes be broadcast together? If yes, what would be the shape of the result?</p>
 <ul class="simple">
-<li>(3, 3) and (2, 3)</li>
-<li>(1, 7) and (4, 7)</li>
 <li>(7, 1) and (7, 4)</li>
+<li>(7,) and (4, 7)</li>
+<li>(3, 3) and (2, 3)</li>
 <li>(1, 1, 1, 8) and (1, 9, 1)</li>
 <li>(4, 1, 9) and (3, 1)</li>
 </ul>
@@ -735,7 +735,6 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
 <span class="go">array([[ True, False],</span>
 <span class="go">       [False, False]], dtype=bool)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
 <span class="go">array([[ True,  True],</span>
 <span class="go">       [ True, False]], dtype=bool)</span>
