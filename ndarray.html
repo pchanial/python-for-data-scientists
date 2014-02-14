@@ -284,30 +284,37 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">sort:</th><td class="field-body">sort elements</td>
 </tr>
-<tr class="field-even field"><th class="field-name">arg:</th><td class="field-body">returns the indices that would sort an array.</td>
+<tr class="field-even field"><th class="field-name">argsort:</th><td class="field-body">return the indices that would sort an array</td>
 </tr>
 </tbody>
 </table>
 </li>
 </ul>
-<p>With these functions a axis can be specified: it is the axis along which the operation is performed.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<p>With these functions, an axis can be specified: it is the axis along which the operation is performed.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 <span class="go">[[0 1 2 3]</span>
 <span class="go"> [4 5 6 7]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="go">array([ 4,  6,  8, 10])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">array([ 6, 22])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="go">[ 4  6  8 10]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">[ 6 22]</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">axes can be specified by starting from the last one, using negative values. <tt class="docutils literal"><span class="pre">-1</span></tt> stands for the last axis, <tt class="docutils literal"><span class="pre">-2</span></tt> for the last but one.</p>
 </div>
 <ul class="simple">
 <li>Most common operations with two operands are performed element-wise:</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
-<span class="go">array([[ 0.,  0.,  0.,  0.],</span>
-<span class="go">       [ 0.,  0.,  0.,  0.]])</span>
+<span class="go">array([[ 0,  2,  0],</span>
+<span class="go">       [ 6,  9, 12]])</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -348,7 +355,7 @@
 <div class="section" id="indexing-arrays">
 <h1>Indexing arrays<a class="headerlink" href="#indexing-arrays" title="Permalink to this headline">¶</a></h1>
 <ul>
-<li><p class="first">integers and slices, like Python</p>
+<li><p class="first">integers and slices: like Python</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">indexing starts at 0!</p>
@@ -359,7 +366,7 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">negative index are fine.</p>
+<p class="last">negative indices are fine.</p>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
@@ -403,7 +410,7 @@
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Computation of <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by Monte-Carlo sampling.</p>
 <p>Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. <img class="math" src="_images/math/e6bb193313c6dd69aea0a65814c37c3c8522a0f7.png" alt="\pi/4"/>. It is then possible possible to compute <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.</p>
-<p>Vectorize the following scalar pure Python code, by using NumPy arrays and functions.</p>
+<p>Vectorize the following pure Python code, by using NumPy arrays and functions.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">random</span>

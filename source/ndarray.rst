@@ -168,25 +168,30 @@ Basic operations
   :cumsum: cumulative sum of elements
   :cumproduct: cumulative sum of elements
   :sort: sort elements
-  :arg: returns the indices that would sort an array.
+  :argsort: return the indices that would sort an array
 
-With these functions a axis can be specified: it is the axis along which the operation is performed.
+With these functions, an axis can be specified: it is the axis along which the operation is performed.
 
->>> arange(8).reshape((2, 4))
+>>> a = arange(8).reshape((2, 4))
+>>> print(a)
 [[0 1 2 3]
  [4 5 6 7]]
->>> np.sum(arange(8).reshape((2, 4)), axis=0)
-array([ 4,  6,  8, 10])
->>> np.sum(arange(8).reshape((2, 4)), axis=1)
-array([ 6, 22])
+>>> print(np.sum(a, axis=0))
+[ 4  6  8 10]
+>>> print(np.sum(a, axis=1))
+[ 6 22]
+
+.. note:: axes can be specified by starting from the last one, using negative values. ``-1`` stands for the last axis, ``-2`` for the last but one.
 
 * Most common operations with two operands are performed element-wise:
 
->>> a = ones((2, 4))
->>> b = zeros((2, 4))
+>>> a = np.array([[0, 1, 0],
+...               [2, 3, 4]])
+>>> b = np.array([[2, 2, 2],
+...               [3, 3, 3]])
 >>> a * b
-array([[ 0.,  0.,  0.,  0.],
-       [ 0.,  0.,  0.,  0.]])
+array([[ 0,  2,  0],
+       [ 6,  9, 12]])
 
 
 * Boolean operations
@@ -216,13 +221,13 @@ array([[ True,  True],
 Indexing arrays
 ---------------
 
-* integers and slices, like Python
+* integers and slices: like Python
 
   .. warning:: indexing starts at 0!
 
   .. warning:: in slices, the stop point is excluded from the selection!
 
-  .. note:: negative index are fine.
+  .. note:: negative indices are fine.
 
   >>> a = np.arange(10)
   >>> a[3: -3]
@@ -260,7 +265,7 @@ Indexing arrays
 
     Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. :math:`\pi/4`. It is then possible possible to compute :math:`\pi` by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.
 
-    Vectorize the following scalar pure Python code, by using NumPy arrays and functions.
+    Vectorize the following pure Python code, by using NumPy arrays and functions.
 
     .. literalinclude:: pi_montecarlo_slow.py
         :lines: 5-
