@@ -244,7 +244,8 @@
 </table>
 </li>
 <li><p class="first">Creation of arrays populated by pseudonumbers. The package <tt class="docutils literal"><span class="pre">numpy.random</span></tt> contains pseudonumber generators for the usual distributions. Many more are available in <tt class="docutils literal"><span class="pre">scipy.stats</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -257,24 +258,43 @@
 <p class="first admonition-title">Note</p>
 <p class="last">Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (<tt class="docutils literal"><span class="pre">randint</span></tt> has not the same default value, so don&#8217;t bother memorizing it).</p>
 </div>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">random_sample:</th><td class="field-body"><p class="first">Return random floats in the half-open interval [0.0, 1.0).</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">for the only purpose of confusing users even more, this function has 3 aliases <tt class="docutils literal"><span class="pre">random</span></tt>, <tt class="docutils literal"><span class="pre">randf</span></tt> and <tt class="docutils literal"><span class="pre">sample</span></tt>! And there&#8217;s also <tt class="docutils literal"><span class="pre">rand</span></tt>: see note below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">array([[5, 2],</span>
+<span class="go">       [3, 6],</span>
+<span class="go">       [1, 6]])</span>
+</pre></div>
 </div>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">standard_nomal:</th><td class="field-body"><p class="first last">Return random floats from the standard normal distribution.</p>
+<tr class="field-even field"><th class="field-name">random_sample:</th><td class="field-body"><p class="first">Return uniformly distributed random floats in the half-open interval [0.0, 1.0).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">for the only purpose of confusing users even more, this function has 3 aliases <tt class="docutils literal"><span class="pre">random</span></tt>, <tt class="docutils literal"><span class="pre">randf</span></tt> and <tt class="docutils literal"><span class="pre">sample</span></tt>! Avoid them. And there&#8217;s also <tt class="docutils literal"><span class="pre">rand</span></tt>, see note below.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">array([[ 0.55442892,  0.97919858],</span>
+<span class="go">        [ 0.40742057,  0.00879652],</span>
+<span class="go">        [ 0.098388836,  0.67112335]])</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">standard_nomal:</th><td class="field-body"><p class="first">Return random floats from the standard normal distribution.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">array([[ 1.72573865,  0.8938781 ],</span>
+<span class="go">       [ 0.37971588, -0.40010123],</span>
+<span class="go">       [-0.33761754,  0.07175398]])</span>
+</pre></div>
+</div>
 </td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">rand</span></tt> and <tt class="docutils literal"><span class="pre">randn</span></tt> for <tt class="docutils literal"><span class="pre">random_sample</span></tt> and <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, since their calling sequence <tt class="docutils literal"><span class="pre">randint(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with that of NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt> or <tt class="docutils literal"><span class="pre">ones</span></tt>, which use a tuple to specify the array shape.</p>
+<p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">rand</span></tt> and <tt class="docutils literal"><span class="pre">randn</span></tt> for <tt class="docutils literal"><span class="pre">random_sample</span></tt> and <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, even if they are available in <tt class="docutils literal"><span class="pre">numpy</span></tt>&#8216;s module namespace, since their calling sequence <tt class="docutils literal"><span class="pre">rand(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with that of NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt>, <tt class="docutils literal"><span class="pre">ones</span></tt>, <tt class="docutils literal"><span class="pre">random_integers</span></tt>, <tt class="docutils literal"><span class="pre">random_sample</span></tt>, <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, <tt class="docutils literal"><span class="pre">standard_cauchy</span></tt> etc., which use a tuple to specify the array shape.</p>
 </div>
+</div></blockquote>
 </li>
 </ul>
 </div>

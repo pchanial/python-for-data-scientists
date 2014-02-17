@@ -147,21 +147,36 @@ Creating arrays
 
 * Creation of arrays populated by pseudonumbers. The package ``numpy.random`` contains pseudonumber generators for the usual distributions. Many more are available in ``scipy.stats``.
 
-  :random_itegers: Return random integers between a lower and upper value, inclusive.
+    :random_itegers: Return random integers between a lower and upper value, inclusive.
 
-      .. note:: ``randint`` also exists. It doesn't do anything that ``random_integers`` cannot, except confusing the user. Stick with ``random_integers``, which has a better name.
+        .. note:: ``randint`` also exists. It doesn't do anything that ``random_integers`` cannot, except confusing the user. Stick with ``random_integers``, which has a better name.
 
-      .. note:: Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (``randint`` has not the same default value, so don't bother memorizing it).
+        .. note:: Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (``randint`` has not the same default value, so don't bother memorizing it).
 
-  :random_sample:
-     Return random floats in the half-open interval [0.0, 1.0).
+        >>> np.random.random_integers(1, 6, (3, 2))
+        array([[5, 2],
+               [3, 6],
+               [1, 6]])
 
-     .. note:: for the only purpose of confusing users even more, this function has 3 aliases ``random``, ``randf`` and ``sample``! And there's also ``rand``: see note below.
+    :random_sample:
+        Return uniformly distributed random floats in the half-open interval [0.0, 1.0).
 
-  :standard_nomal:
-     Return random floats from the standard normal distribution.
+        .. note:: for the only purpose of confusing users even more, this function has 3 aliases ``random``, ``randf`` and ``sample``! Avoid them. And there's also ``rand``, see note below.
 
-  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` and ``randn`` for ``random_sample`` and ``standard_normal``, since their calling sequence ``randint(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros`` or ``ones``, which use a tuple to specify the array shape.
+        >>> np.random.random_sample((3, 2))
+        array([[ 0.55442892,  0.97919858],
+                [ 0.40742057,  0.00879652],
+                [ 0.098388836,  0.67112335]])
+
+    :standard_nomal:
+        Return random floats from the standard normal distribution.
+
+        >>> np.random.standard_normal((3, 2))
+        array([[ 1.72573865,  0.8938781 ],
+               [ 0.37971588, -0.40010123],
+               [-0.33761754,  0.07175398]])
+
+    .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` and ``randn`` for ``random_sample`` and ``standard_normal``, even if they are available in ``numpy``'s module namespace, since their calling sequence ``rand(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros``, ``ones``, ``random_integers``, ``random_sample``, ``standard_normal``, ``standard_cauchy`` etc., which use a tuple to specify the array shape.
 
 
 Basic operations
