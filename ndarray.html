@@ -248,8 +248,7 @@
 </table>
 </li>
 <li><p class="first">Creation of arrays populated by pseudonumbers. The package <tt class="docutils literal"><span class="pre">numpy.random</span></tt> contains pseudonumber generators for the usual distributions. Many more are available in <tt class="docutils literal"><span class="pre">scipy.stats</span></tt>.</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -277,8 +276,8 @@
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="go">array([[ 0.55442892,  0.97919858],</span>
-<span class="go">        [ 0.40742057,  0.00879652],</span>
-<span class="go">        [ 0.098388836,  0.67112335]])</span>
+<span class="go">       [ 0.40742057,  0.00879652],</span>
+<span class="go">       [ 0.098388836,  0.67112335]])</span>
 </pre></div>
 </div>
 </td>
@@ -298,32 +297,43 @@
 <p class="first admonition-title">Note</p>
 <p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">rand</span></tt> and <tt class="docutils literal"><span class="pre">randn</span></tt> for <tt class="docutils literal"><span class="pre">random_sample</span></tt> and <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, even if they are available in <tt class="docutils literal"><span class="pre">numpy</span></tt>&#8216;s module namespace, since their calling sequence <tt class="docutils literal"><span class="pre">rand(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with that of NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt>, <tt class="docutils literal"><span class="pre">ones</span></tt>, <tt class="docutils literal"><span class="pre">random_integers</span></tt>, <tt class="docutils literal"><span class="pre">random_sample</span></tt>, <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, <tt class="docutils literal"><span class="pre">standard_cauchy</span></tt> etc., which use a tuple to specify the array shape.</p>
 </div>
-</div></blockquote>
 </li>
 </ul>
 </div>
 <div class="section" id="basic-operations">
 <h1>Basic operations<a class="headerlink" href="#basic-operations" title="Permalink to this headline">¶</a></h1>
 <ul>
-<li><p class="first">Functions in Numpy are vectorized</p>
+<li><p class="first">Functions in NumPy are vectorized</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">sum:</th><td class="field-body">sum of elements</td>
+<tr class="field-odd field"><th class="field-name">np.sum:</th><td class="field-body">sum of elements</td>
 </tr>
-<tr class="field-even field"><th class="field-name">product:</th><td class="field-body">product of elements</td>
+<tr class="field-even field"><th class="field-name">np.product:</th><td class="field-body">product of elements</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">cumsum:</th><td class="field-body">cumulative sum of elements</td>
+<tr class="field-odd field"><th class="field-name">np.cumsum:</th><td class="field-body">cumulative sum of elements</td>
 </tr>
-<tr class="field-even field"><th class="field-name">cumproduct:</th><td class="field-body">cumulative product of elements</td>
+<tr class="field-even field"><th class="field-name">np.cumproduct:</th><td class="field-body">cumulative product of elements</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">sort:</th><td class="field-body">sort elements</td>
+<tr class="field-odd field"><th class="field-name">np.sort:</th><td class="field-body">sort elements</td>
 </tr>
-<tr class="field-even field"><th class="field-name">argsort:</th><td class="field-body">return the indices that would sort an array</td>
+<tr class="field-even field"><th class="field-name">np.argsort:</th><td class="field-body">return the indices that would sort an array</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">np.all:</th><td class="field-body">return True if all array elements evaluate to True</td>
+</tr>
+<tr class="field-even field"><th class="field-name">np.any:</th><td class="field-body">return True if any array elements evaluate to True</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">np.min:</th><td class="field-body">return the minimum element of an array</td>
+</tr>
+<tr class="field-even field"><th class="field-name">np.max:</th><td class="field-body">return the maximum element of an array</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Python builtin functions <tt class="docutils literal"><span class="pre">all</span></tt>, <tt class="docutils literal"><span class="pre">any</span></tt>, <tt class="docutils literal"><span class="pre">min</span></tt> and <tt class="docutils literal"><span class="pre">max</span></tt> should not be used with NumPy arrays since 1) they are slow and 2) they will not work on multi-dimensional arrays.</p>
+</div>
 </li>
 </ul>
 <p>With these functions, an axis can be specified: it is the axis along which the operation is performed.</p>
@@ -377,6 +387,29 @@
 </tr>
 </tbody>
 </table>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>: Computation of <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by Monte-Carlo sampling.</p>
+<p>Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. <img class="math" src="_images/math/e6bb193313c6dd69aea0a65814c37c3c8522a0f7.png" alt="\pi/4"/>. It is then possible possible to compute <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.</p>
+<p>Vectorize the following pure Python code, by using NumPy arrays and functions.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">NTOTAL</span> <span class="o">=</span> <span class="mi">1000000</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ninside</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">NTOTAL</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ninside</span> <span class="o">+=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span>
+<span class="n">pi</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">ninside</span> <span class="o">/</span> <span class="n">NTOTAL</span>
+
+<span class="k">print</span> <span class="n">pi</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+</pre></div>
+</div>
+<p>[<a class="reference internal" href="auto_examples/pi_montecarlo.html#pi-montecarlo-py"><em>Solution</em></a>]</p>
+</div>
 </div>
 <div class="section" id="indexing-arrays">
 <h1>Indexing arrays<a class="headerlink" href="#indexing-arrays" title="Permalink to this headline">¶</a></h1>
@@ -434,35 +467,12 @@
 </li>
 </ul>
 <div class="green topic">
-<p class="topic-title first"><strong>Exercise</strong>: Computation of <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by Monte-Carlo sampling.</p>
-<p>Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. <img class="math" src="_images/math/e6bb193313c6dd69aea0a65814c37c3c8522a0f7.png" alt="\pi/4"/>. It is then possible possible to compute <img class="math" src="_images/math/c1bd4cb4e3647c6b2356b7ccf2f52aeffedd1b61.png" alt="\pi"/> by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.</p>
-<p>Vectorize the following pure Python code, by using NumPy arrays and functions.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">random</span>
-
-<span class="n">NTOTAL</span> <span class="o">=</span> <span class="mi">1000000</span>
-
-<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">ninside</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">NTOTAL</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">ninside</span> <span class="o">+=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span>
-<span class="n">pi</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">ninside</span> <span class="o">/</span> <span class="n">NTOTAL</span>
-
-<span class="k">print</span> <span class="n">pi</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
-</pre></div>
-</div>
-<p>[<a class="reference internal" href="auto_examples/pi_montecarlo.html#pi-montecarlo-py"><em>Solution</em></a>]</p>
-</div>
-<div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Histogram</p>
 <p>Complete the missing parts of the code below to do this exercise.
 Given a large number of particules of velocities <img class="math" src="_images/math/d6838c7e8f493e142abba75cd9bd1646a55b60ab.png" alt="v_x, v_y, v_z"/> distributed according to the standard normal distribution, plot the histogram of the speed in 1, 2 and 3 dimensions:</p>
 <blockquote>
 <div><div class="math">
-<p><img src="_images/math/95262ec2c5cb7476bcbf8ca4af2af964dce8bbc8.png" alt="v_1 &amp;= |v_x| \\
+<p><img src="_images/math/66b605b6a9390d82a86ad01556be7a336e592b86.png" alt="v_1 &amp;= |v_x| = \sqrt{v_x^2} \\
 v_2 &amp;= \sqrt{v_x^2+v_y^2} \\
 v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div></div></blockquote>

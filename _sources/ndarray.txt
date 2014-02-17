@@ -151,49 +151,53 @@ Creating arrays
 
 * Creation of arrays populated by pseudonumbers. The package ``numpy.random`` contains pseudonumber generators for the usual distributions. Many more are available in ``scipy.stats``.
 
-    :random_itegers: Return random integers between a lower and upper value, inclusive.
+  :random_itegers: Return random integers between a lower and upper value, inclusive.
 
-        .. note:: ``randint`` also exists. It doesn't do anything that ``random_integers`` cannot, except confusing the user. Stick with ``random_integers``, which has a better name.
+    .. note:: ``randint`` also exists. It doesn't do anything that ``random_integers`` cannot, except confusing the user. Stick with ``random_integers``, which has a better name.
 
-        .. note:: Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (``randint`` has not the same default value, so don't bother memorizing it).
+    .. note:: Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (``randint`` has not the same default value, so don't bother memorizing it).
 
-        >>> np.random.random_integers(1, 6, (3, 2))
-        array([[5, 2],
-               [3, 6],
-               [1, 6]])
+    >>> np.random.random_integers(1, 6, (3, 2))
+    array([[5, 2],
+           [3, 6],
+           [1, 6]])
 
-    :random_sample:
-        Return uniformly distributed random floats in the half-open interval [0.0, 1.0).
+  :random_sample: Return uniformly distributed random floats in the half-open interval [0.0, 1.0).
 
-        .. note:: for the only purpose of confusing users even more, this function has 3 aliases ``random``, ``randf`` and ``sample``! Avoid them. And there's also ``rand``, see note below.
+    .. note:: for the only purpose of confusing users even more, this function has 3 aliases ``random``, ``randf`` and ``sample``! Avoid them. And there's also ``rand``, see note below.
 
-        >>> np.random.random_sample((3, 2))
-        array([[ 0.55442892,  0.97919858],
-                [ 0.40742057,  0.00879652],
-                [ 0.098388836,  0.67112335]])
+    >>> np.random.random_sample((3, 2))
+    array([[ 0.55442892,  0.97919858],
+           [ 0.40742057,  0.00879652],
+           [ 0.098388836,  0.67112335]])
 
-    :standard_nomal:
-        Return random floats from the standard normal distribution.
+  :standard_nomal: Return random floats from the standard normal distribution.
 
-        >>> np.random.standard_normal((3, 2))
-        array([[ 1.72573865,  0.8938781 ],
-               [ 0.37971588, -0.40010123],
-               [-0.33761754,  0.07175398]])
+    >>> np.random.standard_normal((3, 2))
+    array([[ 1.72573865,  0.8938781 ],
+           [ 0.37971588, -0.40010123],
+           [-0.33761754,  0.07175398]])
 
-    .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` and ``randn`` for ``random_sample`` and ``standard_normal``, even if they are available in ``numpy``'s module namespace, since their calling sequence ``rand(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros``, ``ones``, ``random_integers``, ``random_sample``, ``standard_normal``, ``standard_cauchy`` etc., which use a tuple to specify the array shape.
+  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` and ``randn`` for ``random_sample`` and ``standard_normal``, even if they are available in ``numpy``'s module namespace, since their calling sequence ``rand(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros``, ``ones``, ``random_integers``, ``random_sample``, ``standard_normal``, ``standard_cauchy`` etc., which use a tuple to specify the array shape.
 
 
 Basic operations
 ----------------
 
-* Functions in Numpy are vectorized
+* Functions in NumPy are vectorized
 
-  :sum: sum of elements
-  :product: product of elements
-  :cumsum: cumulative sum of elements
-  :cumproduct: cumulative product of elements
-  :sort: sort elements
-  :argsort: return the indices that would sort an array
+  :np.sum: sum of elements
+  :np.product: product of elements
+  :np.cumsum: cumulative sum of elements
+  :np.cumproduct: cumulative product of elements
+  :np.sort: sort elements
+  :np.argsort: return the indices that would sort an array
+  :np.all: return True if all array elements evaluate to True
+  :np.any: return True if any array elements evaluate to True
+  :np.min: return the minimum element of an array
+  :np.max: return the maximum element of an array
+
+  .. note:: Python builtin functions ``all``, ``any``, ``min`` and ``max`` should not be used with NumPy arrays since 1) they are slow and 2) they will not work on multi-dimensional arrays.
 
 With these functions, an axis can be specified: it is the axis along which the operation is performed.
 
@@ -232,6 +236,20 @@ The ``and``, ``or`` and ``not`` operators should not be used on arrays.
 +------+--------------------------+
 | xor  | ``^`` or ``logical_xor`` |
 +------+--------------------------+
+
+.. topic:: **Exercise**: Computation of :math:`\pi` by Monte-Carlo sampling.
+    :class: green
+
+    Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. :math:`\pi/4`. It is then possible possible to compute :math:`\pi` by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.
+
+    Vectorize the following pure Python code, by using NumPy arrays and functions.
+
+    .. literalinclude:: pi_montecarlo_slow.py
+        :lines: 5-
+
+    .. only:: html
+
+        [:ref:`Solution <pi_montecarlo.py>`]
 
 
 Indexing arrays
@@ -276,20 +294,6 @@ Indexing arrays
   >>> x[index[:10]] = 0
 
 
-.. topic:: **Exercise**: Computation of :math:`\pi` by Monte-Carlo sampling.
-    :class: green
-
-    Given the random variables X and Y following the uniform distribution between -1 and 1, the probability for the point (X, Y) to be inside the unity disk is the ratio of the surface of the unity disk and that of the unity square, i.e. :math:`\pi/4`. It is then possible possible to compute :math:`\pi` by drawing realizations of X and Y and counting the fraction of points (X, Y) inside the unity disk.
-
-    Vectorize the following pure Python code, by using NumPy arrays and functions.
-
-    .. literalinclude:: pi_montecarlo_slow.py
-        :lines: 5-
-
-    .. only:: html
-
-        [:ref:`Solution <pi_montecarlo.py>`]
-
 .. topic:: **Exercise**: Histogram
   :class: green
 
@@ -297,7 +301,7 @@ Indexing arrays
   Given a large number of particules of velocities :math:`v_x, v_y, v_z` distributed according to the standard normal distribution, plot the histogram of the speed in 1, 2 and 3 dimensions:
 
       .. math::
-        v_1 &= |v_x| \\
+        v_1 &= |v_x| = \sqrt{v_x^2} \\
         v_2 &= \sqrt{v_x^2+v_y^2} \\
         v_3 &= \sqrt{v_x^2+v_y^2+v_z^2}
 
