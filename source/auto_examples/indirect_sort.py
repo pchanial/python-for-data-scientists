@@ -8,7 +8,7 @@ NPEOPLE = 1000000
 
 people_dtype = [('name', 'S10'), ('age', int)]
 people = np.empty(NPEOPLE, dtype=people_dtype)
-people['name'] = ['id{}'.format(_) for _ in range(1, NPEOPLE + 1)]
+people['name'] = ['id{}'.format(_) for _ in xrange(1, NPEOPLE + 1)]
 people['age'] = np.random.random_integers(20, 70, NPEOPLE)
 
 #==========
