@@ -11,7 +11,7 @@ In terms of memory bandwidth, localized data is better than scattered data.
    :width: 40%
 
 
-The NumPy array ``ndarray`` is defined by 4 attributes:
+The NumPy array (``ndarray``) is defined by 4 attributes:
 
   :dtype: The common type of the array's data. It can be a basic type, such as integers, floats or strings of fixed length. NumPy provides many more basic types than Python does (``int8``, ``int16``, ``int32``, ``float16``, ``float32`` etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.
 
@@ -31,7 +31,7 @@ The NumPy array ``ndarray`` is defined by 4 attributes:
             >>> np.zeros((3, 5)).strides
             (40, 8)
 
-            .. note:: The fast dimension is that with the smallest stride. By default, when an ndarray is created, it is the last one (row-major storage order like C and unlike Fortran, Matlab and IDL), but note that this is not the case for every ndarray:
+            .. note:: The fast dimension is that with the smallest stride. By default, when an array is created, it is the last one (row-major storage order like C and unlike Fortran, Matlab and IDL), but note that this is not the case for every array:
 
                       >>> np.zeros((3, 5)).T.strides
                       (8, 40)
@@ -40,7 +40,7 @@ The NumPy array ``ndarray`` is defined by 4 attributes:
 
   :ctypes.data: The memory location of the first array element (but you should not worry about it)
 
-An ndarray also has convenience attributes, which can be derived from the previous ones:
+An array also has convenience attributes, which can be derived from the previous ones:
 
   :ndim: number of dimensions (or array's rank, in NumPy wavering terminology)
   :size: number of elements
@@ -49,13 +49,17 @@ An ndarray also has convenience attributes, which can be derived from the previo
 
 .. note:: The ``len`` function can be confusing when applied on arrays: it returns the number of elements along the first dimension only. It is better not to use it with arrays, and use ``.shape[0]`` instead for clarity.
 
-.. warning:: In Python (so it is also true for NumPy ndarrays), the assignation operator '=' does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for ndarrays the memory buffer will be released.
+.. warning:: In Python (so it is also true for NumPy arrays), the assignation operator '=' does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for arrays the memory buffer will be released.
 
     >>> a = np.arange(100)
     >>> b = a
     >>> id(a) == id(b)
     True
-  
+
+    So, to ensure that the arrays are different, you should explicitly make a copy:
+
+    >>> b = a.copy()
+
 
 Creating arrays
 ---------------
@@ -401,7 +405,7 @@ We will see later how much this notation can be handy when used in conjonction w
 Views and copies
 ----------------
 
-A powerful aspect of NumPy's array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view of the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, so it is important to know which operations return a view and which ones a copy. A view of an ndarray is different from a reference: even though they share the same memory buffer, the viewing and viewed ndarrays are different Python objects:
+A powerful aspect of NumPy's array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view on the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, since modifying the view will affect the original array. It is then important to know which operations return a view and which ones a copy. A view on an array is different from a reference: even though they share the same memory buffer, the viewing and viewed arrays are different Python objects:
 
 >>> a = np.zeros(10)
 >>> b = a.view()
@@ -417,7 +421,7 @@ True
 
        >>> def isview(a, b):
                """
-               Return True if b is a view of a.
+               Return True if b is a view on a.
                (It is assumed that a's memory buffer is contiguous)
                """
                return a.ctypes.data <= b.ctypes.data < a.ctypes.data + a.nbytes
@@ -427,7 +431,7 @@ True
        >>> a = np.arange(24, dtype=float)
        >>> a.shape = (3, 2, 4)
 
-       let's first check that slicing an ``ndarray`` does not copy it:
+       let's first check that slicing an array does not copy it:
 
        >>> isview(a, a[:2, 1, 1:3])
        True
