@@ -151,7 +151,7 @@ Creating arrays
 
       .. note:: ``randint`` also exists. It doesn't do anything that ``random_integers`` cannot, except confusing the user. Stick with ``random_integers``, which has a better name.
 
-      .. note:: Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (``randint`` has not the same default value...).
+      .. note:: Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (``randint`` has not the same default value, so don't bother memorizing it).
 
   :random_sample:
      Return random floats in the half-open interval [0.0, 1.0).
@@ -172,7 +172,7 @@ Basic operations
   :sum: sum of elements
   :product: product of elements
   :cumsum: cumulative sum of elements
-  :cumproduct: cumulative sum of elements
+  :cumproduct: cumulative product of elements
   :sort: sort elements
   :argsort: return the indices that would sort an array
 
