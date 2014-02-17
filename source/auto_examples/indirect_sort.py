@@ -18,7 +18,7 @@ people['age'] = np.random.random_integers(20, 70, NPEOPLE)
 index = np.argsort(people['age'])
 people_sorted = people[index]
 
-# note that in some situations, the numpy function 'take' can be shamefully
+# note that in some situations, the numpy function 'take' can shamefully be
 # much faster than indexing with the brackets
 # >>> %timeit np.take(people, index)
 # 10 loops, best of 3: 42 ms per loop
