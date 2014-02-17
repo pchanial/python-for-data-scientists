@@ -123,7 +123,7 @@
 </div>
 <div class="section" id="the-array-model">
 <h1>2. The array model<a class="headerlink" href="#the-array-model" title="Permalink to this headline">¶</a></h1>
-<p>TBD</p>
+<p>In terms of memory bandwidth, localized data is better than scattered data.</p>
 <a class="reference internal image-reference" href="_images/layout_listoflist.png"><img alt="_images/layout_listoflist.png" src="_images/layout_listoflist.png" style="width: 40%;" /></a>
 <a class="reference internal image-reference" href="_images/layout_2darray.png"><img alt="_images/layout_2darray.png" src="_images/layout_2darray.png" style="width: 40%;" /></a>
 <p>The NumPy array <tt class="docutils literal"><span class="pre">ndarray</span></tt> is defined by 4 attributes:</p>
@@ -330,12 +330,20 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">random_itegers:</th><td class="field-body"><p class="first">Return random integers between a lower and upper value, inclusive.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">randint</span></tt> also exists. It doesn&#8217;t do anything that <tt class="docutils literal"><span class="pre">random_integers</span></tt> cannot, except confusing the user. Stick with <tt class="docutils literal"><span class="pre">random_integers</span></tt>, which has a better name.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (<tt class="docutils literal"><span class="pre">randint</span></tt> has not the same default value...).</p>
+</div>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">random_sample:</th><td class="field-body"><p class="first">Return random floats in the half-open interval [0.0, 1.0).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">for the only purpose of confusing users, this function has 3 aliases <tt class="docutils literal"><span class="pre">random</span></tt>, <tt class="docutils literal"><span class="pre">randf</span></tt> and <tt class="docutils literal"><span class="pre">sample</span></tt>! And there&#8217;s also <tt class="docutils literal"><span class="pre">rand</span></tt>: see note below.</p>
+<p class="last">for the only purpose of confusing users even more, this function has 3 aliases <tt class="docutils literal"><span class="pre">random</span></tt>, <tt class="docutils literal"><span class="pre">randf</span></tt> and <tt class="docutils literal"><span class="pre">sample</span></tt>! And there&#8217;s also <tt class="docutils literal"><span class="pre">rand</span></tt>: see note below.</p>
 </div>
 </td>
 </tr>
@@ -346,7 +354,7 @@
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">randint</span></tt>, <tt class="docutils literal"><span class="pre">rand</span></tt> and <tt class="docutils literal"><span class="pre">randn</span></tt>, since their calling sequence <tt class="docutils literal"><span class="pre">randint(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with that of NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt> or <tt class="docutils literal"><span class="pre">ones</span></tt>, which use a tuple to specify the array shape.</p>
+<p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">rand</span></tt> and <tt class="docutils literal"><span class="pre">randn</span></tt> for <tt class="docutils literal"><span class="pre">random_sample</span></tt> and <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, since their calling sequence <tt class="docutils literal"><span class="pre">randint(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with that of NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt> or <tt class="docutils literal"><span class="pre">ones</span></tt>, which use a tuple to specify the array shape.</p>
 </div>
 </li>
 </ul>
@@ -623,6 +631,10 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <tr class="field-odd field"><th class="field-name">np.resize:</th><td class="field-body">Return a new array with the specified shape, repeating the array if necessary</td>
 </tr>
 <tr class="field-even field"><th class="field-name">tile:</th><td class="field-body">Construct an array by repeating A the given number of times.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">resize:</th><td class="field-body">TBD</td>
+</tr>
+<tr class="field-even field"><th class="field-name">repeat:</th><td class="field-body">TBD</td>
 </tr>
 </tbody>
 </table>

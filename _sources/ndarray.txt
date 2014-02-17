@@ -1,7 +1,7 @@
 The array model
 ---------------
 
-TBD
+In terms of memory bandwidth, localized data is better than scattered data.
 
 .. image:: layout_listoflist.png
    :width: 40%
@@ -149,15 +149,19 @@ Creating arrays
 
   :random_itegers: Return random integers between a lower and upper value, inclusive.
 
+      .. note:: ``randint`` also exists. It doesn't do anything that ``random_integers`` cannot, except confusing the user. Stick with ``random_integers``, which has a better name.
+
+      .. note:: Even if a default value exists for the lower value, it is better practice to specify both the lower and upper values (``randint`` has not the same default value...).
+
   :random_sample:
      Return random floats in the half-open interval [0.0, 1.0).
 
-     .. note:: for the only purpose of confusing users, this function has 3 aliases ``random``, ``randf`` and ``sample``! And there's also ``rand``: see note below.
+     .. note:: for the only purpose of confusing users even more, this function has 3 aliases ``random``, ``randf`` and ``sample``! And there's also ``rand``: see note below.
 
   :standard_nomal:
      Return random floats from the standard normal distribution.
 
-  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``randint``, ``rand`` and ``randn``, since their calling sequence ``randint(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros`` or ``ones``, which use a tuple to specify the array shape.
+  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` and ``randn`` for ``random_sample`` and ``standard_normal``, since their calling sequence ``randint(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros`` or ``ones``, which use a tuple to specify the array shape.
 
 
 Basic operations
@@ -365,6 +369,8 @@ We will see later how much this notation can be handy when used in conjonction w
 
 :np.resize: Return a new array with the specified shape, repeating the array if necessary
 :tile: Construct an array by repeating A the given number of times.
+:resize: TBD
+:repeat: TBD
 
 
 .. topic:: **Exercise**:
