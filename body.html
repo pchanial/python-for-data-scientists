@@ -218,7 +218,7 @@
 <span class="go">int</span>
 </pre></div>
 </div>
-<p>The proper way to assign 2 to the array is:</p>
+<p>The proper way to do it is:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -438,7 +438,7 @@
 </tr>
 <tr class="field-odd field"><th class="field-name">np.all:</th><td class="field-body">return True if all array elements evaluate to True</td>
 </tr>
-<tr class="field-even field"><th class="field-name">np.any:</th><td class="field-body">return True if any array elements evaluate to True</td>
+<tr class="field-even field"><th class="field-name">np.any:</th><td class="field-body">return True if any array element evaluates to True</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">np.min:</th><td class="field-body">return the minimum element of an array</td>
 </tr>
@@ -934,7 +934,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Indirect sort.</p>
 <p>An indirect sort consists in using an array to sort another one.</p>
-<p>First, create a structured dtype with a string field <tt class="docutils literal"><span class="pre">'name'</span></tt> (no more than 10 characters) and an integer field <tt class="docutils literal"><span class="pre">'age'</span></tt>. Then use it to allocate a large array of people. The &#8216;name&#8217; field will be populated with <tt class="docutils literal"><span class="pre">'id1'</span></tt>, <tt class="docutils literal"><span class="pre">'id2'</span></tt>, etc. and the <tt class="docutils literal"><span class="pre">'age'</span></tt> field according to any random distribution. Sort the people according to their age by two methods: 1) using the function <tt class="docutils literal"><span class="pre">argsort</span></tt> and 2) looking at the <tt class="docutils literal"><span class="pre">sort</span></tt> documentation related to structured arrays.</p>
+<p>First, create a structured dtype with a string field <tt class="docutils literal"><span class="pre">name</span></tt> (no more than 10 characters) and an integer field <tt class="docutils literal"><span class="pre">age</span></tt>. Then use it to allocate a large array of people. The <tt class="docutils literal"><span class="pre">name</span></tt> field will be populated with <tt class="docutils literal"><span class="pre">id1</span></tt>, <tt class="docutils literal"><span class="pre">id2</span></tt>, etc. and the <tt class="docutils literal"><span class="pre">age</span></tt> field according to any random distribution. Sort the people according to their age by two methods: 1) using the function <tt class="docutils literal"><span class="pre">argsort</span></tt> and 2) looking at the <tt class="docutils literal"><span class="pre">sort</span></tt> documentation related to structured arrays.</p>
 <p>[<a class="reference internal" href="auto_examples/indirect_sort.html#indirect-sort-py"><em>Solution</em></a>]</p>
 </div>
 </div>
@@ -955,11 +955,11 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </tr>
 <tr class="field-even field"><th class="field-name">isnan:</th><td class="field-body"><p class="first">Return True for NaN elements</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="mi">1000000</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="p">((</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)))</span>
 </pre></div>
 </div>
 </td>
@@ -978,7 +978,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </tr>
 </tbody>
 </table>
-<p>When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: <tt class="docutils literal"><span class="pre">nanmin</span></tt>, <tt class="docutils literal"><span class="pre">nanmax</span></tt>, <tt class="docutils literal"><span class="pre">nanargmin</span></tt>, <tt class="docutils literal"><span class="pre">nanargmax</span></tt>, <tt class="docutils literal"><span class="pre">nanmean</span></tt>, <tt class="docutils literal"><span class="pre">nanstd</span></tt>, <tt class="docutils literal"><span class="pre">nanvar</span></tt>, <tt class="docutils literal"><span class="pre">nansum</span></tt>.</p>
+<p>When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation to the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: <tt class="docutils literal"><span class="pre">nanmin</span></tt>, <tt class="docutils literal"><span class="pre">nanmax</span></tt>, <tt class="docutils literal"><span class="pre">nanargmin</span></tt>, <tt class="docutils literal"><span class="pre">nanargmax</span></tt>, <tt class="docutils literal"><span class="pre">nanmean</span></tt>, <tt class="docutils literal"><span class="pre">nanstd</span></tt>, <tt class="docutils literal"><span class="pre">nanvar</span></tt>, <tt class="docutils literal"><span class="pre">nansum</span></tt>.</p>
 </div>
 <div class="section" id="more-exercises">
 <h1>13. More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>

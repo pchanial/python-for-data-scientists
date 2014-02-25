@@ -69,7 +69,7 @@ An array also has convenience attributes, which can be derived from the previous
     >>> type(a)
     int
 
-    The proper way to assign 2 to the array is:
+    The proper way to do it is:
 
     >>> a = np.arange(100)
     >>> a[...] = 2
@@ -222,7 +222,7 @@ Basic operations
   :np.sort: sort elements
   :np.argsort: return the indices that would sort an array
   :np.all: return True if all array elements evaluate to True
-  :np.any: return True if any array elements evaluate to True
+  :np.any: return True if any array element evaluates to True
   :np.min: return the minimum element of an array
   :np.max: return the maximum element of an array
 
@@ -658,7 +658,7 @@ dtype can be records:
 
     An indirect sort consists in using an array to sort another one.
 
-    First, create a structured dtype with a string field ``'name'`` (no more than 10 characters) and an integer field ``'age'``. Then use it to allocate a large array of people. The 'name' field will be populated with ``'id1'``, ``'id2'``, etc. and the ``'age'`` field according to any random distribution. Sort the people according to their age by two methods: 1) using the function ``argsort`` and 2) looking at the ``sort`` documentation related to structured arrays.
+    First, create a structured dtype with a string field ``name`` (no more than 10 characters) and an integer field ``age``. Then use it to allocate a large array of people. The ``name`` field will be populated with ``id1``, ``id2``, etc. and the ``age`` field according to any random distribution. Sort the people according to their age by two methods: 1) using the function ``argsort`` and 2) looking at the ``sort`` documentation related to structured arrays.
 
     .. only:: html
 
@@ -680,15 +680,15 @@ To inspect these special values:
 :isnan: Return True for NaN elements
 
     >>> from __future__ import division
-    >>> N = 1000
+    >>> N = 1000000
     >>> a = np.random.random_integers(0, 10, N)
     >>> b = np.random.random_integers(0, 10, N)
     >>> c = a / b
-    >>> np.all(np.isnan(c) == (b != 0))
+    >>> np.all(np.isnan(c) == ((a == 0) & (b == 0)))
 :isfinite: Return True for infinite or NaN elements
 
 And to make them non-special:
 
 :nan_to_num: Set `NaN` to zero, `+inf` to max float and `-inf` to min float
 
-When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation on the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: ``nanmin``, ``nanmax``, ``nanargmin``, ``nanargmax``, ``nanmean``, ``nanstd``, ``nanvar``, ``nansum``.
+When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation to the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: ``nanmin``, ``nanmax``, ``nanargmin``, ``nanargmax``, ``nanmean``, ``nanstd``, ``nanvar``, ``nansum``.
