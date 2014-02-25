@@ -60,6 +60,22 @@ An array also has convenience attributes, which can be derived from the previous
 
     >>> b = a.copy()
 
+    In the same vein, here is the wrong way to assign 2 to an array:
+
+    >>> a = np.arange(100)
+    >>> type(a)
+    numpy.ndarray
+    >>> a = 2
+    >>> type(a)
+    int
+
+    The proper way to assign 2 to the array is:
+
+    >>> a = np.arange(100)
+    >>> a[...] = 2
+    >>> type(a)
+    numpy.ndarray
+
 
 Creating arrays
 ---------------
@@ -99,15 +115,28 @@ Creating arrays
 * Alternatively, when the array dimensions are known, the array can be allocated in memory and optionally filled with a particular value. The array may then be updated at a later stage.
 
   :zeros: allocate a 0-filled array of given shape
+
+         >>> np.zeros((2, 2))
+         array([[ 0.,  0.],
+                [ 0.,  0.]])
+
   :ones: allocate a 1-filled array of given shape
+
+         >>> np.zeros((2, 2))
+         array([[ 1.,  1.],
+                [ 1.,  1.]])
+
+  :full: allocate an array of given shape filled by a given value (Numpy 1.8)
+
+         >>> np.full((2, 2), np.pi)
+         array([[ 3.14159265,  3.14159265],
+                [ 3.14159265,  3.14159265]])
+
   :empty: allocate an array of given shape without initializing its values
 
           .. note:: This function is much faster, but be careful to completely populate the array afterwards.
 
-  To initialize an array with another value:
-
-  >>> a = np.empty((3, 5))
-  >>> a[...] = 2
+.. note:: By default, these functions return a ``float64`` array. To speficy another data type, use the ``dtype`` keyword.
 
 * It is possible to use another variable as a template to create a new array with the same data type and shape:
 
