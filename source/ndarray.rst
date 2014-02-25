@@ -122,7 +122,7 @@ Creating arrays
 
   :ones: allocate a 1-filled array of given shape
 
-         >>> np.zeros((2, 2))
+         >>> np.ones((2, 2))
          array([[ 1.,  1.],
                 [ 1.,  1.]])
 
