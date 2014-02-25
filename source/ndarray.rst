@@ -85,7 +85,7 @@ Creating arrays
   >>> np.array([1, 2, 3.14, 4])
   array([ 1.  ,  2.  ,  3.14,  4.  ])
 
-  The data type of the resulting array is inferred from the types of the sequence elements, but it can be explicitly set using the ``dtype`` keyword:
+  The data type of the resulting array is inferred from the types of the sequence elements, but it can be explicitly set with the ``dtype`` keyword:
 
   >>> np.array([1, 2, 3.14, 4], dtype=np.int8)
   array([1, 2, 3, 4], dtype=int8)
@@ -143,9 +143,11 @@ Creating arrays
   >>> a = np.array([[1, 2, 3], [3, 2, 1]])
   >>> b = np.zeros_like(a)
   >>> c = np.ones_like(a)
-  >>> d = np.empty_like(a)
-  >>> for _ in a, b, c, d:
+  >>> d = np.full_like(a, 2)
+  >>> e = np.empty_like(a)
+  >>> for _ in a, b, c, d, e:
   ...     print(_.dtype, _.shape)
+  (dtype('int64'), (2, 3))
   (dtype('int64'), (2, 3))
   (dtype('int64'), (2, 3))
   (dtype('int64'), (2, 3))
@@ -170,13 +172,18 @@ Creating arrays
   :meshgrid: Return coordinate matrices from two or more coordinate vectors.
 
              >>> nx, ny = (3, 2)
-             >>> x = np.linspace(0, 1, nx)
-             >>> y = np.linspace(0, 1, ny)
-             >>> xv, yv = np.meshgrid(x, y)
-             >>> xv
+             >>> x_1d = np.linspace(0, 1, nx)
+             >>> y_1d = np.linspace(0, 1, ny)
+             >>> x_2d, yv_2d = np.meshgrid(x_1d, y_1d)
+             >>> x_2d
              array([[ 0. ,  0.5,  1. ],
                     [ 0. ,  0.5,  1. ]])
-
+             >>> y_2d
+             array([[ 0.,  0.,  0.],
+                    [ 1.,  1.,  1.]])
+             >>> np.sqrt(x_2d**2 + y_2d**2)
+             array([[ 0.        ,  0.5       ,  1.        ],
+                    [ 1.        ,  1.11803399,  1.41421356]])
 
 * Creation of arrays populated by pseudonumbers. The package ``numpy.random`` contains pseudonumber generators for the usual distributions. Many more are available in ``scipy.stats``.
 
