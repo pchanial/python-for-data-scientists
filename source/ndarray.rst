@@ -527,7 +527,7 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 
 * What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.
 
-* Can it work on arrays with different ranks? Sure! Dimensions of length 1 are **prepended** (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:
+* Can it work on arrays of different ranks? Sure! Dimensions of length 1 are **prepended** (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:
 
     >>> np.zeros((5, 9)) + np.zeros(9)
 
@@ -543,7 +543,7 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 
 * Can it work on more than two arrays? Yes again! But you have to find an elementwise operation with more than two operands...
 
-* Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible.
+* Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible, just keep an eye on the size of the broadcast result to make sure that it does not become too large.
 
 .. topic:: **Exercise**:
     :class: green

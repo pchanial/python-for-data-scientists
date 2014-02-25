@@ -741,7 +741,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <ul>
 <li><p class="first">What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.</p>
 </li>
-<li><p class="first">Can it work on arrays with different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:</p>
+<li><p class="first">Can it work on arrays of different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -757,7 +757,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </li>
 <li><p class="first">Can it work on more than two arrays? Yes again! But you have to find an elementwise operation with more than two operands...</p>
 </li>
-<li><p class="first">Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible.</p>
+<li><p class="first">Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible, just keep an eye on the size of the broadcast result to make sure that it does not become too large.</p>
 </li>
 </ul>
 <div class="green topic">
