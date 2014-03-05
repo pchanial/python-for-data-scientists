@@ -13,7 +13,7 @@ In terms of memory bandwidth, localized data is better than scattered data.
 
 The NumPy array (``ndarray``) is defined by 4 attributes:
 
-  :dtype: The common type of the array's data. It can be a basic type, such as integers, floats or strings of fixed length. NumPy provides many more basic types than Python does (``int8``, ``int16``, ``int32``, ``float16``, ``float32`` etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). Extension provide quaternions as dtype.
+  :dtype: The common type of the array's data. It can be a basic type, such as integers, floats or strings of fixed length. NumPy provides many more basic types than Python does (``int8``, ``int16``, ``int32``, ``float16``, ``float32`` etc.). We will see that these basic dtype can be combined to create structured dtype, which are similar to records (or C struct). An extension provides quaternions as dtype.
 
           .. warning:: The name ``float128`` is misleading. This data type is unlikely to represent quadruple precision (but C type ``long double`` instead). Try:
 
@@ -143,7 +143,7 @@ Creating arrays
   >>> a = np.array([[1, 2, 3], [3, 2, 1]])
   >>> b = np.zeros_like(a)
   >>> c = np.ones_like(a)
-  >>> d = np.full_like(a, 2)
+  >>> d = np.full_like(a, 2.)
   >>> e = np.empty_like(a)
   >>> for _ in a, b, c, d, e:
   ...     print(_.dtype, _.shape)
@@ -153,16 +153,27 @@ Creating arrays
   (dtype('int64'), (2, 3))
   (dtype('int64'), (2, 3))
 
-* Since discretization is at the heart of scientific computing, the creation of grids is straightforward and can be done in several ways:
+* Since discretization is at the heart of scientific computing, the creation of grids has been made straightforward and it can be done in several ways:
 
-  :arange: Return evenly spaced values.
+  :arange: Return evenly spaced values (the number of elements is known).
 
-  :linspace: Return evenly spaced numbers over a specified interval.
+           >>> np.arange(10, dtype=float)
+           array([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.,  9.])
+           >>> start = 1
+           >>> step = 0.1
+           >>> n = 10
+           >>> start + np.arange(n).reshape(2, -1) * step
+           array([[ 1. ,  1.1,  1.2,  1.3,  1.4],
+                  [ 1.5,  1.6,  1.7,  1.8,  1.9]])
+
+           .. note:: other calling sequences than ``start + np.arange(n) * step`` can be used with ``arange``, but there are little compelling reasons to use them (see next function ``linspace``).
+
+  :linspace: Return evenly spaced values (the boundaries are known).
 
              >>> np.linspace(2, 4, 6)
              array([ 2. ,  2.4,  2.8,  3.2,  3.6,  4. ])
 
-  :logspace: Return numbers spaced evenly on a log scale. By default the base 10 is used and the end points specify the base's powers.
+  :logspace: Return numbers spaced evenly on a log scale. By default the base 10 is used. The end points specify the base's powers.
 
              >>> np.logspace(0, 2, 5)
              array([ 1., 3.16227766, 10., 31.6227766, 100.])
@@ -235,43 +246,46 @@ Basic operations
 
   .. note:: Python builtin functions ``all``, ``any``, ``min`` and ``max`` should not be used with NumPy arrays since 1) they are slow and 2) they will not work on multi-dimensional arrays.
 
-With these functions, an axis can be specified: it is the axis along which the operation is performed.
+  With these functions, an axis can be specified: it is the axis that will be collapsed and along which the operation is performed.
 
->>> a = arange(8).reshape((2, 4))
->>> print(a)
-[[0 1 2 3]
- [4 5 6 7]]
->>> print(np.sum(a, axis=0))
-[ 4  6  8 10]
->>> print(np.sum(a, axis=1))
-[ 6 22]
+  >>> a = arange(8).reshape((2, 4))
+  >>> print(a)
+  [[0 1 2 3]
+   [4 5 6 7]]
+  >>> print(np.sum(a, axis=0))
+  [ 4  6  8 10]
+  >>> print(np.sum(a, axis=1))
+  [ 6 22]
 
-.. note:: axes can be specified by starting from the last one, using negative values. ``-1`` stands for the last axis, ``-2`` for the last but one.
+  .. note:: axes can be specified by starting from the last one, using negative values. ``-1`` stands for the last axis, ``-2`` for the last but one.
 
 * Most common operations with two operands are performed element-wise:
 
->>> a = np.array([[0, 1, 0],
-...               [2, 3, 4]])
->>> b = np.array([[2, 2, 2],
-...               [3, 3, 3]])
->>> a * b
-array([[ 0,  2,  0],
-       [ 6,  9, 12]])
+  >>> a = np.array([[0, 1, 0],
+  ...               [2, 3, 4]])
+  >>> b = np.array([[2, 2, 2],
+  ...               [3, 3, 3]])
+  >>> a * b
+  array([[ 0,  2,  0],
+         [ 6,  9, 12]])
 
 
-* Boolean operations
+* Boolean operations.
+  
+  The operators ``not``, ``and`` and ``or`` should not be used with arrays.
 
-The ``and``, ``or`` and ``not`` operators should not be used on arrays.
+  === = ========================
+  not → ``~`` or ``logical_not``
+  and → ``&`` or ``logical_and``
+  or  → ``|`` or ``logical_or``
+  xor → ``^`` or ``logical_xor``
+  === = ========================
 
-+------+--------------------------+
-| not  | ``~`` or ``logical_not`` | 
-+------+--------------------------+
-| and  | ``&`` or ``logical_and`` |
-+------+--------------------------+
-| or   | ``|`` or ``logical_or``  |
-+------+--------------------------+
-| xor  | ``^`` or ``logical_xor`` |
-+------+--------------------------+
+  .. note:: The operators ``~``, ``&``, ``|`` and ``^`` have a very high priority, so parenthesis must be used to combine expressions. The following example shows how to print the number of times 1 or 10 are drawn from a uniform distribution:
+
+    >>> a = np.random.random_integers(1, 10, 1000)
+    >>> np.sum((a == 1) | (a == 10))
+    207
 
 .. topic:: **Exercise**: Computation of :math:`\pi` by Monte-Carlo sampling.
     :class: green
@@ -307,7 +321,7 @@ Indexing arrays
   >>> a.strides, a[::2].strides
   (8,), (16,)
 
-* The ``Ellipsis`` (``...``) replaces as many ``:`` as possible. For an array ``a`` of rank 4: ``a[..., 0, :]`` is equivalent to ``a[:, :, 0, :]``
+* The ellipsis ``...`` replaces as many ``:`` as possible. For an array ``a`` of rank 4: ``a[..., 0, :]`` is equivalent to ``a[:, :, 0, :]``
 
   >>> a = np.arange((2, 3, 4, 5))
   >>> a[..., 0].shape
@@ -647,17 +661,39 @@ array([[ True,  True],
        [ True, False]], dtype=bool)
 
 
-Structured dtype
-----------------
+Structured data types
+---------------------
 
-dtype can be records:
+Basic data types can be combined to form structured data types, akin to C's ``struct`` or Fortrans's derived types. The synthax to create such records is strict, it must be a **list** of **tuples**, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.
 
->>> point_dtype = [('x', float), ('y', float)]
->>> print np.zeros(10, dtype=point_dtype)
-[(0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0)
- (0.0, 0.0) (0.0, 0.0) (0.0, 0.0) (0.0, 0.0)]
+>>> point_dtype = [('x', float), ('y', float), ('z', float)]
+>>> n = 100
+>>> points = np.zeros(n, dtype=point_dtype)
+>>> points['x'] = np.random.random_sample(n)
+>>> points['y'] = np.random.random_sample(n)
+>>> points['z'] = np.random.random_sample(n)
+>>> points[0]
+(0.1620762355727834, 0.2395019980532217, 0.9167745701692562)
+>>> points[10] = (1, 1 , 0)
 
-.. note:: since array elements must have a fixed common ``itemsize``, it is mandatory to specify the maximum number of characters in a string field.
+Another example, in which the shapes of the fields are specified:
+
+>>> spectra_dtype = [('fluxdensity', float, 100),
+...                  ('wavelength', float, 100)]
+>>> spectrum = np.empty((), dtype=spectra_dtype)
+>>> spectrum['wavelength'].size
+100
+
+.. note:: Fields can be strings, but since array elements must have a fixed common ``itemsize``, it is mandatory to specify the maximum number of characters. Structured data types can also be combined together:
+
+   >>> galaxy_dtype = [('name', 'S256'),
+   ...                 ('pos', point_dtype)]
+   >>> galaxy = np.empty(10, dtype=galaxy_dtype)
+   >>> galaxy[0] = ('M81', (0, 0, 0))
+   >>> galaxy[0]['name']
+   'M81'
+   >>> galaxy[0]['pos']['x'], galaxy[0]['pos']['y'], galaxy[0]['pos']['z']
+   (0.0, 0.0, 0.0)
 
 
 .. topic:: **Exercise**: Indirect sort.
