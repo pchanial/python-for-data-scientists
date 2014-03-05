@@ -235,7 +235,7 @@
 <span class="go">array([ 1.  ,  2.  ,  3.14,  4.  ])</span>
 </pre></div>
 </div>
-<p>The data type of the resulting array is inferred from the types of the sequence elements, but it can be explicitly set with the <tt class="docutils literal"><span class="pre">dtype</span></tt> keyword:</p>
+<p>The data type of the resulting array is inferred from the types of the elements in the sequence, but it can be explicitly set with the <tt class="docutils literal"><span class="pre">dtype</span></tt> keyword:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
 <span class="go">array([1, 2, 3, 4], dtype=int8)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
@@ -305,7 +305,7 @@
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By default, these functions return a <tt class="docutils literal"><span class="pre">float64</span></tt> array. To speficy another data type, use the <tt class="docutils literal"><span class="pre">dtype</span></tt> keyword.</p>
+<p class="last">By default, these functions return a <tt class="docutils literal"><span class="pre">float64</span></tt> array. To specify another data type, use the <tt class="docutils literal"><span class="pre">dtype</span></tt> keyword.</p>
 </div>
 <ul>
 <li><p class="first">It is possible to use another variable as a template to create a new array with the same data type and shape:</p>
@@ -528,7 +528,7 @@
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The operators <tt class="docutils literal"><span class="pre">~</span></tt>, <tt class="docutils literal"><span class="pre">&amp;</span></tt>, <tt class="docutils literal"><span class="pre">|</span></tt> and <tt class="docutils literal"><span class="pre">^</span></tt> have a very high priority, so parenthesis must be used to combine expressions. The following example shows how to print the number of times 1 or 10 are drawn from a uniform distribution:</p>
+<p>The operators <tt class="docutils literal"><span class="pre">~</span></tt>, <tt class="docutils literal"><span class="pre">&amp;</span></tt>, <tt class="docutils literal"><span class="pre">|</span></tt> and <tt class="docutils literal"><span class="pre">^</span></tt> have a very high priority, so parenthesis must be used to combine expressions. The following example shows how to print the number of times that 1 or 10 are drawn from a uniform distribution:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">a</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="mi">10</span><span class="p">))</span>
 <span class="go">207</span>
@@ -762,11 +762,11 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Given the function</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">isview</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-<span class="go">        &quot;&quot;&quot;</span>
-<span class="go">        Return True if b is a view on a.</span>
-<span class="go">        (It is assumed that a&#39;s memory buffer is contiguous)</span>
-<span class="go">        &quot;&quot;&quot;</span>
-<span class="go">        return a.ctypes.data &lt;= b.ctypes.data &lt; a.ctypes.data + a.nbytes</span>
+<span class="gp">... </span>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="sd">    Return True if b is a view on a.</span>
+<span class="gp">... </span><span class="sd">    (It is assumed that a&#39;s memory buffer is contiguous)</span>
+<span class="gp">... </span><span class="sd">    &quot;&quot;&quot;</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">a</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">nbytes</span>
 </pre></div>
 </div>
 <p>and the array</p>
@@ -857,16 +857,16 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <li><p class="first">What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.</p>
 </li>
 <li><p class="first">Can it work on arrays of different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>but not this one, since the righmost dimensions are different:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="go">ValueError: operands could not be broadcast together with shapes (5,9) (5)</span>
 </pre></div>
 </div>
 <p>So for columns, an additional dimension must be specified and added on the right:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">)[:,</span> <span class="bp">None</span><span class="p">]</span>
 </pre></div>
 </div>
 </li>
@@ -926,8 +926,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <span class="n">mp</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="s">&#39;212&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">signal</span><span class="p">:</span>
     <span class="n">mp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
-    <span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;time [s]&#39;</span><span class="p">)</span>
-    <span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;signal&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;time [s]&#39;</span><span class="p">)</span>
+<span class="n">mp</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;signal&#39;</span><span class="p">)</span>
 <span class="n">mp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -939,8 +939,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <p>[<a class="reference internal" href="auto_examples/normalize.html#normalize-py"><em>Solution</em></a>]</p>
 </div>
 </div>
-<div class="section" id="ufuncs">
-<h1>10. Ufuncs<a class="headerlink" href="#ufuncs" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="universal-functions-ufuncs">
+<h1>10. Universal functions (Ufuncs)<a class="headerlink" href="#universal-functions-ufuncs" title="Permalink to this headline">¶</a></h1>
 <p>TBD</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
@@ -952,51 +952,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="structured-data-types">
-<h1>11. Structured data types<a class="headerlink" href="#structured-data-types" title="Permalink to this headline">¶</a></h1>
-<p>Basic data types can be combined to form structured data types, akin to C&#8217;s <tt class="docutils literal"><span class="pre">struct</span></tt> or Fortrans&#8217;s derived types. The synthax to create such records is strict, it must be a <strong>list</strong> of <strong>tuples</strong>, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">point_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;z&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">point_dtype</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="s">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">(0.1620762355727834, 0.2395019980532217, 0.9167745701692562)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Another example, in which the shapes of the fields are specified:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">spectra_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;fluxdensity&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
-<span class="gp">... </span>                 <span class="p">(</span><span class="s">&#39;wavelength&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">100</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">spectra_dtype</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">spectrum</span><span class="p">[</span><span class="s">&#39;wavelength&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
-<span class="go">100</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Fields can be strings, but since array elements must have a fixed common <tt class="docutils literal"><span class="pre">itemsize</span></tt>, it is mandatory to specify the maximum number of characters. Structured data types can also be combined together:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;S256&#39;</span><span class="p">),</span>
-<span class="gp">... </span>                <span class="p">(</span><span class="s">&#39;pos&#39;</span><span class="p">,</span> <span class="n">point_dtype</span><span class="p">)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">galaxy_dtype</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
-<span class="go">&#39;M81&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="s">&#39;x&#39;</span><span class="p">],</span> <span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="s">&#39;y&#39;</span><span class="p">],</span> <span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="s">&#39;z&#39;</span><span class="p">]</span>
-<span class="go">(0.0, 0.0, 0.0)</span>
-</pre></div>
-</div>
-</div>
-<div class="green topic">
-<p class="topic-title first"><strong>Exercise</strong>: Indirect sort.</p>
-<p>An indirect sort consists in using an array to sort another one.</p>
-<p>First, create a structured dtype with a string field <tt class="docutils literal"><span class="pre">name</span></tt> (no more than 10 characters) and an integer field <tt class="docutils literal"><span class="pre">age</span></tt>. Then use it to allocate a large array of people. The <tt class="docutils literal"><span class="pre">name</span></tt> field will be populated with <tt class="docutils literal"><span class="pre">id1</span></tt>, <tt class="docutils literal"><span class="pre">id2</span></tt>, etc. and the <tt class="docutils literal"><span class="pre">age</span></tt> field according to any random distribution. Sort the people according to their age by two methods: 1) using the function <tt class="docutils literal"><span class="pre">argsort</span></tt> and 2) looking at the <tt class="docutils literal"><span class="pre">sort</span></tt> documentation related to structured arrays.</p>
-<p>[<a class="reference internal" href="auto_examples/indirect_sort.html#indirect-sort-py"><em>Solution</em></a>]</p>
-</div>
-</div>
 <div class="section" id="special-values">
-<h1>12. Special values<a class="headerlink" href="#special-values" title="Permalink to this headline">¶</a></h1>
+<h1>11. Special values<a class="headerlink" href="#special-values" title="Permalink to this headline">¶</a></h1>
 <p>NumPy supports IEEE 754 floating point special values <cite>NaN</cite> and <cite>inf</cite>. These literal values are available as <tt class="docutils literal"><span class="pre">np.nan</span></tt> and <tt class="docutils literal"><span class="pre">np.inf</span></tt> and are stored as Python <tt class="docutils literal"><span class="pre">float</span></tt>.</p>
 <p>NumPy&#8217;s behaviour when an IEEE exception occurs is configurable with the <tt class="docutils literal"><span class="pre">seterr</span></tt> function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s">&#39;raise&#39;</span><span class="p">)</span>
@@ -1037,8 +994,82 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </table>
 <p>When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation to the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: <tt class="docutils literal"><span class="pre">nanmin</span></tt>, <tt class="docutils literal"><span class="pre">nanmax</span></tt>, <tt class="docutils literal"><span class="pre">nanargmin</span></tt>, <tt class="docutils literal"><span class="pre">nanargmax</span></tt>, <tt class="docutils literal"><span class="pre">nanmean</span></tt>, <tt class="docutils literal"><span class="pre">nanstd</span></tt>, <tt class="docutils literal"><span class="pre">nanvar</span></tt>, <tt class="docutils literal"><span class="pre">nansum</span></tt>.</p>
 </div>
+<div class="section" id="structured-data-types">
+<h1>12. Structured data types<a class="headerlink" href="#structured-data-types" title="Permalink to this headline">¶</a></h1>
+<p>Basic data types can be combined to form structured data types, akin to C&#8217;s <tt class="docutils literal"><span class="pre">struct</span></tt> or Fortrans&#8217;s derived types. The synthax to create such records is strict, it must be a <strong>list</strong> of <strong>tuples</strong>, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">point_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;z&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">point_dtype</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="s">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="s">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">(0.1620762355727834, 0.2395019980532217, 0.9167745701692562)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Another example, in which the shapes of the fields are specified:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">spectra_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;fluxdensity&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="gp">... </span>                 <span class="p">(</span><span class="s">&#39;wavelength&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">100</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectrum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">spectra_dtype</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spectrum</span><span class="p">[</span><span class="s">&#39;wavelength&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+<span class="go">100</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Fields can be strings, but since array elements must have a fixed common <tt class="docutils literal"><span class="pre">itemsize</span></tt>, it is mandatory to specify the maximum number of characters. Structured data types can also be combined together:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;S256&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                <span class="p">(</span><span class="s">&#39;pos&#39;</span><span class="p">,</span> <span class="n">point_dtype</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">galaxy_dtype</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+<span class="go">&#39;M81&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="s">&#39;x&#39;</span><span class="p">],</span> <span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="s">&#39;y&#39;</span><span class="p">],</span> <span class="n">galaxy</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;pos&#39;</span><span class="p">][</span><span class="s">&#39;z&#39;</span><span class="p">]</span>
+<span class="go">(1.0, -1.0, 0.0)</span>
+</pre></div>
+</div>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>: Indirect sort.</p>
+<p>An indirect sort consists in using an array to sort another one.</p>
+<p>First, create a structured dtype with a string field <tt class="docutils literal"><span class="pre">name</span></tt> (no more than 10 characters) and an integer field <tt class="docutils literal"><span class="pre">age</span></tt>. Then use it to allocate a large array of people. The <tt class="docutils literal"><span class="pre">name</span></tt> field will be populated with <tt class="docutils literal"><span class="pre">id1</span></tt>, <tt class="docutils literal"><span class="pre">id2</span></tt>, etc. and the <tt class="docutils literal"><span class="pre">age</span></tt> field according to any random distribution. Sort the people according to their age by two methods: 1) using the function <tt class="docutils literal"><span class="pre">argsort</span></tt> and 2) looking at the <tt class="docutils literal"><span class="pre">sort</span></tt> documentation related to structured arrays.</p>
+<p>[<a class="reference internal" href="auto_examples/indirect_sort.html#indirect-sort-py"><em>Solution</em></a>]</p>
+</div>
+</div>
+<div class="section" id="record-arrays">
+<h1>13. Record arrays<a class="headerlink" href="#record-arrays" title="Permalink to this headline">¶</a></h1>
+<p>Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. Following the previous example, it can be done in the following way (field values are not initialized):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;S256&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                                <span class="p">(</span><span class="s">&#39;ra&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
+<span class="gp">... </span>                                <span class="p">(</span><span class="s">&#39;dec&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="mf">148.8882208</span><span class="p">,</span> <span class="mf">69.0652947</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ra</span><span class="p">,</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dec</span><span class="p">)</span>
+<span class="go">(&#39;M81&#39;, 148.8882208, 69.065294699999995)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>An existing structured array can be viewed as a <tt class="docutils literal"><span class="pre">recarray</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">source_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>But attribute access is broken for scalars (NumPy 1.8):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="go">AttributeError: &#39;numpy.void&#39; object has no attribute &#39;name&#39;</span>
+</pre></div>
+</div>
+<p>So one should write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&#39;M81&#39;</span>
+</pre></div>
+</div>
+<p class="last">For record arrays obtained with <tt class="docutils literal"><span class="pre">np.recarray</span></tt>, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
+</div>
+</div>
 <div class="section" id="more-exercises">
-<h1>13. More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>
+<h1>14. More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Data fitting</p>
 <p>Download the <strong>FITS file</strong> <a class="reference download internal" href="_downloads/data_oof.fits"><tt class="xref download docutils literal"><span class="pre">data_oof.fits</span></tt></a>, read and run the following example of curve fitting:</p>

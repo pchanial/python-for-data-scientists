@@ -281,7 +281,7 @@ Basic operations
   xor → ``^`` or ``logical_xor``
   === = ========================
 
-  .. note:: The operators ``~``, ``&``, ``|`` and ``^`` have a very high priority, so parenthesis must be used to combine expressions. The following example shows how to print the number of times 1 or 10 are drawn from a uniform distribution:
+  .. note:: The operators ``~``, ``&``, ``|`` and ``^`` have a very high priority, so parenthesis must be used to combine expressions. The following example shows how to print the number of times that 1 or 10 are drawn from a uniform distribution:
 
     >>> a = np.random.random_integers(1, 10, 1000)
     >>> np.sum((a == 1) | (a == 10))
@@ -461,12 +461,12 @@ Views and copies
 
 A powerful aspect of NumPy's array model is that many operations can be performed without copying the data, which can be expensive especially when handling big datasets. For instance, indexing using a slice returns a view on the initial array, which mean that the initial and sliced arrays share the same memory buffer. This is a frequent source a confusion, since modifying the view will affect the original array. It is then important to know which operations return a view and which ones a copy. A view on an array is different from a reference: even though they share the same memory buffer, the viewing and viewed arrays are different Python objects:
 
->>> a = np.zeros(10)
->>> b = a.view()
->>> id(a) == id(b)
-False
->>> a.ctypes.data == b.ctypes.data
-True
+    >>> a = np.zeros(10)
+    >>> b = a.view()
+    >>> id(a) == id(b)
+    False
+    >>> a.ctypes.data == b.ctypes.data
+    True
 
 .. topic:: **Exercise**:
        :class: green
@@ -474,11 +474,11 @@ True
        Given the function
 
        >>> def isview(a, b):
-               """
-               Return True if b is a view on a.
-               (It is assumed that a's memory buffer is contiguous)
-               """
-               return a.ctypes.data <= b.ctypes.data < a.ctypes.data + a.nbytes
+       ...     """
+       ...     Return True if b is a view on a.
+       ...     (It is assumed that a's memory buffer is contiguous)
+       ...     """
+       ...     return a.ctypes.data <= b.ctypes.data < a.ctypes.data + a.nbytes
 
        and the array
 
@@ -550,16 +550,16 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 
 * Can it work on arrays of different ranks? Sure! Dimensions of length 1 are **prepended** (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:
 
-    >>> np.zeros((5, 9)) + np.zeros(9)
+    >>> np.zeros((5, 9)) + np.ones(9)
 
   but not this one, since the righmost dimensions are different:
 
-    >>> np.zeros((5, 9)) + np.zeros(5)
+    >>> np.zeros((5, 9)) + np.ones(5)
     ValueError: operands could not be broadcast together with shapes (5,9) (5)
 
   So for columns, an additional dimension must be specified and added on the right:
 
-    >>> np.zeros((5, 9)) + np.zeros(5)[:, None]
+    >>> np.zeros((5, 9)) + np.ones(5)[:, None]
 
 
 * Can it work on more than two arrays? Yes again! But you have to find an elementwise operation with more than two operands...
@@ -629,8 +629,8 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
       mp.subplot('212')
       for s in signal:
           mp.plot(time, s)
-          mp.xlabel('time [s]')
-          mp.ylabel('signal')
+      mp.xlabel('time [s]')
+      mp.ylabel('signal')
       mp.show()
 
     .. only:: html
@@ -647,8 +647,9 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
         [:ref:`Solution <normalize.py>`]
 
 
-Ufuncs
-------
+Universal functions (Ufuncs)
+----------------------------
+
 
 TBD
 
@@ -660,58 +661,6 @@ array([[ True, False],
 array([[ True,  True],
        [ True, False]], dtype=bool)
 
-
-Structured data types
----------------------
-
-Basic data types can be combined to form structured data types, akin to C's ``struct`` or Fortrans's derived types. The synthax to create such records is strict, it must be a **list** of **tuples**, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.
-
->>> point_dtype = [('x', float), ('y', float), ('z', float)]
->>> n = 100
->>> points = np.zeros(n, dtype=point_dtype)
->>> points['x'] = np.random.random_sample(n)
->>> points['y'] = np.random.random_sample(n)
->>> points['z'] = np.random.random_sample(n)
->>> points[0]
-(0.1620762355727834, 0.2395019980532217, 0.9167745701692562)
->>> points[10] = (1, 1 , 0)
-
-Another example, in which the shapes of the fields are specified:
-
->>> spectra_dtype = [('fluxdensity', float, 100),
-...                  ('wavelength', float, 100)]
->>> spectrum = np.empty((), dtype=spectra_dtype)
->>> spectrum['wavelength'].size
-100
-
-.. note:: Fields can be strings, but since array elements must have a fixed common ``itemsize``, it is mandatory to specify the maximum number of characters. Structured data types can also be combined together:
-
-   >>> galaxy_dtype = [('name', 'S256'),
-   ...                 ('pos', point_dtype)]
-   >>> galaxy = np.empty(10, dtype=galaxy_dtype)
-   >>> galaxy[0] = ('M81', (0, 0, 0))
-   >>> galaxy[0]['name']
-   'M81'
-   >>> galaxy[0]['pos']['x'], galaxy[0]['pos']['y'], galaxy[0]['pos']['z']
-   (0.0, 0.0, 0.0)
-
-
-.. topic:: **Exercise**: Indirect sort.
-    :class: green
-
-    An indirect sort consists in using an array to sort another one.
-
-    First, create a structured dtype with a string field ``name`` (no more than 10 characters) and an integer field ``age``. Then use it to allocate a large array of people. The ``name`` field will be populated with ``id1``, ``id2``, etc. and the ``age`` field according to any random distribution. Sort the people according to their age by two methods: 1) using the function ``argsort`` and 2) looking at the ``sort`` documentation related to structured arrays.
-
-    .. only:: html
-
-        [:ref:`Solution <indirect_sort.py>`]
-
-
-Record arrays
--------------
-
-Since accessing fields in structured arrays using bracking can be tedious, it is possible to do so using attributes. The array should
 
 Special values
 --------------
@@ -740,3 +689,80 @@ And to make them non-special:
 :nan_to_num: Set `NaN` to zero, `+inf` to max float and `-inf` to min float
 
 When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation to the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: ``nanmin``, ``nanmax``, ``nanargmin``, ``nanargmax``, ``nanmean``, ``nanstd``, ``nanvar``, ``nansum``.
+
+
+Structured data types
+---------------------
+
+Basic data types can be combined to form structured data types, akin to C's ``struct`` or Fortrans's derived types. The synthax to create such records is strict, it must be a **list** of **tuples**, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.
+
+>>> point_dtype = [('x', float), ('y', float), ('z', float)]
+>>> n = 100
+>>> points = np.empty(n, dtype=point_dtype)
+>>> points['x'] = np.random.random_sample(n)
+>>> points['y'] = np.random.random_sample(n)
+>>> points['z'] = np.random.random_sample(n)
+>>> points[0]
+(0.1620762355727834, 0.2395019980532217, 0.9167745701692562)
+>>> points[10] = (1, 1 , 0)
+
+Another example, in which the shapes of the fields are specified:
+
+>>> spectra_dtype = [('fluxdensity', float, 100),
+...                  ('wavelength', float, 100)]
+>>> spectrum = np.zeros((), dtype=spectra_dtype)
+>>> spectrum['wavelength'].size
+100
+
+.. note:: Fields can be strings, but since array elements must have a fixed common ``itemsize``, it is mandatory to specify the maximum number of characters. Structured data types can also be combined together:
+
+   >>> galaxy_dtype = [('name', 'S256'),
+   ...                 ('pos', point_dtype)]
+   >>> galaxy = np.zeros(10, dtype=galaxy_dtype)
+   >>> galaxy[0] = ('M81', (1, -1, 0))
+   >>> galaxy[0]['name']
+   'M81'
+   >>> galaxy[0]['pos']['x'], galaxy[0]['pos']['y'], galaxy[0]['pos']['z']
+   (1.0, -1.0, 0.0)
+
+
+.. topic:: **Exercise**: Indirect sort.
+    :class: green
+
+    An indirect sort consists in using an array to sort another one.
+
+    First, create a structured dtype with a string field ``name`` (no more than 10 characters) and an integer field ``age``. Then use it to allocate a large array of people. The ``name`` field will be populated with ``id1``, ``id2``, etc. and the ``age`` field according to any random distribution. Sort the people according to their age by two methods: 1) using the function ``argsort`` and 2) looking at the ``sort`` documentation related to structured arrays.
+
+    .. only:: html
+
+        [:ref:`Solution <indirect_sort.py>`]
+
+
+Record arrays
+-------------
+
+Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. Following the previous example, it can be done in the following way (field values are not initialized):
+
+    >>> source = np.recarray(10, dtype=[('name', 'S256'),
+    ...                                 ('ra', float),
+    ...                                 ('dec', float)])
+    >>> source[0] = ('M81', 148.8882208, 69.0652947)
+    >>> print(source[0].name, source[0].ra, source[0].dec)
+    ('M81', 148.8882208, 69.065294699999995)
+
+.. warning:: An existing structured array can be viewed as a ``recarray``:
+
+    >>> source = np.empty(10, dtype=source_dtype).view(np.recarray)
+    >>> source[0] = ('M81', (1, -1, 0))
+
+    But attribute access is broken for scalars (NumPy 1.8):
+
+    >>> source[0].name
+    AttributeError: 'numpy.void' object has no attribute 'name'
+
+    So one should write:
+
+    >>> source.name[0]
+    'M81'
+
+    For record arrays obtained with ``np.recarray``, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).

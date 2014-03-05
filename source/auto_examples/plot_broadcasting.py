@@ -33,5 +33,6 @@ mp.xlabel('sample')
 mp.subplot('212')
 for s in signal:
     mp.plot(time, s)
-    mp.xlabel('time [s]')
+mp.xlabel('time [s]')
+mp.ylabel('signal')
 mp.show()
