@@ -694,7 +694,7 @@ When NaN values are present in an array, most NumPy functions will propagate the
 Structured data types
 ---------------------
 
-Basic data types can be combined to form structured data types, akin to C's ``struct`` or Fortrans's derived types. The synthax to create such records is strict, it must be a **list** of **tuples**, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.
+Basic data types can be combined to form structured data types, akin to C's ``struct`` or Fortran's derived types. The synthax to create such records is strict, it must be a **list** of **tuples**, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.
 
 >>> point_dtype = [('x', float), ('y', float), ('z', float)]
 >>> n = 100
@@ -741,7 +741,7 @@ Another example, in which the shapes of the fields are specified:
 Record arrays
 -------------
 
-Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. Following the previous example, it can be done in the following way (field values are not initialized):
+Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. It can be done in the following way (field values are not initialized):
 
     >>> source = np.recarray(10, dtype=[('name', 'S256'),
     ...                                 ('ra', float),
