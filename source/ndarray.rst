@@ -49,7 +49,7 @@ An array also has convenience attributes, which can be derived from the previous
 
 .. note:: The ``len`` function can be confusing when applied on arrays: it returns the number of elements along the first dimension only. It is better not to use it with arrays, and use ``.shape[0]`` instead for clarity.
 
-.. warning:: In Python (so it is also true for NumPy arrays), the assignation operator '=' does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for arrays the memory buffer will be released.
+.. warning:: In Python (so it is also true for NumPy arrays), the assignation operator '=' does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for arrays, the memory buffer will be released.
 
     >>> a = np.arange(100)
     >>> b = a
@@ -60,21 +60,21 @@ An array also has convenience attributes, which can be derived from the previous
 
     >>> b = a.copy()
 
-    In the same vein, here is the wrong way to assign 2 to an array:
+    In the same vein, here is the wrong way to assign 2 to all the elements of an array:
 
-    >>> a = np.arange(100)
-    >>> type(a)
-    numpy.ndarray
+    >>> a = np.arange(5)
+    >>> a
+    array([0, 1, 2, 3, 4])
     >>> a = 2
-    >>> type(a)
-    int
+    >>> a
+    2
 
     The proper way to do it is:
 
-    >>> a = np.arange(100)
+    >>> a = np.arange(5)
     >>> a[...] = 2
-    >>> type(a)
-    numpy.ndarray
+    >>> a
+    array([2, 2, 2, 2, 2])
 
 
 Creating arrays
@@ -182,7 +182,8 @@ Creating arrays
 
   :meshgrid: Return coordinate matrices from two or more coordinate vectors.
 
-             >>> nx, ny = (3, 2)
+             >>> nx = 3
+             >>> ny = 2
              >>> x_1d = np.linspace(0, 1, nx)
              >>> y_1d = np.linspace(0, 1, ny)
              >>> x_2d, yv_2d = np.meshgrid(x_1d, y_1d)
@@ -195,6 +196,7 @@ Creating arrays
              >>> np.sqrt(x_2d**2 + y_2d**2)
              array([[ 0.        ,  0.5       ,  1.        ],
                     [ 1.        ,  1.11803399,  1.41421356]])
+
 
 * Creation of arrays populated by pseudonumbers. The package ``numpy.random`` contains pseudonumber generators for the usual distributions. Many more are available in ``scipy.stats``.
 
@@ -546,7 +548,7 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 
 .. image:: broadcast_column.png
 
-* What if the arrays (still of same rank) have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.
+* What if the rank of the arrays is greater than 2? There is no restriction on the rank: any dimension of length 1 is broadcastable and is virtually replicated to match the other array's dimension length. The two arrays may have different broadcastable dimensions. If this happens, the result of the operation will have more elements than any of the operands.
 
 * Can it work on arrays of different ranks? Sure! Dimensions of length 1 are **prepended** (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:
 
@@ -667,7 +669,7 @@ Special values
 
 NumPy supports IEEE 754 floating point special values `NaN` and `inf`. These literal values are available as ``np.nan`` and ``np.inf`` and are stored as Python ``float``.
 
-NumPy's behaviour when an IEEE exception occurs is configurable with the ``seterr`` function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:
+NumPy's behaviour when an IEEE exception occurs is configurable with the ``seterr`` function. If your code produces NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:
 
     >>> np.seterr(invalid='raise')
 
@@ -682,6 +684,7 @@ To inspect these special values:
     >>> b = np.random.random_integers(0, 10, N)
     >>> c = a / b
     >>> np.all(np.isnan(c) == ((a == 0) & (b == 0)))
+    True
 :isfinite: Return True for infinite or NaN elements
 
 And to make them non-special:
@@ -731,7 +734,7 @@ Another example, in which the shapes of the fields are specified:
 
     An indirect sort consists in using an array to sort another one.
 
-    First, create a structured dtype with a string field ``name`` (no more than 10 characters) and an integer field ``age``. Then use it to allocate a large array of people. The ``name`` field will be populated with ``id1``, ``id2``, etc. and the ``age`` field according to any random distribution. Sort the people according to their age by two methods: 1) using the function ``argsort`` and 2) looking at the ``sort`` documentation related to structured arrays.
+    First, create a structured dtype with a string field ``name`` (no more than 10 characters) and an integer field ``age``. Then use it to allocate a large array of people. The ``name`` field will be populated with ``id1``, ``id2``, etc. and the ``age`` field according to any random distribution. Sort the people according to their age by two methods: 1) using the function ``np.argsort`` and 2) looking at the ``np.sort`` documentation related to structured arrays.
 
     .. only:: html
 
@@ -743,9 +746,10 @@ Record arrays
 
 Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. It can be done in the following way (field values are not initialized):
 
-    >>> source = np.recarray(10, dtype=[('name', 'S256'),
-    ...                                 ('ra', float),
-    ...                                 ('dec', float)])
+    >>> source_dtype = [('name', 'S256'),
+    ...                 ('ra', float),
+    ...                 ('dec', float)]
+    >>> source = np.recarray(10, dtype=source_dtype)
     >>> source[0] = ('M81', 148.8882208, 69.0652947)
     >>> print(source[0].name, source[0].ra, source[0].dec)
     ('M81', 148.8882208, 69.065294699999995)
@@ -753,7 +757,7 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
 .. warning:: An existing structured array can be viewed as a ``recarray``:
 
     >>> source = np.empty(10, dtype=source_dtype).view(np.recarray)
-    >>> source[0] = ('M81', (1, -1, 0))
+    >>> source[0] = ('M81', 148.8882208, 69.0652947)
 
     But attribute access is broken for scalars (NumPy 1.8):
 
@@ -766,3 +770,9 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
     'M81'
 
     For record arrays obtained with the ``np.recarray`` constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).
+
+
+Linear algebra
+--------------
+
+Although

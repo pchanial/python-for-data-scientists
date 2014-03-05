@@ -198,7 +198,7 @@
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>In Python (so it is also true for NumPy arrays), the assignation operator &#8216;=&#8217; does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for arrays the memory buffer will be released.</p>
+<p>In Python (so it is also true for NumPy arrays), the assignation operator &#8216;=&#8217; does not make a copy. It adds a reference to the reference list of an object stored in memory. When the number of references drops to zero, the object will disappear and for arrays, the memory buffer will be released.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
@@ -209,20 +209,20 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>In the same vein, here is the wrong way to assign 2 to an array:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="go">numpy.ndarray</span>
+<p>In the same vein, here is the wrong way to assign 2 to all the elements of an array:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([0, 1, 2, 3, 4])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="go">int</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">2</span>
 </pre></div>
 </div>
 <p>The proper way to do it is:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="go">numpy.ndarray</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([2, 2, 2, 2, 2])</span>
 </pre></div>
 </div>
 </div>
@@ -365,7 +365,8 @@
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">meshgrid:</th><td class="field-body"><p class="first">Return coordinate matrices from two or more coordinate vectors.</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ny</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x_2d</span><span class="p">,</span> <span class="n">yv_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_1d</span><span class="p">,</span> <span class="n">y_1d</span><span class="p">)</span>
@@ -854,7 +855,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </ul>
 <img alt="_images/broadcast_column.png" src="_images/broadcast_column.png" />
 <ul>
-<li><p class="first">What if the arrays (still of same rank) have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.</p>
+<li><p class="first">What if the rank of the arrays is greater than 2? There is no restriction on the rank: any dimension of length 1 is broadcastable and is virtually replicated to match the other array&#8217;s dimension length. The two arrays may have different broadcastable dimensions. If this happens, the result of the operation will have more elements than any of the operands.</p>
 </li>
 <li><p class="first">Can it work on arrays of different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
@@ -955,7 +956,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <div class="section" id="special-values">
 <h1>11. Special values<a class="headerlink" href="#special-values" title="Permalink to this headline">¶</a></h1>
 <p>NumPy supports IEEE 754 floating point special values <cite>NaN</cite> and <cite>inf</cite>. These literal values are available as <tt class="docutils literal"><span class="pre">np.nan</span></tt> and <tt class="docutils literal"><span class="pre">np.inf</span></tt> and are stored as Python <tt class="docutils literal"><span class="pre">float</span></tt>.</p>
-<p>NumPy&#8217;s behaviour when an IEEE exception occurs is configurable with the <tt class="docutils literal"><span class="pre">seterr</span></tt> function. If your code produce NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:</p>
+<p>NumPy&#8217;s behaviour when an IEEE exception occurs is configurable with the <tt class="docutils literal"><span class="pre">seterr</span></tt> function. If your code produces NaNs, you can raise exceptions when NaN are triggered to know where the problem happens:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s">&#39;raise&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -974,6 +975,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="p">((</span><span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </td>
@@ -1033,16 +1035,17 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Indirect sort.</p>
 <p>An indirect sort consists in using an array to sort another one.</p>
-<p>First, create a structured dtype with a string field <tt class="docutils literal"><span class="pre">name</span></tt> (no more than 10 characters) and an integer field <tt class="docutils literal"><span class="pre">age</span></tt>. Then use it to allocate a large array of people. The <tt class="docutils literal"><span class="pre">name</span></tt> field will be populated with <tt class="docutils literal"><span class="pre">id1</span></tt>, <tt class="docutils literal"><span class="pre">id2</span></tt>, etc. and the <tt class="docutils literal"><span class="pre">age</span></tt> field according to any random distribution. Sort the people according to their age by two methods: 1) using the function <tt class="docutils literal"><span class="pre">argsort</span></tt> and 2) looking at the <tt class="docutils literal"><span class="pre">sort</span></tt> documentation related to structured arrays.</p>
+<p>First, create a structured dtype with a string field <tt class="docutils literal"><span class="pre">name</span></tt> (no more than 10 characters) and an integer field <tt class="docutils literal"><span class="pre">age</span></tt>. Then use it to allocate a large array of people. The <tt class="docutils literal"><span class="pre">name</span></tt> field will be populated with <tt class="docutils literal"><span class="pre">id1</span></tt>, <tt class="docutils literal"><span class="pre">id2</span></tt>, etc. and the <tt class="docutils literal"><span class="pre">age</span></tt> field according to any random distribution. Sort the people according to their age by two methods: 1) using the function <tt class="docutils literal"><span class="pre">np.argsort</span></tt> and 2) looking at the <tt class="docutils literal"><span class="pre">np.sort</span></tt> documentation related to structured arrays.</p>
 <p>[<a class="reference internal" href="auto_examples/indirect_sort.html#indirect-sort-py"><em>Solution</em></a>]</p>
 </div>
 </div>
 <div class="section" id="record-arrays">
 <h1>13. Record arrays<a class="headerlink" href="#record-arrays" title="Permalink to this headline">¶</a></h1>
 <p>Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. It can be done in the following way (field values are not initialized):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;S256&#39;</span><span class="p">),</span>
-<span class="gp">... </span>                                <span class="p">(</span><span class="s">&#39;ra&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
-<span class="gp">... </span>                                <span class="p">(</span><span class="s">&#39;dec&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;S256&#39;</span><span class="p">),</span>
+<span class="gp">... </span>                <span class="p">(</span><span class="s">&#39;ra&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
+<span class="gp">... </span>                <span class="p">(</span><span class="s">&#39;dec&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">source_dtype</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="mf">148.8882208</span><span class="p">,</span> <span class="mf">69.0652947</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ra</span><span class="p">,</span> <span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dec</span><span class="p">)</span>
 <span class="go">(&#39;M81&#39;, 148.8882208, 69.065294699999995)</span>
@@ -1052,7 +1055,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <p class="first admonition-title">Warning</p>
 <p>An existing structured array can be viewed as a <tt class="docutils literal"><span class="pre">recarray</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">source_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="mf">148.8882208</span><span class="p">,</span> <span class="mf">69.0652947</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>But attribute access is broken for scalars (NumPy 1.8):</p>
@@ -1068,8 +1071,12 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <p class="last">For record arrays obtained with the <tt class="docutils literal"><span class="pre">np.recarray</span></tt> constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
 </div>
 </div>
+<div class="section" id="linear-algebra">
+<h1>14. Linear algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
+<p>Although</p>
+</div>
 <div class="section" id="more-exercises">
-<h1>14. More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>
+<h1>15. More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Data fitting</p>
 <p>Download the <strong>FITS file</strong> <a class="reference download internal" href="_downloads/data_oof.fits"><tt class="xref download docutils literal"><span class="pre">data_oof.fits</span></tt></a>, read and run the following example of curve fitting:</p>
