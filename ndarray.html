@@ -773,7 +773,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </ul>
 <img alt="_images/broadcast_column.png" src="_images/broadcast_column.png" />
 <ul>
-<li><p class="first">What if the arrays have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.</p>
+<li><p class="first">What if the arrays (still of same rank) have a rank greater than 2? There is no restriction on the rank: any dimension of length 1 of an array is virtually replicated to match the other array dimension length. Both arrays may have dimensions that will be broadcast. If this happens, the result of the operation will have more elements than any of the operands.</p>
 </li>
 <li><p class="first">Can it work on arrays of different ranks? Sure! Dimensions of length 1 are <strong>prepended</strong> (added on the left of the array shape) until the two arrays have the same rank. As a consequence, the following operation is possible:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
@@ -915,7 +915,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="structured-data-types">
 <h1>Structured data types<a class="headerlink" href="#structured-data-types" title="Permalink to this headline">¶</a></h1>
-<p>Basic data types can be combined to form structured data types, akin to C&#8217;s <tt class="docutils literal"><span class="pre">struct</span></tt> or Fortrans&#8217;s derived types. The synthax to create such records is strict, it must be a <strong>list</strong> of <strong>tuples</strong>, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.</p>
+<p>Basic data types can be combined to form structured data types, akin to C&#8217;s <tt class="docutils literal"><span class="pre">struct</span></tt> or Fortran&#8217;s derived types. The synthax to create such records is strict, it must be a <strong>list</strong> of <strong>tuples</strong>, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">point_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;z&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">point_dtype</span><span class="p">)</span>
@@ -958,7 +958,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="record-arrays">
 <h1>Record arrays<a class="headerlink" href="#record-arrays" title="Permalink to this headline">¶</a></h1>
-<p>Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. Following the previous example, it can be done in the following way (field values are not initialized):</p>
+<p>Accessing fields in structured arrays by using brackets can be a bit clumsy. Fortunately, it is possible to access these fields in a more concise way, as attributes, by using record arrays. It can be done in the following way (field values are not initialized):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;S256&#39;</span><span class="p">),</span>
 <span class="gp">... </span>                                <span class="p">(</span><span class="s">&#39;ra&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
 <span class="gp">... </span>                                <span class="p">(</span><span class="s">&#39;dec&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">)])</span>
@@ -984,7 +984,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <span class="go">&#39;M81&#39;</span>
 </pre></div>
 </div>
-<p class="last">For record arrays obtained with <tt class="docutils literal"><span class="pre">np.recarray</span></tt>, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
+<p class="last">For record arrays obtained with the <tt class="docutils literal"><span class="pre">np.recarray</span></tt> constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
 </div>
 </div>
 

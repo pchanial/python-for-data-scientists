@@ -765,4 +765,4 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
     >>> source.name[0]
     'M81'
 
-    For record arrays obtained with ``np.recarray``, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).
+    For record arrays obtained with the ``np.recarray`` constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).
