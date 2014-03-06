@@ -4,9 +4,17 @@ More exercises
 .. topic:: **Exercise**: Power spectrum & data fitting
     :class: green
 
-    Download the **FITS file** :download:`data_oof.fits <auto_examples/data_oof.fits>`, read and run the following example of curve fitting:
+    1. Download the **FITS file** :download:`data_oof.fits <auto_examples/data_oof.fits>`, read and run the following example of power spectrum estimate:
 
-    .. literalinclude:: auto_examples/plot_oof.py
+    .. literalinclude:: auto_examples/plot_oof1.py
+
+    2. Complete the ellipses in the following code, to estimate the 1/f noise parameters of the signal.
+
+    .. literalinclude:: auto_examples/plot_oof2.py
+
+    .. only:: html
+
+        [:ref:`Solution <plot_oof_solution.py>`]
 
 
 .. topic:: **Exercise**: Condition number & error propagation.
@@ -45,7 +53,6 @@ More exercises
                  x + \Delta x_B &= B^{-1}(b_B + \Delta b_B) \\
 
        by computing the mean relative errors :math:`\frac{||\Delta x||}{||x||}` and :math:`\frac{||\Delta b||}{||b||}`. Compare these values to the condition numbers of the matrices.
-
 
     .. only:: html
 

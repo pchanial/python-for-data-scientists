@@ -1085,14 +1085,16 @@ B_{ij} &amp;= ij"/></p>
 <h1>14. More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Power spectrum &amp; data fitting</p>
-<p>Download the <strong>FITS file</strong> <a class="reference download internal" href="_downloads/data_oof.fits"><tt class="xref download docutils literal"><span class="pre">data_oof.fits</span></tt></a>, read and run the following example of curve fitting:</p>
+<ol class="arabic simple">
+<li>Download the <strong>FITS file</strong> <a class="reference download internal" href="_downloads/data_oof.fits"><tt class="xref download docutils literal"><span class="pre">data_oof.fits</span></tt></a>, read and run the following example of power spectrum estimate:</li>
+</ol>
 <div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">non-linear fit example with 3 parameters model 1/f noise :</span>
 <span class="sd">   variance*[ 1 + (f_knee/f)^alpha ]</span>
 
 <span class="sd">Jm. Colley</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="kn">as</span> <span class="nn">spo</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">mp</span>
@@ -1110,8 +1112,28 @@ B_{ij} &amp;= ij"/></p>
     <span class="n">ps</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">fft_signal</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">size_signal</span>
     <span class="k">return</span> <span class="n">ps</span><span class="p">[:</span><span class="mi">1</span> <span class="o">+</span> <span class="n">size_signal</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
 
+<span class="c"># inspect the FITS Table</span>
+<span class="n">fits</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;data_oof.fits&#39;</span><span class="p">)</span>
+<span class="n">hdulist</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;data_oof.fits&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">oof_model</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+<span class="c"># read the FITS table as a record array</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+<span class="n">signal</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">timeline</span>
+<span class="n">nsamples</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">size</span>
+
+<span class="c"># create array freq mode 1 to Nyquist Mode</span>
+<span class="n">delta_freq</span> <span class="o">=</span> <span class="n">FREQ_SAMPLING</span> <span class="o">/</span> <span class="n">nsamples</span>
+<span class="n">freq</span> <span class="o">=</span> <span class="n">delta_freq</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nsamples</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># remove mode 0</span>
+<span class="n">spectrum</span> <span class="o">=</span> <span class="n">spectrum_estimate</span><span class="p">(</span><span class="n">signal</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>Complete the ellipses in the following code, to estimate the 1/f noise parameters of the signal.</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">oof_model</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    1/f noise model</span>
 <span class="sd">        param[0] : noise standard deviation</span>
@@ -1120,47 +1142,33 @@ B_{ij} &amp;= ij"/></p>
 <span class="sd">    freq : array of frequency</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sigma</span><span class="p">,</span> <span class="n">fknee</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">param</span>
-    <span class="k">return</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">fknee</span> <span class="o">/</span> <span class="n">freq</span><span class="p">)</span><span class="o">**</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">...</span>
 
 
 <span class="k">def</span> <span class="nf">compute_residuals</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return array: observation - model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">oof_model</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="o">...</span>
     <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">observation</span> <span class="o">/</span> <span class="n">model</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&quot;residual: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residual</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;residual: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residual</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">residual</span>
 
-<span class="c"># read raw signal in fits Table Data</span>
-<span class="n">hdulist</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s">&#39;data_oof.fits&#39;</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">header</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
-<span class="n">signal</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">timeline</span>
-<span class="n">nsamples</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">size</span>
-
-<span class="c"># remove mode 0</span>
-<span class="n">spectrum</span> <span class="o">=</span> <span class="n">spectrum_estimate</span><span class="p">(</span><span class="n">signal</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
-
-<span class="c"># create array freq mode 1 to Nyquist Mode</span>
-<span class="n">delta_freq</span> <span class="o">=</span> <span class="n">FREQ_SAMPLING</span> <span class="o">/</span> <span class="n">nsamples</span>
-<span class="n">freq</span> <span class="o">=</span> <span class="n">delta_freq</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nsamples</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="c"># fit with  scipy optimize, leastsq() function</span>
+<span class="c"># fit with scipy optimize, leastsq() function</span>
 <span class="n">param_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">signal</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
 <span class="n">param_guess</span> <span class="o">=</span> <span class="n">param_true</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="n">ret_lsq</span> <span class="o">=</span> <span class="n">spo</span><span class="o">.</span><span class="n">leastsq</span><span class="p">(</span><span class="n">compute_residuals</span><span class="p">,</span> <span class="n">param_guess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freq</span><span class="p">),</span>
+<span class="n">ret_lsq</span> <span class="o">=</span> <span class="n">spo</span><span class="o">.</span><span class="n">leastsq</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">param_guess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
                       <span class="n">full_output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="n">param_est</span><span class="p">,</span> <span class="n">cov_x</span><span class="p">,</span> <span class="n">infodict</span><span class="p">,</span> <span class="n">mesg_result</span><span class="p">,</span> <span class="n">ret_value</span> <span class="o">=</span> <span class="n">ret_lsq</span>
-<span class="k">print</span> <span class="s">&quot;Return value:&quot;</span><span class="p">,</span> <span class="n">ret_value</span>
-<span class="k">print</span> <span class="s">&quot;Return message:&quot;</span><span class="p">,</span> <span class="n">mesg_result</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Return value:&quot;</span><span class="p">,</span> <span class="n">ret_value</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Return message:&quot;</span><span class="p">,</span> <span class="n">mesg_result</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">ret_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">mesg_result</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="s">&quot;guess    :&quot;</span><span class="p">,</span> <span class="n">param_guess</span>
-<span class="k">print</span> <span class="s">&quot;solution :&quot;</span><span class="p">,</span> <span class="n">param_est</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;guess    :&quot;</span><span class="p">,</span> <span class="n">param_guess</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;solution :&quot;</span><span class="p">,</span> <span class="n">param_est</span><span class="p">)</span>
 
 <span class="c"># plot</span>
 <span class="n">mp</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1187,6 +1195,7 @@ B_{ij} &amp;= ij"/></p>
 <span class="n">mp</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>[<a class="reference internal" href="auto_examples/plot_oof_solution.html#plot-oof-solution-py"><em>Solution</em></a>]</p>
 </div>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Condition number &amp; error propagation.</p>

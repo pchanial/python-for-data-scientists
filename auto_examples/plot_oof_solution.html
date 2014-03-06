@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Python for Data Scientists, 2014.02</title>
+    
+    <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2014.02',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Python for Data Scientists, 2014.02" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <p id="plot-oof-solution-py">Fitting of 1/f PSD.</p>
+<p><strong>Python source code:</strong> <a class="reference download internal" href="../_downloads/plot_oof_solution.py"><tt class="xref download docutils literal"><span class="pre">plot_oof_solution.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">oof_model</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    1/f noise model</span>
+<span class="sd">        param[0] : noise standard deviation</span>
+<span class="sd">        param[1] : knee frequency</span>
+<span class="sd">        param[2] : alpha</span>
+<span class="sd">    freq : array of frequency</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sigma</span><span class="p">,</span> <span class="n">fknee</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">param</span>
+    <span class="k">return</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">fknee</span> <span class="o">/</span> <span class="n">freq</span><span class="p">)</span><span class="o">**</span><span class="n">alpha</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">compute_residuals</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return array: observation - model</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">oof_model</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">observation</span> <span class="o">/</span> <span class="n">model</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;residual: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residual</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">residual</span>
+
+<span class="c"># fit with scipy optimize, leastsq() function</span>
+<span class="n">param_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">signal</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+<span class="n">param_guess</span> <span class="o">=</span> <span class="n">param_true</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ret_lsq</span> <span class="o">=</span> <span class="n">spo</span><span class="o">.</span><span class="n">leastsq</span><span class="p">(</span><span class="n">compute_residuals</span><span class="p">,</span> <span class="n">param_guess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">spectrum</span><span class="p">,</span> <span class="n">freq</span><span class="p">),</span>
+                      <span class="n">full_output</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/plot_oof_solution.png" class="align-center" src="../_images/plot_oof_solution.png" />
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">Python for Data Scientists, 2014.02</a> &raquo;</li> 
+      </ul>
+    </div>
+
+<a href="www.univ-paris-diderot.fr">
+  <img src="../_static/paris7.png" alt="Université Paris Diderot / Paris 7" height="80" style="image-orientation: 90deg;">
+</a>
+
+<a href="www.apc.univ-paris-diderot.fr">
+  <img src="../_static/apc.png" alt="Laboratoire APC" height="80">
+</a>
+
+<a href="http://univearths.in2p3.fr">
+  <img src="../_static/labex-univearths.png" alt="UnivEarthS' LabEx" height="80">
+</a>
+
+<script language="JavaScript" src="http://freehostedscripts.net/ocount.php?site=ID2440830&name=Visits since 2014.02"></script>
+
+  </body>
+</html>
