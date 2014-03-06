@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Formation Python for Data Scientists - APC, Université Paris 7
-==============================================================
+Formation Python for Data Scientists - Pierre Chanial, APC, Université Paris 7
+==============================================================================
 
 .. only:: html
 
