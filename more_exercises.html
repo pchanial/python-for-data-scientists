@@ -43,7 +43,7 @@
   <div class="section" id="more-exercises">
 <h1>More exercises<a class="headerlink" href="#more-exercises" title="Permalink to this headline">¶</a></h1>
 <div class="green topic">
-<p class="topic-title first"><strong>Exercise</strong>: Data fitting</p>
+<p class="topic-title first"><strong>Exercise</strong>: Power spectrum &amp; data fitting</p>
 <p>Download the <strong>FITS file</strong> <a class="reference download internal" href="_downloads/data_oof.fits"><tt class="xref download docutils literal"><span class="pre">data_oof.fits</span></tt></a>, read and run the following example of curve fitting:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">non-linear fit example with 3 parameters model 1/f noise :</span>
@@ -148,7 +148,48 @@
 </div>
 </div>
 <div class="green topic">
-<p class="topic-title first"><strong>Exercise</strong>: Integration</p>
+<p class="topic-title first"><strong>Exercise</strong>: Condition number &amp; error propagation.</p>
+<p>Given</p>
+<div class="math">
+<p><img src="_images/math/1de76db410f8126aac854b10eb989504ae9aecb6.png" alt="A &amp;= \frac{1}{4}
+     \begin{bmatrix}
+         3 &amp; -\sqrt{3} &amp; 1 &amp; -\sqrt{3} \\
+         \sqrt{3} &amp; 3 &amp; -\sqrt{3} &amp; -1 \\
+         \sqrt{3} &amp; 1 &amp;  \sqrt{3} &amp;  3 \\
+         1 &amp; -\sqrt{3} &amp; -3 &amp; \sqrt{3} \\
+     \end{bmatrix},\quad
+B =  \begin{bmatrix}
+         10 &amp; 10 &amp;  7 &amp; 8 \\
+          9 &amp;  2 &amp;  7 &amp; 7 \\
+          1 &amp;  5 &amp; 11 &amp; 1 \\
+         10 &amp; 11 &amp;  4 &amp; 8 \\
+     \end{bmatrix}, \quad
+x =  \begin{bmatrix}
+         1\\
+         1\\
+         1\\
+         1\\
+     \end{bmatrix} \\
+b_A &amp;= A x \\
+b_B &amp;= B x \\"/></p>
+</div><ol class="arabic">
+<li><p class="first">Check that <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> is orthogonal.</p>
+</li>
+<li><p class="first">Compute the condition numbers of <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/>.</p>
+</li>
+<li><p class="first">Compute <img class="math" src="_images/math/a56c39ce165595191d804b50453f4cca133a5575.png" alt="A^{-1}"/> and <img class="math" src="_images/math/f2ef5001def9601cf928d92991f2152a894b70ec.png" alt="B^{-1}"/>.</p>
+</li>
+<li><p class="first">By Monte-Carlo sampling, check how perturbations in <img class="math" src="_images/math/16318577c88ec980dd23e70c93f533ca439e68ed.png" alt="b_A"/> and <img class="math" src="_images/math/6f28c47d7d434031c061b90ec0192efc2cf6e085.png" alt="b_B"/> are propagated to the solutions</p>
+<div class="math">
+<p><img src="_images/math/f83b8e8b80b8549875dd6609825ec1d9d221e458.png" alt="x + \Delta x_A &amp;= A^{-1}(b_A + \Delta b_A) \\
+x + \Delta x_B &amp;= B^{-1}(b_B + \Delta b_B) \\"/></p>
+</div><p>by computing the mean relative errors <img class="math" src="_images/math/beaae1711243afd395bbb4ef8b26ecc946667e78.png" alt="\frac{||\Delta x||}{||x||}"/> and <img class="math" src="_images/math/584f734ec0677e1e6340a5dba79084a791053ed5.png" alt="\frac{||\Delta b||}{||b||}"/>. Compare these values to the condition numbers of the matrices.</p>
+</li>
+</ol>
+<p>[<a class="reference internal" href="auto_examples/condnum.html#condnum-py"><em>Solution</em></a>]</p>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>: Scientific constants &amp; integration</p>
 <p>Numerically verify the Stephan-Boltzmann law, which relates the emission of a black body to its temperature.</p>
 </div>
 </div>

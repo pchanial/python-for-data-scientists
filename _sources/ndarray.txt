@@ -136,7 +136,7 @@ Creating arrays
 
           .. note:: This function is much faster, but be careful to completely populate the array afterwards.
 
-.. note:: By default, these functions return a ``float64`` array. To specify another data type, use the ``dtype`` keyword.
+  .. note:: By default, these functions return a ``float64`` array. To specify another data type, use the ``dtype`` keyword.
 
 * It is possible to use another variable as a template to create a new array with the same data type and shape:
 
@@ -410,7 +410,7 @@ Manipulating arrays
 
 * Transformations that change the shape but not the size
 
-:.reshape: Give a new shape.
+  :.reshape: Give a new shape.
 
            .. note:: One shape dimension can be -1. In this case, the value is inferred from the number of elements of the array and the remaining dimensions.
 
@@ -419,33 +419,33 @@ Manipulating arrays
                      >>> b.shape
                      (4, 14)
 
-:.ravel: Flatten an array to one dimension.
+  :.ravel: Flatten an array to one dimension.
 
          .. note:: By default, in the ``reshape`` and ``ravel`` transformations, the elements of the input and output array are identical when both travelled following the row-major order.
 
-:.T: Transpose of the array.
-:.swapaxes: Interchange two axes.
-:np.rollaxis: Roll a specified axis backwards, until it lies in a given position.
-:.squeeze: Remove single-dimensional entries from the shape of the array.
+  :.T: Transpose of the array.
+  :.swapaxes: Interchange two axes.
+  :np.rollaxis: Roll a specified axis backwards, until it lies in a given position.
+  :.squeeze: Remove single-dimensional entries from the shape of the array.
 
-It is also easy to add a new dimension, using ``None`` (or equivalently ``np.newaxis``):
+  It is also easy to add a new dimension, using ``None`` (or equivalently ``np.newaxis``):
 
->>> a = np.zeros((3, 5))
->>> a[..., None].shape
-(3, 5, 1)
->>> a[:, None, :].shape
-(3, 1, 5)
->>> a[None, ...].shape
-(1, 3, 5)
+  >>> a = np.zeros((3, 5))
+  >>> a[..., None].shape
+  (3, 5, 1)
+  >>> a[:, None, :].shape
+  (3, 1, 5)
+  >>> a[None, ...].shape
+  (1, 3, 5)
 
-We will see later how much this notation can be handy when used in conjonction with broadcasting.
+  We will see later how much this notation can be handy when used in conjonction with broadcasting.
 
 * Transformations that change the size
 
-:np.resize: Return a new array with the specified shape, repeating the array if necessary
-:tile: Construct an array by repeating A the given number of times.
-:resize: TBD
-:repeat: TBD
+  :np.resize: Return a new array with the specified shape, repeating the array if necessary
+  :tile: Construct an array by repeating A the given number of times.
+  :resize: TBD
+  :repeat: TBD
 
 
 .. topic:: **Exercise**:
@@ -534,7 +534,7 @@ Combining arrays
 Broadcasting
 ------------
 
-Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of operations involving an array and a scalar.
+Broadcasting allows operations (such as addition, multiplication etc.) which are normally element-wise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of operations involving an array and a scalar.
 
 * the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).
 
@@ -564,7 +564,7 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
     >>> np.zeros((5, 9)) + np.ones(5)[:, None]
 
 
-* Can it work on more than two arrays? Yes again! But you have to find an elementwise operation with more than two operands...
+* Can it work on more than two arrays? Yes again! But you have to find an element-wise operation with more than two operands...
 
 * Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible, just keep an eye on the size of the broadcast result to make sure that it does not become too large.
 
@@ -652,16 +652,31 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 Universal functions (Ufuncs)
 ----------------------------
 
-
+Universal functions are the second 
 TBD
 
->>> tf = np.array([True, False])
+>>> tf = [True, False]
 >>> np.logical_and.outer(tf, tf)
 array([[ True, False],
        [False, False]], dtype=bool)
 >>> np.logical_or.outer(tf, tf)
 array([[ True,  True],
        [ True, False]], dtype=bool)
+
+.. topic:: **Exercise**:
+    :class: green
+
+    Using ufunc capabilities, create :math:`M\times N` matrices :math:`A` and :math:`B` such that
+
+      .. math::
+         A_{ij} &= i + j \\
+         B_{ij} &= ij
+
+    with :math:`0\le i<M` and  :math:`0\le j<N`
+
+    .. only:: html
+
+        [:ref:`Solution <ufunc_matrices.py>`]
 
 
 Special values
@@ -770,9 +785,3 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
     'M81'
 
     For record arrays obtained with the ``np.recarray`` constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).
-
-
-Linear algebra
---------------
-
-Although

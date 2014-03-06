@@ -220,13 +220,11 @@
 </tr>
 </tbody>
 </table>
-</li>
-</ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">By default, these functions return a <tt class="docutils literal"><span class="pre">float64</span></tt> array. To specify another data type, use the <tt class="docutils literal"><span class="pre">dtype</span></tt> keyword.</p>
 </div>
-<ul>
+</li>
 <li><p class="first">It is possible to use another variable as a template to create a new array with the same data type and shape:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -592,9 +590,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="manipulating-arrays">
 <h1>Manipulating arrays<a class="headerlink" href="#manipulating-arrays" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li>Transformations that change the shape but not the size</li>
-</ul>
+<ul>
+<li><p class="first">Transformations that change the shape but not the size</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -644,9 +641,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </pre></div>
 </div>
 <p>We will see later how much this notation can be handy when used in conjonction with broadcasting.</p>
-<ul class="simple">
-<li>Transformations that change the size</li>
-</ul>
+</li>
+<li><p class="first">Transformations that change the size</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -661,6 +657,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </tr>
 </tbody>
 </table>
+</li>
+</ul>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Write a function that returns the mean of each 100 element block of a vector of size 100×N. The first version will loop over the vector slices by using a list comprehension and the second one will use NumPy transformation functions to avoid the <tt class="docutils literal"><span class="pre">for</span></tt> loop. The vector elements will be drawn from any statistical distribution.</p>
@@ -760,7 +758,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="broadcasting">
 <h1>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h1>
-<p>Broadcasting allows operations (such as addition, multiplication etc.) which are normally elementwise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of operations involving an array and a scalar.</p>
+<p>Broadcasting allows operations (such as addition, multiplication etc.) which are normally element-wise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of operations involving an array and a scalar.</p>
 <ul class="simple">
 <li>the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).</li>
 </ul>
@@ -790,7 +788,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Can it work on more than two arrays? Yes again! But you have to find an elementwise operation with more than two operands...</p>
+<li><p class="first">Can it work on more than two arrays? Yes again! But you have to find an element-wise operation with more than two operands...</p>
 </li>
 <li><p class="first">Since the replication is virtual, no memory is wasted. Broadcasting is fast. Use it wherever possible, just keep an eye on the size of the broadcast result to make sure that it does not become too large.</p>
 </li>
@@ -861,8 +859,9 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="universal-functions-ufuncs">
 <h1>Universal functions (Ufuncs)<a class="headerlink" href="#universal-functions-ufuncs" title="Permalink to this headline">¶</a></h1>
-<p>TBD</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<p>Universal functions are the second
+TBD</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
 <span class="go">array([[ True, False],</span>
 <span class="go">       [False, False]], dtype=bool)</span>
@@ -870,6 +869,17 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <span class="go">array([[ True,  True],</span>
 <span class="go">       [ True, False]], dtype=bool)</span>
 </pre></div>
+</div>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>:</p>
+<p>Using ufunc capabilities, create <img class="math" src="_images/math/be03d37abd791d40059574c12ee4774f06d3d91d.png" alt="M\times N"/> matrices <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> such that</p>
+<blockquote>
+<div><div class="math">
+<p><img src="_images/math/75127747d5528cea286211a5482da927fea6701c.png" alt="A_{ij} &amp;= i + j \\
+B_{ij} &amp;= ij"/></p>
+</div></div></blockquote>
+<p>with <img class="math" src="_images/math/459bc457a3207fcd21fa637505ec3345b09337b1.png" alt="0\le i&lt;M"/> and  <img class="math" src="_images/math/8c70a73e313ee1f872ce534811b0ae63278b8c65.png" alt="0\le j&lt;N"/></p>
+<p>[<a class="reference internal" href="auto_examples/ufunc_matrices.html#ufunc-matrices-py"><em>Solution</em></a>]</p>
 </div>
 </div>
 <div class="section" id="special-values">
@@ -989,10 +999,6 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <p class="last">For record arrays obtained with the <tt class="docutils literal"><span class="pre">np.recarray</span></tt> constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
 </div>
-</div>
-<div class="section" id="linear-algebra">
-<h1>Linear algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
-<p>Although</p>
 </div>
 
 
