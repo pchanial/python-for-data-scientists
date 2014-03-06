@@ -126,7 +126,7 @@ Creating arrays
          array([[ 1.,  1.],
                 [ 1.,  1.]])
 
-  :full: allocate an array of given shape filled by a given value (Numpy 1.8)
+  :full: allocate an array of given shape filled by a given value (NumPy 1.8)
 
          >>> np.full((2, 2), np.pi)
          array([[ 3.14159265,  3.14159265],
@@ -236,8 +236,8 @@ Basic operations
 * Functions in NumPy are vectorized
 
   :np.sum: sum of elements
-  :np.product: product of elements
   :np.cumsum: cumulative sum of elements
+  :np.product: product of elements
   :np.cumproduct: cumulative product of elements
   :np.sort: sort elements
   :np.argsort: return the indices that would sort an array
@@ -652,16 +652,89 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
 Universal functions (Ufuncs)
 ----------------------------
 
-Universal functions are the second 
-TBD
+Arrays and universal functions are the two fundamental NumPy building blocks. The most basic operations on arrays are performed by these ufuncs.
 
->>> tf = [True, False]
->>> np.logical_and.outer(tf, tf)
-array([[ True, False],
-       [False, False]], dtype=bool)
->>> np.logical_or.outer(tf, tf)
-array([[ True,  True],
-       [ True, False]], dtype=bool)
+======== ========================
+Operator Ufunc
+======== ========================
+``+``    ``np.add``
+``-``    ``np.subtract``
+``*``    ``np.multiply``
+``/``    ``np.true_divide`` (with: ``from __future__ import division``)
+``//``   ``np.floor_divide``
+``**``   ``np.power``
+``%``    ``np.mod``
+``==``   ``np.equal``
+``!=``   ``np.not_equal``
+``<``    ``np.less``
+``<=``   ``np.less_equal``
+``>``    ``np.greater``
+``>=``   ``np.greater_equal``
+``~``    ``np.logical_not`` or ``np.bitwise_not``
+``&``    ``np.logical_and`` or ``np.bitwise_and``
+``|``    ``np.logical_or``  or ``np.bitwise_or``
+``^``    ``np.logical_xor`` or ``np.bitwise_xor``
+======== ========================
+
+`Many functions <http://docs.scipy.org/doc/numpy/reference/ufuncs.html#available-ufuncs>`_ are also implemented as ufuncs: ``absolute``, ``conj``, ``sign``, ``cos``, ``sin``, ``tan``, ``arccos``, ``arcsin``, ``arctan2`` and many more...
+
+A ``ufunc`` has the following characteritics:
+
+1. a buffer can be provided for the output, which can be useful to avoid temporaries.
+
+   >>> N = 1000000
+   >>> x = np.random.random_sample(N)
+   >>> %timeit 2 * np.sin(x) + x
+   10 loops, best of 3: 45 ms per loop
+   >>> out = np.empty_like(x)
+   >>> %timeit global out; np.sin(x, out); out *= 2; out += x
+   10 loops, best of 3: 37 ms per loop
+
+
+2. it implements the broadcasting mechanism on its inputs and outputs.
+
+3. it has the following methods (which are only useful for ufuncs with two arguments):
+
+:reduce: reduces `a`'s dimension by one, by applying ``ufunc`` along one axis. Equivalent to:
+
+   >>> r = x[0]
+   >>> for i in range(1, len(x) - 1):
+   ...     r = ufunc(r, x[i])
+
+:accumulate: accumulate the result of applying the ``ufunc`` to all elements. Equivalent to:
+
+   >>> a = np.empty(len(x))
+   >>> a[0] = x[0]
+   >>> for i in range(1, len(x) - 1):
+   ...     a[i] = ufunc(a[i - 1], x[i])
+
+:outer: outer product such that ``ufunc.outer(x, y)[i, j] = ufunc(x[i], y[j])``
+
+    >>> tf = [True, False]
+    >>> np.logical_and.outer(tf, tf)
+    array([[ True, False],
+           [False, False]], dtype=bool)
+    >>> np.logical_or.outer(tf, tf)
+    array([[ True,  True],
+           [ True, False]], dtype=bool)
+
+These methods are used internally by the following functions:
+
+============= ======================
+Function      Under the hood
+============= ======================
+np.sum        np.add.reduce
+np.cumsum     np.add.accumulate
+np.product    np.multiply.reduce
+np.cumproduct np.multiply.accumulate
+np.min        np.minimum.reduce
+np.max        np.maximum.reduce
+np.any        np.logical_or.reduce
+np.all        np.logical_and.reduce
+============= ======================
+
+It is relatively easy to write ufuncs in C.
+
 
 .. topic:: **Exercise**:
     :class: green

@@ -203,7 +203,7 @@
 </div>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">full:</th><td class="field-body"><p class="first">allocate an array of given shape filled by a given value (Numpy 1.8)</p>
+<tr class="field-odd field"><th class="field-name">full:</th><td class="field-body"><p class="first">allocate an array of given shape filled by a given value (NumPy 1.8)</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
 <span class="go">array([[ 3.14159265,  3.14159265],</span>
 <span class="go">       [ 3.14159265,  3.14159265]])</span>
@@ -366,9 +366,9 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">np.sum:</th><td class="field-body">sum of elements</td>
 </tr>
-<tr class="field-even field"><th class="field-name">np.product:</th><td class="field-body">product of elements</td>
+<tr class="field-even field"><th class="field-name">np.cumsum:</th><td class="field-body">cumulative sum of elements</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">np.cumsum:</th><td class="field-body">cumulative sum of elements</td>
+<tr class="field-odd field"><th class="field-name">np.product:</th><td class="field-body">product of elements</td>
 </tr>
 <tr class="field-even field"><th class="field-name">np.cumproduct:</th><td class="field-body">cumulative product of elements</td>
 </tr>
@@ -859,9 +859,113 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 <div class="section" id="universal-functions-ufuncs">
 <h1>Universal functions (Ufuncs)<a class="headerlink" href="#universal-functions-ufuncs" title="Permalink to this headline">¶</a></h1>
-<p>Universal functions are the second
-TBD</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+<p>Arrays and universal functions are the two fundamental NumPy building blocks. The most basic operations on arrays are performed by these ufuncs.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operator</th>
+<th class="head">Ufunc</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">+</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.add</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.subtract</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">*</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.multiply</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">/</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.true_divide</span></tt> (with: <tt class="docutils literal"><span class="pre">from</span> <span class="pre">__future__</span> <span class="pre">import</span> <span class="pre">division</span></tt>)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">//</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.floor_divide</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">**</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.power</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">%</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.mod</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">==</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.equal</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">!=</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.not_equal</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">&lt;</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.less</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">&lt;=</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.less_equal</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">&gt;</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.greater</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">&gt;=</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.greater_equal</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">~</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.logical_not</span></tt> or <tt class="docutils literal"><span class="pre">np.bitwise_not</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">&amp;</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.logical_and</span></tt> or <tt class="docutils literal"><span class="pre">np.bitwise_and</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">|</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.logical_or</span></tt>  or <tt class="docutils literal"><span class="pre">np.bitwise_or</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">^</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">np.logical_xor</span></tt> or <tt class="docutils literal"><span class="pre">np.bitwise_xor</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/ufuncs.html#available-ufuncs">Many functions</a> are also implemented as ufuncs: <tt class="docutils literal"><span class="pre">absolute</span></tt>, <tt class="docutils literal"><span class="pre">conj</span></tt>, <tt class="docutils literal"><span class="pre">sign</span></tt>, <tt class="docutils literal"><span class="pre">cos</span></tt>, <tt class="docutils literal"><span class="pre">sin</span></tt>, <tt class="docutils literal"><span class="pre">tan</span></tt>, <tt class="docutils literal"><span class="pre">arccos</span></tt>, <tt class="docutils literal"><span class="pre">arcsin</span></tt>, <tt class="docutils literal"><span class="pre">arctan2</span></tt> and many more...</p>
+<p>A <tt class="docutils literal"><span class="pre">ufunc</span></tt> has the following characteritics:</p>
+<ol class="arabic">
+<li><p class="first">a buffer can be provided for the output, which can be useful to avoid temporaries.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="mi">1000000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span>
+<span class="go">10 loops, best of 3: 45 ms per loop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="o">%</span><span class="n">timeit</span> <span class="k">global</span> <span class="n">out</span><span class="p">;</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">out</span><span class="p">);</span> <span class="n">out</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">out</span> <span class="o">+=</span> <span class="n">x</span>
+<span class="go">10 loops, best of 3: 37 ms per loop</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">it implements the broadcasting mechanism on its inputs and outputs.</p>
+</li>
+<li><p class="first">it has the following methods (which are only useful for ufuncs with two arguments):</p>
+</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">reduce:</th><td class="field-body"><p class="first">reduces <cite>a</cite>&#8216;s dimension by one, by applying <tt class="docutils literal"><span class="pre">ufunc</span></tt> along one axis. Equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">r</span> <span class="o">=</span> <span class="n">ufunc</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">accumulate:</th><td class="field-body"><p class="first">accumulate the result of applying the <tt class="docutils literal"><span class="pre">ufunc</span></tt> to all elements. Equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ufunc</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">outer:</th><td class="field-body"><p class="first">outer product such that <tt class="docutils literal"><span class="pre">ufunc.outer(x,</span> <span class="pre">y)[i,</span> <span class="pre">j]</span> <span class="pre">=</span> <span class="pre">ufunc(x[i],</span> <span class="pre">y[j])</span></tt></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
 <span class="go">array([[ True, False],</span>
 <span class="go">       [False, False]], dtype=bool)</span>
@@ -870,6 +974,49 @@ TBD</p>
 <span class="go">       [ True, False]], dtype=bool)</span>
 </pre></div>
 </div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>These methods are used internally by the following functions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function</th>
+<th class="head">Under the hood</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>np.sum</td>
+<td>np.add.reduce</td>
+</tr>
+<tr class="row-odd"><td>np.cumsum</td>
+<td>np.add.accumulate</td>
+</tr>
+<tr class="row-even"><td>np.product</td>
+<td>np.multiply.reduce</td>
+</tr>
+<tr class="row-odd"><td>np.cumproduct</td>
+<td>np.multiply.accumulate</td>
+</tr>
+<tr class="row-even"><td>np.min</td>
+<td>np.minimum.reduce</td>
+</tr>
+<tr class="row-odd"><td>np.max</td>
+<td>np.maximum.reduce</td>
+</tr>
+<tr class="row-even"><td>np.any</td>
+<td>np.logical_or.reduce</td>
+</tr>
+<tr class="row-odd"><td>np.all</td>
+<td>np.logical_and.reduce</td>
+</tr>
+</tbody>
+</table>
+<p>It is relatively easy to write ufuncs in C.</p>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Using ufunc capabilities, create <img class="math" src="_images/math/be03d37abd791d40059574c12ee4774f06d3d91d.png" alt="M\times N"/> matrices <img class="math" src="_images/math/0acafa529182e79b4f56165ec677554fba7fcf98.png" alt="A"/> and <img class="math" src="_images/math/83956e92fcc80dee17fce864543216939a3c9da7.png" alt="B"/> such that</p>
