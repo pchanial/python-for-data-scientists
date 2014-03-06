@@ -695,43 +695,43 @@ A ``ufunc`` has the following characteritics:
 
 3. it has the following methods (which are only useful for ufuncs with two arguments):
 
-:reduce: reduces `a`'s dimension by one, by applying ``ufunc`` along one axis. Equivalent to:
+   :reduce: reduces `a`'s dimension by one, by applying ``ufunc`` along one axis. Equivalent to:
 
-   >>> r = x[0]
-   >>> for i in range(1, len(x) - 1):
-   ...     r = ufunc(r, x[i])
+       >>> r = x[0]
+       >>> for i in range(1, len(x) - 1):
+       ...     r = ufunc(r, x[i])
 
-:accumulate: accumulate the result of applying the ``ufunc`` to all elements. Equivalent to:
+   :accumulate: accumulate the result of applying the ``ufunc`` to all elements. Equivalent to:
 
-   >>> a = np.empty(len(x))
-   >>> a[0] = x[0]
-   >>> for i in range(1, len(x) - 1):
-   ...     a[i] = ufunc(a[i - 1], x[i])
+       >>> a = np.empty(len(x))
+       >>> a[0] = x[0]
+       >>> for i in range(1, len(x) - 1):
+       ...     a[i] = ufunc(a[i - 1], x[i])
 
-:outer: outer product such that ``ufunc.outer(x, y)[i, j] = ufunc(x[i], y[j])``
+   :outer: outer product such that ``ufunc.outer(x, y)[i, j] = ufunc(x[i], y[j])``
 
-    >>> tf = [True, False]
-    >>> np.logical_and.outer(tf, tf)
-    array([[ True, False],
-           [False, False]], dtype=bool)
-    >>> np.logical_or.outer(tf, tf)
-    array([[ True,  True],
-           [ True, False]], dtype=bool)
+       >>> tf = [True, False]
+       >>> np.logical_and.outer(tf, tf)
+       array([[ True, False],
+              [False, False]], dtype=bool)
+       >>> np.logical_or.outer(tf, tf)
+       array([[ True,  True],
+              [ True, False]], dtype=bool)
 
-These methods are used internally by the following functions:
+    These methods are used internally by the following functions:
 
-============= ======================
-Function      Under the hood
-============= ======================
-np.sum        np.add.reduce
-np.cumsum     np.add.accumulate
-np.product    np.multiply.reduce
-np.cumproduct np.multiply.accumulate
-np.min        np.minimum.reduce
-np.max        np.maximum.reduce
-np.any        np.logical_or.reduce
-np.all        np.logical_and.reduce
-============= ======================
+    ============= ======================
+    Function      Under the hood
+    ============= ======================
+    np.sum        np.add.reduce
+    np.cumsum     np.add.accumulate
+    np.product    np.multiply.reduce
+    np.cumproduct np.multiply.accumulate
+    np.min        np.minimum.reduce
+    np.max        np.maximum.reduce
+    np.any        np.logical_or.reduce
+    np.all        np.logical_and.reduce
+    ============= ======================
 
 It is relatively easy to write ufuncs in C.
 

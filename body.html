@@ -1022,8 +1022,6 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <li><p class="first">it implements the broadcasting mechanism on its inputs and outputs.</p>
 </li>
 <li><p class="first">it has the following methods (which are only useful for ufuncs with two arguments):</p>
-</li>
-</ol>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1046,7 +1044,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">outer:</th><td class="field-body"><p class="first">outer product such that <tt class="docutils literal"><span class="pre">ufunc.outer(x,</span> <span class="pre">y)[i,</span> <span class="pre">j]</span> <span class="pre">=</span> <span class="pre">ufunc(x[i],</span> <span class="pre">y[j])</span></tt></p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
 <span class="go">array([[ True, False],</span>
 <span class="go">       [False, False]], dtype=bool)</span>
@@ -1055,12 +1053,8 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <span class="go">       [ True, False]], dtype=bool)</span>
 </pre></div>
 </div>
-</td>
-</tr>
-</tbody>
-</table>
 <p>These methods are used internally by the following functions:</p>
-<table border="1" class="docutils">
+<table border="1" class="last docutils">
 <colgroup>
 <col width="37%" />
 <col width="63%" />
@@ -1097,6 +1091,12 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </tr>
 </tbody>
 </table>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
 <p>It is relatively easy to write ufuncs in C.</p>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>:</p>
