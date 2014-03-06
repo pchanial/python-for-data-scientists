@@ -20,8 +20,7 @@ def compute_residuals(param, observation, freq):
     return residual
 
 # fit with scipy optimize, leastsq() function
-param_true = np.array([np.std(signal), 1, 1.2])
-param_guess = param_true * np.random.uniform(0.5, 2, 3)
+param_guess = [np.std(signal), 1, 1.2] * np.random.uniform(0.5, 2, 3)
 ret_lsq = spo.leastsq(..., param_guess, args=(...),
                       full_output=True)
 
