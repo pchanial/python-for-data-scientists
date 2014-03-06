@@ -52,7 +52,7 @@ More exercises
        .. math:: x + \Delta x_A &= A^{-1}(b_A + \Delta b_A) \\
                  x + \Delta x_B &= B^{-1}(b_B + \Delta b_B) \\
 
-       by computing the mean ratio of the relative errors :math:`\frac{||\Delta x||}{||x||}` and :math:`\frac{||\Delta b||}{||b||}`. Compare these values to the condition numbers of the matrices.
+       by computing the mean ratio of the relative errors :math:`\frac{||\Delta x||}{||x||}` and :math:`\frac{||\Delta b||}{||b||}` for :math:`A` and :math:`B`. Compare these values to the condition numbers of the matrices.
 
     .. only:: html
 
