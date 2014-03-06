@@ -368,7 +368,7 @@ Indexing arrays
 
     from __future__ import division
     import numpy as np
-    from matplotlib import pyplot as mp
+    import matplotlib.pyplot as mp
 
 
     def velocity2speed(velocity, ndims):
@@ -596,6 +596,7 @@ Broadcasting allows operations (such as addition, multiplication etc.) which are
     ::
 
       from __future__ import division
+      import matplotlib.pyplot as mp
       import numpy as np
 
       NDETECTORS = 8
@@ -773,7 +774,7 @@ To inspect these special values:
     >>> c = a / b
     >>> np.all(np.isnan(c) == ((a == 0) & (b == 0)))
     True
-:isfinite: Return True for infinite or NaN elements
+:isfinite: Return True for finite elements (non-infinite and non-NaN)
 
 And to make them non-special:
 
@@ -863,7 +864,14 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
 Dense linear algebra
 --------------------
 
-Although an array can be viewed as a ``matrix``, for which the ``*`` sign corrisponds to the matrix multiplications, it is seldom the case in practice, the reason being that it is more frequent to deal with arrays of dimensions larger than two.
+Although a specific class (``matrix``) does exist to facilitate matrix handling (the signs ``*`` and ``**`` have been redefined to mean matrix multiplication and power), it is seldom used in practice, the reason being that it is more frequent to deal with arrays of dimensions larger than two.
+
+In the NumPy name space:
+
+:dot:             Vector-vector, matrix-vector or matrix-matrix dot product
+:tensordor:       Compute tensor dot product along specified axes
+:einsum:          Evaluates the Einstein summation convention on the operands
+
 The NumPy package ``linalg`` has the following functions:
 
 :norm:            Vector or matrix norm
@@ -888,4 +896,3 @@ Tensor operations:
 
 :tensorsolve:     Solve a linear tensor equation
 :tensorinv:       Calculate an inverse of a tensor
-:einsum:          Evaluates the Einstein summation convention on the operands

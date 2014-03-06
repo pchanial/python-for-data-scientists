@@ -552,7 +552,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <p>where <img class="math" src="_images/math/413f8a8e40062a9090d9d50b88bc7b551b314c26.png" alt="n"/> = 1, 2, 3 is the number of dimensions.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">mp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">mp</span>
 
 
 <span class="k">def</span> <span class="nf">velocity2speed</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="n">ndims</span><span class="p">):</span>
@@ -809,6 +809,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <p class="topic-title first"><strong>Exercise</strong>:</p>
 <p>Remove the <tt class="docutils literal"><span class="pre">for</span></tt> loops in this code by using broadcasting and measure the improvement in execution time.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">mp</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="n">NDETECTORS</span> <span class="o">=</span> <span class="mi">8</span>
@@ -1056,7 +1057,7 @@ B_{ij} &amp;= ij"/></p>
 </div>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">isfinite:</th><td class="field-body"><p class="first last">Return True for infinite or NaN elements</p>
+<tr class="field-odd field"><th class="field-name">isfinite:</th><td class="field-body"><p class="first last">Return True for finite elements (non-infinite and non-NaN)</p>
 </td>
 </tr>
 </tbody>
@@ -1149,8 +1150,21 @@ B_{ij} &amp;= ij"/></p>
 </div>
 <div class="section" id="dense-linear-algebra">
 <h1>Dense linear algebra<a class="headerlink" href="#dense-linear-algebra" title="Permalink to this headline">¶</a></h1>
-<p>Although an array can be viewed as a <tt class="docutils literal"><span class="pre">matrix</span></tt>, for which the <tt class="docutils literal"><span class="pre">*</span></tt> sign corrisponds to the matrix multiplications, it is seldom the case in practice, the reason being that it is more frequent to deal with arrays of dimensions larger than two.
-The NumPy package <tt class="docutils literal"><span class="pre">linalg</span></tt> has the following functions:</p>
+<p>Although a specific class (<tt class="docutils literal"><span class="pre">matrix</span></tt>) does exist to facilitate matrix handling (the signs <tt class="docutils literal"><span class="pre">*</span></tt> and <tt class="docutils literal"><span class="pre">**</span></tt> have been redefined to mean matrix multiplication and power), it is seldom used in practice, the reason being that it is more frequent to deal with arrays of dimensions larger than two.</p>
+<p>In the NumPy name space:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">dot:</th><td class="field-body">Vector-vector, matrix-vector or matrix-matrix dot product</td>
+</tr>
+<tr class="field-even field"><th class="field-name">tensordor:</th><td class="field-body">Compute tensor dot product along specified axes</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">einsum:</th><td class="field-body">Evaluates the Einstein summation convention on the operands</td>
+</tr>
+</tbody>
+</table>
+<p>The NumPy package <tt class="docutils literal"><span class="pre">linalg</span></tt> has the following functions:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1200,8 +1214,6 @@ The NumPy package <tt class="docutils literal"><span class="pre">linalg</span></
 <tr class="field-odd field"><th class="field-name">tensorsolve:</th><td class="field-body">Solve a linear tensor equation</td>
 </tr>
 <tr class="field-even field"><th class="field-name">tensorinv:</th><td class="field-body">Calculate an inverse of a tensor</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">einsum:</th><td class="field-body">Evaluates the Einstein summation convention on the operands</td>
 </tr>
 </tbody>
 </table>

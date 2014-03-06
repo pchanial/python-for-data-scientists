@@ -5,9 +5,9 @@ non-linear fit example with 3 parameters model 1/f noise :
 Jm. Colley
 """
 from __future__ import division, print_function
+import matplotlib.pyplot as mp
 import numpy as np
 import scipy.optimize as spo
-from matplotlib import pyplot as mp
 from astropy.io import fits
 
 FREQ_SAMPLING = 180
