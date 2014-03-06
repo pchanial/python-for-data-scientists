@@ -1147,6 +1147,65 @@ B_{ij} &amp;= ij"/></p>
 <p class="last">For record arrays obtained with the <tt class="docutils literal"><span class="pre">np.recarray</span></tt> constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
 </div>
 </div>
+<div class="section" id="dense-linear-algebra">
+<h1>Dense linear algebra<a class="headerlink" href="#dense-linear-algebra" title="Permalink to this headline">¶</a></h1>
+<p>Although an array can be viewed as a <tt class="docutils literal"><span class="pre">matrix</span></tt>, for which the <tt class="docutils literal"><span class="pre">*</span></tt> sign corrisponds to the matrix multiplications, it is seldom the case in practice, the reason being that it is more frequent to deal with arrays of dimensions larger than two.
+The NumPy package <tt class="docutils literal"><span class="pre">linalg</span></tt> has the following functions:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">norm:</th><td class="field-body">Vector or matrix norm</td>
+</tr>
+<tr class="field-even field"><th class="field-name">inv:</th><td class="field-body">Inverse of a square matrix</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">solve:</th><td class="field-body">Solve a linear system of equations</td>
+</tr>
+<tr class="field-even field"><th class="field-name">det:</th><td class="field-body">Determinant of a square matrix</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">lstsq:</th><td class="field-body">Solve linear least-squares problem</td>
+</tr>
+<tr class="field-even field"><th class="field-name">pinv:</th><td class="field-body">Pseudo-inverse (Moore-Penrose) calculated using a singular value decomposition</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">matrix_power:</th><td class="field-body">Integer power of a square matrix</td>
+</tr>
+</tbody>
+</table>
+<p>Eigenvalues and decompositions:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">eig:</th><td class="field-body">Eigenvalues and vectors of a square matrix</td>
+</tr>
+<tr class="field-even field"><th class="field-name">eigh:</th><td class="field-body">Eigenvalues and eigenvectors of a Hermitian matrix</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">eigvals:</th><td class="field-body">Eigenvalues of a square matrix</td>
+</tr>
+<tr class="field-even field"><th class="field-name">eigvalsh:</th><td class="field-body">Eigenvalues of a Hermitian matrix</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">qr:</th><td class="field-body">QR decomposition of a matrix</td>
+</tr>
+<tr class="field-even field"><th class="field-name">svd:</th><td class="field-body">Singular value decomposition of a matrix</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">cholesky:</th><td class="field-body">Cholesky decomposition of a matrix</td>
+</tr>
+</tbody>
+</table>
+<p>Tensor operations:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">tensorsolve:</th><td class="field-body">Solve a linear tensor equation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">tensorinv:</th><td class="field-body">Calculate an inverse of a tensor</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">einsum:</th><td class="field-body">Evaluates the Einstein summation convention on the operands</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 
           </div>

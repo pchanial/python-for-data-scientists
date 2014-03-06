@@ -858,3 +858,34 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
     'M81'
 
     For record arrays obtained with the ``np.recarray`` constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).
+
+
+Dense linear algebra
+--------------------
+
+Although an array can be viewed as a ``matrix``, for which the ``*`` sign corrisponds to the matrix multiplications, it is seldom the case in practice, the reason being that it is more frequent to deal with arrays of dimensions larger than two.
+The NumPy package ``linalg`` has the following functions:
+
+:norm:            Vector or matrix norm
+:inv:             Inverse of a square matrix
+:solve:           Solve a linear system of equations
+:det:             Determinant of a square matrix
+:lstsq:           Solve linear least-squares problem
+:pinv:            Pseudo-inverse (Moore-Penrose) calculated using a singular value decomposition
+:matrix_power:    Integer power of a square matrix
+
+Eigenvalues and decompositions:
+
+:eig:             Eigenvalues and vectors of a square matrix
+:eigh:            Eigenvalues and eigenvectors of a Hermitian matrix
+:eigvals:         Eigenvalues of a square matrix
+:eigvalsh:        Eigenvalues of a Hermitian matrix
+:qr:              QR decomposition of a matrix
+:svd:             Singular value decomposition of a matrix
+:cholesky:        Cholesky decomposition of a matrix
+
+Tensor operations:
+
+:tensorsolve:     Solve a linear tensor equation
+:tensorinv:       Calculate an inverse of a tensor
+:einsum:          Evaluates the Einstein summation convention on the operands
