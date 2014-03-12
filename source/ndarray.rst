@@ -696,7 +696,7 @@ A ``ufunc`` has the following characteritics:
 
 3. it has the following methods (which are only useful for ufuncs with two arguments):
 
-   :reduce: reduces `a`'s dimension by one, by applying ``ufunc`` along one axis. Equivalent to:
+   :reduce: reduce `a` to a scalar or `a`'s dimension by one, by applying the ``ufunc`` along all axes or one specified axis. Equivalent to:
 
        >>> r = x[0]
        >>> for i in range(1, len(x) - 1):
@@ -709,7 +709,14 @@ A ``ufunc`` has the following characteritics:
        >>> for i in range(1, len(x) - 1):
        ...     a[i] = ufunc(a[i - 1], x[i])
 
-   :outer: outer product such that ``ufunc.outer(x, y)[i, j] = ufunc(x[i], y[j])``
+   :outer: outer product equivalent to:
+           
+       >>> r = np.empty(len(x), len(y))
+       >>> for i in range(len(x)):
+       ...     for j in range(len(y)):
+       ...         r[i, j] = ufunc(x[i], y[j])
+
+       Example: the truth table of logical operators can be obtained straightforwardly using this method.
 
        >>> tf = [True, False]
        >>> np.logical_and.outer(tf, tf)
@@ -719,7 +726,7 @@ A ``ufunc`` has the following characteritics:
        array([[ True,  True],
               [ True, False]], dtype=bool)
 
-    These methods are used internally by the following functions:
+The use of ufuncs in NumPy is pervasive and the following non-ufunc functions, which are amongst the most basic ones, are using internally the ufunc methods that we have just described:
 
     ============= ======================
     Function      Under the hood
@@ -818,6 +825,26 @@ Another example, in which the shapes of the fields are specified:
    (1.0, -1.0, 0.0)
 
 
+.. warning:: Indexing using boolean or integer arrays makes a copy. In the following expression, a temporary structured array is created to store ``galaxy[[0, 1]]``
+
+   >>> galaxy[[0, 1]]['name'] = 'new name 1', 'new name 2'
+
+   and this is where the update of the field ``name`` takes place. As a consequence, the original array is left intact:
+
+   >>> print(galaxy[:2]['name'])
+   ['M81' '']
+
+   To circumvent this potential source of mistakes using boolean and integer arrays, the indexing should be performed rightmost:
+
+   >>> galaxy['name'][[0, 1]] = 'new name 1', 'new name 2'
+   >>> print(galaxy[:2]['name'])
+
+   Note that using integers or slices for indexing does not make a copy, so rightmost indexing is not required in these cases:
+
+   >>> galaxy[:2]['name'] = 'galaxy 1', 'galaxy 2'
+   >>> print(galaxy[:2]['name'])
+   ['galaxy 1' 'galaxy 2']
+
 .. topic:: **Exercise**: Indirect sort.
     :class: green
 
@@ -843,12 +870,14 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
     >>> print(source[0].name, source[0].ra, source[0].dec)
     ('M81', 148.8882208, 69.065294699999995)
 
-.. warning:: An existing structured array can be viewed as a ``recarray``:
+An existing structured array can be viewed as a ``recarray``:
 
     >>> source = np.empty(10, dtype=source_dtype).view(np.recarray)
     >>> source[0] = ('M81', 148.8882208, 69.0652947)
 
-    But attribute access is broken for scalars (NumPy 1.8):
+.. warning::
+
+    \... but attribute access is broken for scalars (NumPy 1.8):
 
     >>> source[0].name
     AttributeError: 'numpy.void' object has no attribute 'name'
@@ -858,7 +887,7 @@ Accessing fields in structured arrays by using brackets can be a bit clumsy. For
     >>> source.name[0]
     'M81'
 
-    For record arrays obtained with the ``np.recarray`` constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).
+    And even for record arrays obtained with the ``np.recarray`` constructor, attribute access is broken (NumPy 1.8) for scalars with nested data types (write ``galaxy.pos.x[0]`` instead of ``galaxy[0].pos.x`` as well).
 
 
 Dense linear algebra
@@ -868,9 +897,28 @@ Although a specific class (``matrix``) does exist to facilitate matrix handling 
 
 In the NumPy name space:
 
-:dot:             Vector-vector, matrix-vector or matrix-matrix dot product
-:tensordor:       Compute tensor dot product along specified axes
-:einsum:          Evaluates the Einstein summation convention on the operands
+:dot:       Vector-vector, matrix-vector or matrix-matrix dot product
+
+    .. note:: 1-dimensional arrays are used as column vectors:
+
+        >>> M = np.array([[1, 2],
+        ...               [0, 1]])
+        >>> x = np.array([1, 1])
+        >>> np.dot(M, x)
+        array([3, 1])
+
+        but beware that the transpose of a 1-dimensional array is still 1-dimensional, so the expression :math:`x^{\rm T} M` should be written as:
+
+        >>> np.dot(x, M)
+
+        or
+
+        >>> np.dot(M.T, x)
+        
+
+:tensordor: Compute tensor dot product along specified axes
+:einsum:    Evaluate the Einstein summation convention on the operands
+:eye:       Return the identity matrix
 
 The NumPy package ``linalg`` has the following functions:
 
@@ -888,6 +936,7 @@ Eigenvalues and decompositions:
 :eigh:            Eigenvalues and eigenvectors of a Hermitian matrix
 :eigvals:         Eigenvalues of a square matrix
 :eigvalsh:        Eigenvalues of a Hermitian matrix
+:cond:            Compute the condition number of a matrix
 :qr:              QR decomposition of a matrix
 :svd:             Singular value decomposition of a matrix
 :cholesky:        Cholesky decomposition of a matrix

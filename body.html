@@ -1027,7 +1027,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">reduce:</th><td class="field-body"><p class="first">reduces <cite>a</cite>&#8216;s dimension by one, by applying <tt class="docutils literal"><span class="pre">ufunc</span></tt> along one axis. Equivalent to:</p>
+<tr class="field-odd field"><th class="field-name">reduce:</th><td class="field-body"><p class="first">reduce <cite>a</cite> to a scalar or <cite>a</cite>&#8216;s dimension by one, by applying the <tt class="docutils literal"><span class="pre">ufunc</span></tt> along all axes or one specified axis. Equivalent to:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">r</span> <span class="o">=</span> <span class="n">ufunc</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -1044,8 +1044,15 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">outer:</th><td class="field-body"><p class="first">outer product such that <tt class="docutils literal"><span class="pre">ufunc.outer(x,</span> <span class="pre">y)[i,</span> <span class="pre">j]</span> <span class="pre">=</span> <span class="pre">ufunc(x[i],</span> <span class="pre">y[j])</span></tt></p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
+<tr class="field-odd field"><th class="field-name">outer:</th><td class="field-body"><p class="first">outer product equivalent to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+<span class="gp">... </span>        <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">ufunc</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Example: the truth table of logical operators can be obtained straightforwardly using this method.</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span> <span class="n">tf</span><span class="p">)</span>
 <span class="go">array([[ True, False],</span>
 <span class="go">       [False, False]], dtype=bool)</span>
@@ -1054,8 +1061,15 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 <span class="go">       [ True, False]], dtype=bool)</span>
 </pre></div>
 </div>
-<p>These methods are used internally by the following functions:</p>
-<table border="1" class="last docutils">
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>The use of ufuncs in NumPy is pervasive and the following non-ufunc functions, which are amongst the most basic ones, are using internally the ufunc methods that we have just described:</p>
+<blockquote>
+<div><table border="1" class="docutils">
 <colgroup>
 <col width="37%" />
 <col width="63%" />
@@ -1092,12 +1106,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </tr>
 </tbody>
 </table>
-</td>
-</tr>
-</tbody>
-</table>
-</li>
-</ol>
+</div></blockquote>
 <p>It is relatively easy to write ufuncs in C.</p>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>:</p>
@@ -1190,6 +1199,29 @@ B_{ij} &amp;= ij"/></p>
 </pre></div>
 </div>
 </div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Indexing using boolean or integer arrays makes a copy. In the following expression, a temporary structured array is created to store <tt class="docutils literal"><span class="pre">galaxy[[0,</span> <span class="pre">1]]</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]][</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;new name 1&#39;</span><span class="p">,</span> <span class="s">&#39;new name 2&#39;</span>
+</pre></div>
+</div>
+<p>and this is where the update of the field <tt class="docutils literal"><span class="pre">name</span></tt> takes place. As a consequence, the original array is left intact:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">galaxy</span><span class="p">[:</span><span class="mi">2</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+<span class="go">[&#39;M81&#39; &#39;&#39;]</span>
+</pre></div>
+</div>
+<p>To circumvent this potential source of mistakes using boolean and integer arrays, the indexing should be performed rightmost:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">][[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="s">&#39;new name 1&#39;</span><span class="p">,</span> <span class="s">&#39;new name 2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">galaxy</span><span class="p">[:</span><span class="mi">2</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Note that using integers or slices for indexing does not make a copy, so rightmost indexing is not required in these cases:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">galaxy</span><span class="p">[:</span><span class="mi">2</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;galaxy 1&#39;</span><span class="p">,</span> <span class="s">&#39;galaxy 2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">galaxy</span><span class="p">[:</span><span class="mi">2</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
+<span class="go">[&#39;galaxy 1&#39; &#39;galaxy 2&#39;]</span>
+</pre></div>
+</div>
+</div>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Indirect sort.</p>
 <p>An indirect sort consists in using an array to sort another one.</p>
@@ -1209,14 +1241,14 @@ B_{ij} &amp;= ij"/></p>
 <span class="go">(&#39;M81&#39;, 148.8882208, 69.065294699999995)</span>
 </pre></div>
 </div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
 <p>An existing structured array can be viewed as a <tt class="docutils literal"><span class="pre">recarray</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">source_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">recarray</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;M81&#39;</span><span class="p">,</span> <span class="mf">148.8882208</span><span class="p">,</span> <span class="mf">69.0652947</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>But attribute access is broken for scalars (NumPy 1.8):</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>... but attribute access is broken for scalars (NumPy 1.8):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
 <span class="go">AttributeError: &#39;numpy.void&#39; object has no attribute &#39;name&#39;</span>
 </pre></div>
@@ -1226,7 +1258,7 @@ B_{ij} &amp;= ij"/></p>
 <span class="go">&#39;M81&#39;</span>
 </pre></div>
 </div>
-<p class="last">For record arrays obtained with the <tt class="docutils literal"><span class="pre">np.recarray</span></tt> constructor, attribute access is also broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
+<p class="last">And even for record arrays obtained with the <tt class="docutils literal"><span class="pre">np.recarray</span></tt> constructor, attribute access is broken (NumPy 1.8) for scalars with nested data types (write <tt class="docutils literal"><span class="pre">galaxy.pos.x[0]</span></tt> instead of <tt class="docutils literal"><span class="pre">galaxy[0].pos.x</span></tt> as well).</p>
 </div>
 </div>
 <div class="section" id="dense-linear-algebra">
@@ -1237,11 +1269,36 @@ B_{ij} &amp;= ij"/></p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">dot:</th><td class="field-body">Vector-vector, matrix-vector or matrix-matrix dot product</td>
+<tr class="field-odd field"><th class="field-name">dot:</th><td class="field-body"><p class="first">Vector-vector, matrix-vector or matrix-matrix dot product</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>1-dimensional arrays are used as column vectors:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="go">array([3, 1])</span>
+</pre></div>
+</div>
+<p>but beware that the transpose of a 1-dimensional array is still 1-dimensional, so the expression <img class="math" src="_images/math/cf3661be6fe1cd23c4d3462f0267bc650b6a6845.png" alt="x^{\rm T} M"/> should be written as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">tensordor:</th><td class="field-body">Compute tensor dot product along specified axes</td>
+<tr class="field-even field"><th class="field-name">tensordor:</th><td class="field-body"><p class="first">Compute tensor dot product along specified axes</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">einsum:</th><td class="field-body">Evaluates the Einstein summation convention on the operands</td>
+<tr class="field-odd field"><th class="field-name">einsum:</th><td class="field-body"><p class="first">Evaluate the Einstein summation convention on the operands</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">eye:</th><td class="field-body"><p class="first last">Return the identity matrix</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1279,11 +1336,13 @@ B_{ij} &amp;= ij"/></p>
 </tr>
 <tr class="field-even field"><th class="field-name">eigvalsh:</th><td class="field-body">Eigenvalues of a Hermitian matrix</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">qr:</th><td class="field-body">QR decomposition of a matrix</td>
+<tr class="field-odd field"><th class="field-name">cond:</th><td class="field-body">Compute the condition number of a matrix</td>
 </tr>
-<tr class="field-even field"><th class="field-name">svd:</th><td class="field-body">Singular value decomposition of a matrix</td>
+<tr class="field-even field"><th class="field-name">qr:</th><td class="field-body">QR decomposition of a matrix</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">cholesky:</th><td class="field-body">Cholesky decomposition of a matrix</td>
+<tr class="field-odd field"><th class="field-name">svd:</th><td class="field-body">Singular value decomposition of a matrix</td>
+</tr>
+<tr class="field-even field"><th class="field-name">cholesky:</th><td class="field-body">Cholesky decomposition of a matrix</td>
 </tr>
 </tbody>
 </table>
