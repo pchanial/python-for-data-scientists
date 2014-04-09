@@ -65,7 +65,7 @@ The NumPy array model ``ndarray`` instead of ``list`` or ``tuple`` and NumPy's v
       .. math::
          \pi = \sqrt{12}\sum^\infty_{k=0} \frac{(-\frac{1}{3})^{k}}{2k+1}.
 
-    The `k` indices ranging from 0 to (let's say) 29 will be returned by the Numpy function ``arange`` (see above) and :math:`\pi` will be computed by calling another NumPy function (``sum``), instead of using a ``for`` loop.
+    The `k` indices ranging from 0 to (let's say) 29 will be returned by the NumPy function ``arange`` (see above) and :math:`\pi` will be computed by calling another NumPy function (``sum``), instead of using a ``for`` loop.
 
     .. only:: html
 
