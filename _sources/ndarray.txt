@@ -12,9 +12,9 @@ In most systems, data from the memory is transferred to the CPU via layers of ca
 
 The NumPy array (``ndarray``) is defined by 4 attributes:
 
-  :dtype: The common type of the array's data. It can be a basic data type such as integer, float and string of fixed length, or a structured data type which combines basic data types into records. NumPy provides many more basic data types than Python does (``int8``, ``int16``, ``int32``, ``int64``, ``uint8``, ``uint16``, ..., ``float16``, ``float32``, ``float64``, ``float128`` etc.).
+  :dtype: The common type of the array's data. It can be a basic data type such as integer, float and string of fixed length, or a structured data type which combines basic data types into records (more on this topic :ref:`below <section-structured-dtype>`). NumPy provides many more basic data types than Python does (``int8``, ``int16``, ``int32``, ``int64``, ``uint8``, ``uint16``, ..., ``float16``, ``float32``, ``float64``, ``float128`` etc.).
 
-          .. note:: The set of the 24 basic data types can also be extended (a `non-official extension <https://github.com/martinling/numpy_quaternion>`_ provides a basic data type for quaternions, which can be used like the native ones).
+          .. note:: The set of the 24 basic data types can also be extended. A `non-official extension <https://github.com/martinling/numpy_quaternion>`_ defines a basic data type for quaternions for which usual operations are provided.
 
           .. warning:: In Python, integer representation is only limited by the available memory and operations on integers never overflow. This convenience has a computational cost that is avoided by NumPy. The NumPy's data types encode integers by using a fixed number of bytes and thus they can silently overflow.
 
@@ -792,6 +792,8 @@ And to make them non-special:
 
 When NaN values are present in an array, most NumPy functions will propagate them to the result instead of restricting the operation to the non-NaN elements. To explicitly discard the NaNs, one should call the following functions: ``nanmin``, ``nanmax``, ``nanargmin``, ``nanargmax``, ``nanmean``, ``nanstd``, ``nanvar``, ``nansum``.
 
+
+.. _section-structured-dtype:
 
 Structured data types
 ---------------------
