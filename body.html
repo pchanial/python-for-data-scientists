@@ -132,7 +132,15 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">dtype:</th><td class="field-body"><p class="first">The common type of the array&#8217;s data. It can be a basic type, such as integers, floats or strings of fixed length. NumPy provides many more basic types than Python does (<tt class="docutils literal"><span class="pre">int8</span></tt>, <tt class="docutils literal"><span class="pre">int16</span></tt>, <tt class="docutils literal"><span class="pre">int32</span></tt>, <tt class="docutils literal"><span class="pre">float16</span></tt>, <tt class="docutils literal"><span class="pre">float32</span></tt> etc.). We will see that these basic data types can be combined to create structured data types, which are similar to records (or C struct). The set of basic data types can also be extended (a <a class="reference external" href="https://github.com/martinling/numpy_quaternion">non-official extension</a> provides a basic data type for quaternions, which can be used like the native ones).</p>
+<tr class="field-odd field"><th class="field-name">dtype:</th><td class="field-body"><p class="first">The common type of the array&#8217;s data. It can be a basic data type such as integer, float or string of fixed length but also a structured data type similar to records (or C struct) obtained by combining basic data types. NumPy provides many more basic types than Python does (<tt class="docutils literal"><span class="pre">int8</span></tt>, <tt class="docutils literal"><span class="pre">int16</span></tt>, <tt class="docutils literal"><span class="pre">int32</span></tt>, <tt class="docutils literal"><span class="pre">int64</span></tt>, <tt class="docutils literal"><span class="pre">uint8</span></tt>, <tt class="docutils literal"><span class="pre">uint16</span></tt>, ..., <tt class="docutils literal"><span class="pre">float16</span></tt>, <tt class="docutils literal"><span class="pre">float32</span></tt>, <tt class="docutils literal"><span class="pre">float64</span></tt>, <tt class="docutils literal"><span class="pre">float128</span></tt> etc.).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The set of the 24 basic data types can also be extended (a <a class="reference external" href="https://github.com/martinling/numpy_quaternion">non-official extension</a> provides a basic data type for quaternions, which can be used like the native ones).</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In Python, integer representation is only limited by the available memory and operations on integers never overflow. This convenience has a computational cost that is avoided by NumPy. The NumPy&#8217;s data types encode integers by using a fixed number of bytes and thus they can silently overflow.</p>
+</div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>The name <tt class="docutils literal"><span class="pre">float128</span></tt> is misleading. This data type is unlikely to represent quadruple precision (but C type <tt class="docutils literal"><span class="pre">long</span> <span class="pre">double</span></tt> instead). Try:</p>
