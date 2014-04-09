@@ -12,7 +12,7 @@ In most systems, data from the memory is transferred to the CPU via layers of ca
 
 The NumPy array (``ndarray``) is defined by 4 attributes:
 
-  :dtype: The common type of the array's data. It can be a basic data type such as integer, float or string of fixed length but also a structured data type similar to records (or C struct) obtained by combining the basic ones. NumPy provides many more basic types than Python does (``int8``, ``int16``, ``int32``, ``int64``, ``uint8``, ``uint16``, ..., ``float16``, ``float32``, ``float64``, ``float128`` etc.).
+  :dtype: The common type of the array's data. It can be a basic data type such as integer, float and string of fixed length, or a structured data type which combines basic data types into records. NumPy provides many more basic data types than Python does (``int8``, ``int16``, ``int32``, ``int64``, ``uint8``, ``uint16``, ..., ``float16``, ``float32``, ``float64``, ``float128`` etc.).
 
           .. note:: The set of the 24 basic data types can also be extended (a `non-official extension <https://github.com/martinling/numpy_quaternion>`_ provides a basic data type for quaternions, which can be used like the native ones).
 
