@@ -798,7 +798,7 @@ When NaN values are present in an array, most NumPy functions will propagate the
 Structured data types
 ---------------------
 
-Basic data types can be combined to form structured data types, akin to C's ``struct`` or Fortran's derived types. The synthax to create such records is strict, it must be a **list** of **tuples**, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets.
+Basic data types can be combined to form structured data types, akin to C's ``struct`` or Fortran's derived types. The synthax to create such records is strict, it must be a **list** of **tuples**, each tuple containing the name, data type and optionally the shape of the field. The field values are accessed by using brackets enclosing the field names.
 
 >>> point_dtype = [('x', float), ('y', float), ('z', float)]
 >>> n = 100
