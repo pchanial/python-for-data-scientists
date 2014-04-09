@@ -1,13 +1,12 @@
 The array model
 ---------------
 
-In terms of memory bandwidth, localized data is better than scattered data.
-
-.. image:: layout_listoflist.png
-   :width: 40%
-
+In most systems, data from the memory is transferred to the CPU via layers of caches. The transfers involve chunks of contiguous memory (a cache line) even if only few bytes are requested by the CPU. Modern CPUs also have the possibility to anticipate transfers from the memory by prefetching the next cache lines. This is why localized data is better than scattered data in memory and why NumPy's arrays are more efficient than Python's lists in terms of memory bandwidth, as sketched in the following figure.
 
 .. image:: layout_2darray.png
+   :width: 40%
+
+.. image:: layout_listoflist.png
    :width: 40%
 
 
@@ -134,7 +133,7 @@ Creating arrays
 
   :empty: allocate an array of given shape without initializing its values
 
-          .. note:: This function is much faster, but be careful to completely populate the array afterwards.
+          .. note:: This function is much faster since to write to the memory is involved, but be careful to completely populate the array afterwards.
 
   .. note:: By default, these functions return a ``float64`` array. To specify another data type, use the ``dtype`` keyword.
 
@@ -153,7 +152,7 @@ Creating arrays
   (dtype('int64'), (2, 3))
   (dtype('int64'), (2, 3))
 
-* Since discretization is at the heart of scientific computing, the creation of grids has been made straightforward and it can be done in several ways:
+* Since discretization is at the heart of scientific computing, creation of grids has been made straightforward and it can be done in several ways:
 
   :arange: Return evenly spaced values (the number of elements is known).
 
@@ -916,7 +915,7 @@ In the NumPy name space:
         >>> np.dot(M.T, x)
         
 
-:tensordor: Compute tensor dot product along specified axes
+:tensordot: Compute tensor dot product along specified axes
 :einsum:    Evaluate the Einstein summation convention on the operands
 :eye:       Return the identity matrix
 
