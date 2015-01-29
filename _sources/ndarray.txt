@@ -1,7 +1,9 @@
 The array model
 ---------------
 
-In most systems, data from the memory is transferred to the CPU via layers of caches. The transfers involve chunks of contiguous memory (a cache line) even if only few bytes are requested by the CPU. Modern CPUs also have the possibility to anticipate transfers from the memory by prefetching the next cache lines. This is why localized data is better than scattered data in memory and why NumPy's arrays are more efficient than Python's lists in terms of memory bandwidth, as sketched in the following figure.
+Numpy array model is quite powerful, but before delving into the details, it is important to understand why Numpy arrays are more efficient than Python lists.
+First, when a Numpy array is created, its elements are stored one next to the other (the memory storage is contiguous, see figure on the left for a 2-dimensional array). In a Python list, the elements are created before the list and they can be stored wherever in the memory (the memory storage is scattered, see figure on the right). In most systems, data from the main memory is transferred to the CPU via layers of caches. The transfers involve whole chunks of contiguous memory (a cache line) even if only few bytes in the cache line are actually requested by the CPU. As a consequence, a non-contiguous memory storage of the data will imply the transfer of unneeded data to the cache and it will incur a bandwidth penalty. In addition to that, modern architectures also have the possibility to anticipate transfers from the memory by prefetching the next cache lines. This mechanism will obviously better work when the data storage is contiguous. A second advantage of Numpy's arrays over the Python's lists is that all elements occupy the same number of bytes, and as a consequence, the location of an element in the memory (its address) can be cheaply computed from its index and the location of the first element. 
+There is no such relationship in Python lists: the location of each element has to be stored in the memory, so that every read or write access has the indirection overhead of transferring this element location to the CPU beforehand.
 
 .. image:: layout_2darray.png
    :width: 40%
@@ -176,7 +178,7 @@ Creating arrays
              >>> np.linspace(2, 4, 6)
              array([ 2. ,  2.4,  2.8,  3.2,  3.6,  4. ])
 
-  :logspace: Return numbers spaced evenly on a log scale. By default the base 10 is used. The end points specify the base's powers.
+  :logspace: Return numbers evenly spaced on a log scale. By default the base 10 is used. The end points specify the base's powers.
 
              >>> np.logspace(0, 2, 5)
              array([ 1., 3.16227766, 10., 31.6227766, 100.])
@@ -230,7 +232,7 @@ Creating arrays
            [ 0.37971588, -0.40010123],
            [-0.33761754,  0.07175398]])
 
-  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` and ``randn`` for ``random_sample`` and ``standard_normal``, even if they are available in ``numpy``'s module namespace, since their calling sequence ``rand(d0, d1, ...)`` is inconsistent with that of NumPy functions such as ``zeros``, ``ones``, ``random_integers``, ``random_sample``, ``standard_normal``, ``standard_cauchy`` etc., which use a tuple to specify the array shape.
+  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` (for ``random_sample``) and ``randn`` (for ``standard_normal``), even if they are conveniently available in ``numpy``'s module namespace. Their calling sequence ``rand(d0, d1, ...)`` is inconsistent with most other NumPy functions such as ``zeros``, ``ones``, ``random_integers``, ``random_sample``, ``standard_normal``, ``standard_cauchy`` etc., which take a tuple to specify the array shape.
 
 
 Basic operations
