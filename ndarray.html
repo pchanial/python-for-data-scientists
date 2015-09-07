@@ -42,8 +42,8 @@
             
   <div class="section" id="the-array-model">
 <h1>The array model<a class="headerlink" href="#the-array-model" title="Permalink to this headline">¶</a></h1>
-<p>Numpy array model is quite powerful, but before delving into the details, it is important to understand why Numpy arrays are more efficient than Python lists.
-First, when a Numpy array is created, its elements are stored one next to the other (the memory storage is contiguous, see figure on the left for a 2-dimensional array). In a Python list, the elements are created before the list and they can be stored wherever in the memory (the memory storage is scattered, see figure on the right). In most systems, data from the main memory is transferred to the CPU via layers of caches. The transfers involve whole chunks of contiguous memory (a cache line) even if only few bytes in the cache line are actually requested by the CPU. As a consequence, a non-contiguous memory storage of the data will imply the transfer of unneeded data to the cache and it will incur a bandwidth penalty. In addition to that, modern architectures also have the possibility to anticipate transfers from the memory by prefetching the next cache lines. This mechanism will obviously better work when the data storage is contiguous. A second advantage of Numpy&#8217;s arrays over the Python&#8217;s lists is that all elements occupy the same number of bytes, and as a consequence, the location of an element in the memory (its address) can be cheaply computed from its index and the location of the first element.
+<p>The Numpy array model is quite powerful, but before delving into the details on how Numpy arrays can be manipulated, it is interesting to understand why they are much more efficient than Python lists.
+First, when a Numpy array is created, its elements are stored one next to the other (the memory storage is contiguous, see figure on the left for a 2-dimensional array), whereas in a Python list, elements are created before the list and they can be stored wherever in the memory (the memory storage is scattered, see figure on the right). In most systems, data from the main memory is transferred to the CPU via layers of caches, which implies that memory transfers from the cache to the CPU involve whole chunks of contiguous memory (a cache line) even if only few bytes in the cache line are actually requested by the CPU. As a consequence, a non-contiguous memory storage of the data will force the transfer of unneeded data from the cache and will incur a bandwidth penalty. In addition to that, modern architectures also have the possibility to anticipate transfers from the memory by prefetching the next cache lines. This mechanism will obviously better work when the data storage is contiguous. A second advantage of Numpy&#8217;s arrays over Python&#8217;s lists is that all elements occupy the same number of bytes, and as a consequence, the location of an element in the memory (its address) can be cheaply computed from its index and the location of the first element.
 There is no such relationship in Python lists: the location of each element has to be stored in the memory, so that every read or write access has the indirection overhead of transferring this element location to the CPU beforehand.</p>
 <a class="reference internal image-reference" href="_images/layout_2darray.png"><img alt="_images/layout_2darray.png" src="_images/layout_2darray.png" style="width: 40%;" /></a>
 <a class="reference internal image-reference" href="_images/layout_listoflist.png"><img alt="_images/layout_listoflist.png" src="_images/layout_listoflist.png" style="width: 40%;" /></a>
@@ -292,7 +292,7 @@ There is no such relationship in Python lists: the location of each element has 
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">meshgrid:</th><td class="field-body"><p class="first">Return coordinate matrices from two or more coordinate vectors.</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span> <span class="o">=</span> <span class="mi">3</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">nx</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ny</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_1d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span>
@@ -306,6 +306,82 @@ There is no such relationship in Python lists: the location of each element has 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x_2d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y_2d</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <span class="go">array([[ 0.        ,  0.5       ,  1.        ],</span>
 <span class="go">       [ 1.        ,  1.11803399,  1.41421356]])</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mgrid:</th><td class="field-body"><p class="first">Return a dense multi-dimensional meshgrid.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Brackets are used and not parentheses.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">N</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">j</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(4, 4), (4, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span>
+<span class="go">array([[0, 0, 0, 0],</span>
+<span class="go">       [1, 1, 1, 1],</span>
+<span class="go">       [2, 2, 2, 2],</span>
+<span class="go">       [3, 3, 3, 3]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span>
+<span class="go">array([[0, 1, 2, 3],</span>
+<span class="go">       [0, 1, 2, 3],</span>
+<span class="go">       [0, 1, 2, 3],</span>
+<span class="go">       [0, 1, 2, 3]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span>
+<span class="go">array([[ 1.41421356,  1.        ,  1.41421356,  2.23606798],</span>
+<span class="go">       [ 1.        ,  0.        ,  1.        ,  2.        ],</span>
+<span class="go">       [ 1.41421356,  1.        ,  1.41421356,  2.23606798],</span>
+<span class="go">       [ 2.23606798,  2.        ,  2.23606798,  2.82842712]])</span>
+</pre></div>
+</div>
+<p>Another calling sequence specifies the bounds and the number of samples:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span>
+<span class="go">array([[ 0. ,  0. ,  0. ],</span>
+<span class="go">       [ 0.5,  0.5,  0.5],</span>
+<span class="go">       [ 1. ,  1. ,  1. ]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span>
+<span class="go">array([[ 0. ,  0.5,  1. ],</span>
+<span class="go">       [ 0. ,  0.5,  1. ],</span>
+<span class="go">       [ 0. ,  0.5,  1. ]])</span>
+</pre></div>
+</div>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">ogrid:</th><td class="field-body"><p class="first">Return a sparse multi-dimensional meshgrid.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">N</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ogrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">N</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">j</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(4, 1), (1, 4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span>
+<span class="go">array([[0],</span>
+<span class="go">       [1],</span>
+<span class="go">       [2],</span>
+<span class="go">       [3]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span>
+<span class="go">array([[0, 1, 2, 3]])</span>
+</pre></div>
+</div>
+<p>The sparse grid can be manipulated using <a class="reference internal" href="#section-broadcasting"><em>broadcasting</em></a> to achieve the same result as that of the dense grid:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span>
+<span class="go">array([[ 1.41421356,  1.        ,  1.41421356,  2.23606798],</span>
+<span class="go">       [ 1.        ,  0.        ,  1.        ,  2.        ],</span>
+<span class="go">       [ 1.41421356,  1.        ,  1.41421356,  2.23606798],</span>
+<span class="go">       [ 2.23606798,  2.        ,  2.23606798,  2.82842712]])</span>
+</pre></div>
+</div>
+<p>Similarly to <cite>mgrid</cite>, an alternate calling sequence can be used:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ogrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span>
+<span class="go">array([[ 0. ],</span>
+<span class="go">       [ 0.5],</span>
+<span class="go">       [ 1. ]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span>
+<span class="go">array([[ 0. ,  0.5,  1. ]])</span>
 </pre></div>
 </div>
 </td>
@@ -361,7 +437,7 @@ There is no such relationship in Python lists: the location of each element has 
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">rand</span></tt> (for <tt class="docutils literal"><span class="pre">random_sample</span></tt>) and <tt class="docutils literal"><span class="pre">randn</span></tt> (for <tt class="docutils literal"><span class="pre">standard_normal</span></tt>), even if they are conveniently available in <tt class="docutils literal"><span class="pre">numpy</span></tt>&#8216;s module namespace. Their calling sequence <tt class="docutils literal"><span class="pre">rand(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with most other NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt>, <tt class="docutils literal"><span class="pre">ones</span></tt>, <tt class="docutils literal"><span class="pre">random_integers</span></tt>, <tt class="docutils literal"><span class="pre">random_sample</span></tt>, <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, <tt class="docutils literal"><span class="pre">standard_cauchy</span></tt> etc., which take a tuple to specify the array shape.</p>
+<p class="last">I prefer not to use MATLAB® equivalent shortcuts <tt class="docutils literal"><span class="pre">rand</span></tt> (for <tt class="docutils literal"><span class="pre">random_sample</span></tt>) and <tt class="docutils literal"><span class="pre">randn</span></tt> (for <tt class="docutils literal"><span class="pre">standard_normal</span></tt>), even if they are conveniently available in <tt class="docutils literal"><span class="pre">numpy</span></tt>&#8216;s module namespace. Their calling sequence <tt class="docutils literal"><span class="pre">rand(d0,</span> <span class="pre">d1,</span> <span class="pre">...)</span></tt> is inconsistent with most other NumPy functions such as <tt class="docutils literal"><span class="pre">zeros</span></tt>, <tt class="docutils literal"><span class="pre">ones</span></tt>, <tt class="docutils literal"><span class="pre">random_integers</span></tt>, <tt class="docutils literal"><span class="pre">random_sample</span></tt>, <tt class="docutils literal"><span class="pre">standard_normal</span></tt>, <tt class="docutils literal"><span class="pre">standard_cauchy</span></tt> etc., which take a tuple as first argument to specify the array shape.</p>
 </div>
 </li>
 </ul>
@@ -544,6 +620,16 @@ There is no such relationship in Python lists: the location of each element has 
 </div>
 </li>
 </ul>
+<div class="green topic">
+<p class="topic-title first"><strong>Exercise</strong>: Array creation</p>
+<p>Create the following 1-dimensional arrays:</p>
+<blockquote>
+<div><div class="math">
+<p><img src="_images/math/df1491e216ef6fc35fd351a0180f05bc37d72439.png" alt="a_1 &amp;= [\underbrace{0\,0\,0 \cdots 0}_{N\ \rm times}\;\underbrace{1\,1 \cdots 1}_{N-1\ \rm times}\;\underbrace{2 \cdots 2}_{N-2\ \rm times}\;\cdots\;N-2\;N-2\;N-1] \\
+a_2 &amp;= [0\,1 \cdots N-1\quad 0\,1 \cdots N-2\;\cdots\;0\,1\,2\;0\,1\;0]"/></p>
+</div></div></blockquote>
+<p>[<a class="reference internal" href="auto_examples/array_creation.html#array-creation-py"><em>Solution</em></a>]</p>
+</div>
 <div class="green topic">
 <p class="topic-title first"><strong>Exercise</strong>: Histogram</p>
 <p>Complete the missing parts of the code below to do this exercise.
@@ -767,7 +853,7 @@ v_3 &amp;= \sqrt{v_x^2+v_y^2+v_z^2}"/></p>
 </div></blockquote>
 </div>
 <div class="section" id="broadcasting">
-<h1>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h1>
+<span id="section-broadcasting"></span><h1>Broadcasting<a class="headerlink" href="#broadcasting" title="Permalink to this headline">¶</a></h1>
 <p>Broadcasting allows operations (such as addition, multiplication etc.) which are normally element-wise to be carried on arrays of different shapes. It is a virtual replication of the arrays along the missing dimensions. It can be seen as a generalization of operations involving an array and a scalar.</p>
 <ul class="simple">
 <li>the addition of a scalar on an matrix can be seen as the addition of a matrix with identical elements (and same dimensions).</li>

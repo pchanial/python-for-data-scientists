@@ -1,8 +1,8 @@
 The array model
 ---------------
 
-Numpy array model is quite powerful, but before delving into the details, it is important to understand why Numpy arrays are more efficient than Python lists.
-First, when a Numpy array is created, its elements are stored one next to the other (the memory storage is contiguous, see figure on the left for a 2-dimensional array). In a Python list, the elements are created before the list and they can be stored wherever in the memory (the memory storage is scattered, see figure on the right). In most systems, data from the main memory is transferred to the CPU via layers of caches. The transfers involve whole chunks of contiguous memory (a cache line) even if only few bytes in the cache line are actually requested by the CPU. As a consequence, a non-contiguous memory storage of the data will imply the transfer of unneeded data to the cache and it will incur a bandwidth penalty. In addition to that, modern architectures also have the possibility to anticipate transfers from the memory by prefetching the next cache lines. This mechanism will obviously better work when the data storage is contiguous. A second advantage of Numpy's arrays over the Python's lists is that all elements occupy the same number of bytes, and as a consequence, the location of an element in the memory (its address) can be cheaply computed from its index and the location of the first element. 
+The Numpy array model is quite powerful, but before delving into the details on how Numpy arrays can be manipulated, it is interesting to understand why they are much more efficient than Python lists.
+First, when a Numpy array is created, its elements are stored one next to the other (the memory storage is contiguous, see figure on the left for a 2-dimensional array), whereas in a Python list, elements are created before the list and they can be stored wherever in the memory (the memory storage is scattered, see figure on the right). In most systems, data from the main memory is transferred to the CPU via layers of caches, which implies that memory transfers from the cache to the CPU involve whole chunks of contiguous memory (a cache line) even if only few bytes in the cache line are actually requested by the CPU. As a consequence, a non-contiguous memory storage of the data will force the transfer of unneeded data from the cache and will incur a bandwidth penalty. In addition to that, modern architectures also have the possibility to anticipate transfers from the memory by prefetching the next cache lines. This mechanism will obviously better work when the data storage is contiguous. A second advantage of Numpy's arrays over Python's lists is that all elements occupy the same number of bytes, and as a consequence, the location of an element in the memory (its address) can be cheaply computed from its index and the location of the first element. 
 There is no such relationship in Python lists: the location of each element has to be stored in the memory, so that every read or write access has the indirection overhead of transferring this element location to the CPU beforehand.
 
 .. image:: layout_2darray.png
@@ -187,20 +187,90 @@ Creating arrays
 
   :meshgrid: Return coordinate matrices from two or more coordinate vectors.
 
-             >>> nx = 3
-             >>> ny = 2
-             >>> x_1d = np.linspace(0, 1, nx)
-             >>> y_1d = np.linspace(0, 1, ny)
-             >>> x_2d, yv_2d = np.meshgrid(x_1d, y_1d)
-             >>> x_2d
-             array([[ 0. ,  0.5,  1. ],
-                    [ 0. ,  0.5,  1. ]])
-             >>> y_2d
-             array([[ 0.,  0.,  0.],
-                    [ 1.,  1.,  1.]])
-             >>> np.sqrt(x_2d**2 + y_2d**2)
-             array([[ 0.        ,  0.5       ,  1.        ],
-                    [ 1.        ,  1.11803399,  1.41421356]])
+      >>> nx = 3
+      >>> ny = 2
+      >>> x_1d = np.linspace(0, 1, nx)
+      >>> y_1d = np.linspace(0, 1, ny)
+      >>> x_2d, yv_2d = np.meshgrid(x_1d, y_1d)
+      >>> x_2d
+      array([[ 0. ,  0.5,  1. ],
+             [ 0. ,  0.5,  1. ]])
+      >>> y_2d
+      array([[ 0.,  0.,  0.],
+             [ 1.,  1.,  1.]])
+      >>> np.sqrt(x_2d**2 + y_2d**2)
+      array([[ 0.        ,  0.5       ,  1.        ],
+             [ 1.        ,  1.11803399,  1.41421356]])
+
+  :mgrid: Return a dense multi-dimensional meshgrid.
+
+      .. warning:: Brackets are used and not parentheses.
+
+      >>> N = 4
+      >>> i, j = np.mgrid[0:N, 0:N]
+      >>> i.shape, j.shape
+      (4, 4), (4, 4)
+      >>> i
+      array([[0, 0, 0, 0],
+             [1, 1, 1, 1],
+             [2, 2, 2, 2],
+             [3, 3, 3, 3]])
+      >>> j
+      array([[0, 1, 2, 3],
+             [0, 1, 2, 3],
+             [0, 1, 2, 3],
+             [0, 1, 2, 3]])
+      >>> distance = np.sqrt((i-1)**2 + (j-1)**2)
+      >>> distance
+      array([[ 1.41421356,  1.        ,  1.41421356,  2.23606798],
+             [ 1.        ,  0.        ,  1.        ,  2.        ],
+             [ 1.41421356,  1.        ,  1.41421356,  2.23606798],
+             [ 2.23606798,  2.        ,  2.23606798,  2.82842712]])
+
+      Another calling sequence specifies the bounds and the number of samples:
+
+      >>> i, j = np.mgrid[0:1:complex(3), 0:1:complex(3)]
+      >>> i
+      array([[ 0. ,  0. ,  0. ],
+             [ 0.5,  0.5,  0.5],
+             [ 1. ,  1. ,  1. ]])
+      >>> j
+      array([[ 0. ,  0.5,  1. ],
+             [ 0. ,  0.5,  1. ],
+             [ 0. ,  0.5,  1. ]])
+
+  :ogrid: Return a sparse multi-dimensional meshgrid.
+
+      >>> N = 4
+      >>> i, j = np.ogrid[0:N, 0:N]
+      >>> i.shape, j.shape
+      (4, 1), (1, 4)
+      >>> i
+      array([[0],
+             [1],
+             [2],
+             [3]])
+      >>> j
+      array([[0, 1, 2, 3]])
+
+      The sparse grid can be manipulated using :ref:`broadcasting <section-broadcasting>` to achieve the same result as that of the dense grid:
+
+      >>> distance = np.sqrt((i-1)**2 + (j-1)**2)
+      >>> distance
+      array([[ 1.41421356,  1.        ,  1.41421356,  2.23606798],
+             [ 1.        ,  0.        ,  1.        ,  2.        ],
+             [ 1.41421356,  1.        ,  1.41421356,  2.23606798],
+             [ 2.23606798,  2.        ,  2.23606798,  2.82842712]])
+
+      Similarly to `mgrid`, an alternate calling sequence can be used:
+
+      >>> i, j = np.ogrid[0:1:complex(3), 0:1:complex(3)]
+      >>> i
+      array([[ 0. ],
+             [ 0.5],
+             [ 1. ]])
+      >>> j
+      array([[ 0. ,  0.5,  1. ]])
 
 
 * Creation of arrays populated by pseudonumbers. The package ``numpy.random`` contains pseudonumber generators for the usual distributions. Many more are available in ``scipy.stats``.
@@ -232,7 +302,7 @@ Creating arrays
            [ 0.37971588, -0.40010123],
            [-0.33761754,  0.07175398]])
 
-  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` (for ``random_sample``) and ``randn`` (for ``standard_normal``), even if they are conveniently available in ``numpy``'s module namespace. Their calling sequence ``rand(d0, d1, ...)`` is inconsistent with most other NumPy functions such as ``zeros``, ``ones``, ``random_integers``, ``random_sample``, ``standard_normal``, ``standard_cauchy`` etc., which take a tuple to specify the array shape.
+  .. note:: I prefer not to use MATLAB® equivalent shortcuts ``rand`` (for ``random_sample``) and ``randn`` (for ``standard_normal``), even if they are conveniently available in ``numpy``'s module namespace. Their calling sequence ``rand(d0, d1, ...)`` is inconsistent with most other NumPy functions such as ``zeros``, ``ones``, ``random_integers``, ``random_sample``, ``standard_normal``, ``standard_cauchy`` etc., which take a tuple as first argument to specify the array shape.
 
 
 Basic operations
@@ -350,6 +420,19 @@ Indexing arrays
   >>> index = np.argsort(x)
   >>> x[index[:10]] = 0
 
+
+.. topic:: **Exercise**: Array creation
+  :class: green
+
+  Create the following 1-dimensional arrays:
+
+      .. math::
+         a_1 &= [\underbrace{0\,0\,0 \cdots 0}_{N\ \rm times}\;\underbrace{1\,1 \cdots 1}_{N-1\ \rm times}\;\underbrace{2 \cdots 2}_{N-2\ \rm times}\;\cdots\;N-2\;N-2\;N-1] \\
+         a_2 &= [0\,1 \cdots N-1\quad 0\,1 \cdots N-2\;\cdots\;0\,1\,2\;0\,1\;0]
+
+  .. only:: html
+
+            [:ref:`Solution <array_creation.py>`]
 
 .. topic:: **Exercise**: Histogram
   :class: green
@@ -535,6 +618,8 @@ Combining arrays
   :column_stack: Stack 1-D arrays as columns into a 2-D array.
   :row_stack: Stack arrays in sequence vertically (row wise).
 
+
+.. _section-broadcasting:
 
 Broadcasting
 ------------
