@@ -262,7 +262,7 @@ Creating arrays
              [ 1.41421356,  1.        ,  1.41421356,  2.23606798],
              [ 2.23606798,  2.        ,  2.23606798,  2.82842712]])
 
-      Similarly to `mgrid`, an alternate calling sequence can be used:
+      Similarly to ``mgrid``, an alternate calling sequence can be used:
 
       >>> i, j = np.ogrid[0:1:complex(3), 0:1:complex(3)]
       >>> i
@@ -509,7 +509,9 @@ Manipulating arrays
 
   :.ravel: Flatten an array to one dimension.
 
-         .. note:: By default, in the ``reshape`` and ``ravel`` transformations, the elements of the input and output array are identical when both travelled following the row-major order.
+         .. note:: By default, in the ``reshape`` and ``ravel`` transformations, the elements of the input and output array are identical when both travelled along the row-major order.
+
+         .. note:: The ``.ravel`` method will attempt to return a view of the array, but if the elements of the array cannot be travelled using a constant stride, a copy will be returned. The method ``.flatten`` always return a copy and should therefore be used less frequently.
 
   :.T: Transpose of the array.
   :.swapaxes: Interchange two axes.
