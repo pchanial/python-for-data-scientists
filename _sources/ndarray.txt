@@ -511,7 +511,7 @@ Manipulating arrays
 
          .. note:: By default, in the ``reshape`` and ``ravel`` transformations, the elements of the input and output array are identical when both travelled along the row-major order.
 
-         .. note:: The ``.ravel`` method will attempt to return a view of the array, but if the elements of the array cannot be travelled using a constant stride, a copy will be returned. The method ``.flatten`` always return a copy and should therefore be used less frequently.
+         .. note:: The ``.ravel`` method will attempt to return a view of the array, but if the elements of the array cannot be travelled using a constant stride, a copy will be returned. The ``.flatten`` method is similar, but always returns a copy and should therefore be used less frequently.
 
   :.T: Transpose of the array.
   :.swapaxes: Interchange two axes.
