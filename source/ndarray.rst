@@ -391,12 +391,15 @@ Indexing arrays
   .. note:: negative indices are fine.
 
   >>> a = np.arange(10)
+  array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
   >>> a[3: -3]
   array([3, 4, 5, 6])
   >>> a[::2]
   array([0, 2, 4, 6, 8])
   >>> a.strides, a[::2].strides
   (8,), (16,)
+  >>> a[::-1]
+  array([9, 8, 7, 6, 5, 4, 3, 2, 1, 0])
 
 * The ellipsis ``...`` replaces as many ``:`` as possible. For an array ``a`` of rank 4: ``a[..., 0, :]`` is equivalent to ``a[:, :, 0, :]``
 
